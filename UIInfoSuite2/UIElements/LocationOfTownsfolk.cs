@@ -40,7 +40,7 @@ internal class LocationOfTownsfolk : IDisposable
   private SocialPage _socialPage = null!;
   private string[] _friendNames = null!;
   private readonly List<NPC> _townsfolk = new();
-  private Dictionary<string, MultiPlayerSyncData> _multiPlayerSyncData = new();
+  private static Dictionary<string, MultiPlayerSyncData> _multiPlayerSyncData = new();
   private readonly List<OptionsCheckbox> _checkboxes = new();
 
   private readonly ModOptions _options;
@@ -344,7 +344,7 @@ internal class LocationOfTownsfolk : IDisposable
                                    character.id != -1;
         if (shouldDrawCharacter)
         {
-          DrawNPC(character, namesToShow, _multiPlayerSyncData);
+          DrawNPC(character, namesToShow);
         }
       }
       catch (Exception ex)
@@ -362,14 +362,13 @@ internal class LocationOfTownsfolk : IDisposable
     IClickableMenu.drawHoverText(Game1.spriteBatch, hoverText, Game1.smallFont);
   }
 
-  private static void DrawNPC(NPC character, List<string> namesToShow, Dictionary<string, MultiPlayerSyncData> multiPlayerSyncData)
+  private static void DrawNPC(NPC character, List<string> namesToShow)
   {
     // Compare with the game code - MapPage.drawMiniPortraits
 
     Vector2?
       location = GetMapCoordinatesForNPC(
-        character,
-        multiPlayerSyncData
+        character
       ); // location is the absolute position or null if the npc is not on the map
     if (location is null)
     {
@@ -419,7 +418,7 @@ internal class LocationOfTownsfolk : IDisposable
     DrawQuestsForNPC(character, (int)offsetLocation.X, (int)offsetLocation.Y);
   }
 
-  private static Vector2? GetMapCoordinatesForNPC(NPC character, Dictionary<string, MultiPlayerSyncData> multiPlayerSyncData)
+  private static Vector2? GetMapCoordinatesForNPC(NPC character)
   {
     var playerNormalizedTile = new Point(Math.Max(0, Game1.player.TilePoint.X), Math.Max(0, Game1.player.TilePoint.Y));
     MapAreaPosition playerMapAreaPosition =
@@ -435,9 +434,9 @@ internal class LocationOfTownsfolk : IDisposable
 
     // Checking if the player is the main player.
     // If it is, do as we normally do.
-    // The second check is to prevent spam on the other players side if the mod is not updated
-    // on the MainPlayer side.
-    if (Context.IsMainPlayer || multiPlayerSyncData.Keys.Count == 0)
+    // The second check is a "fallback" to prevent errors if the MainPlayer doesn't have the
+    // mod on the last version.
+    if (Context.IsMainPlayer || _multiPlayerSyncData.Keys.Count == 0)
     {
       characterNormalizedTile = new Point(Math.Max(0, character.TilePoint.X), Math.Max(0, character.TilePoint.Y));
       characterMapAreaPosition =
@@ -453,7 +452,7 @@ internal class LocationOfTownsfolk : IDisposable
     // Multiplayer Sync
     else
     {
-      return new Vector2(multiPlayerSyncData[character.Name].X, multiPlayerSyncData[character.Name].Y);
+      return new Vector2(_multiPlayerSyncData[character.Name].X, _multiPlayerSyncData[character.Name].Y);
     }
 
     return null;
