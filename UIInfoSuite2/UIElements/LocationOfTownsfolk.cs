@@ -19,10 +19,32 @@ namespace UIInfoSuite2.UIElements;
 
 internal class LocationOfTownsfolk : IDisposable
 {
+#region Internal Cass
+  private class MultiplayerSyncData
+  {
+    // Point data
+    public int X { get; set; }
+    public int Y { get; set; }
+
+    // GameLocation data
+    public string MapPath { get; set; }
+    public string Name { get; set; }
+
+    public MultiplayerSyncData(int x, int y, string mapPath, string name)
+    {
+      this.X = x;
+      this.Y = y;
+      this.MapPath = mapPath;
+      this.Name = name;
+    }
+  }
+#endregion
+
 #region Properties
   private SocialPage _socialPage = null!;
   private string[] _friendNames = null!;
   private readonly List<NPC> _townsfolk = new();
+  private static Dictionary<string, MultiplayerSyncData> _townsfolkTilePointMPSync = new();
   private readonly List<OptionsCheckbox> _checkboxes = new();
 
   private readonly ModOptions _options;
@@ -47,6 +69,7 @@ internal class LocationOfTownsfolk : IDisposable
     _helper.Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu_DrawNPCLocationsOnMap;
     _helper.Events.Input.ButtonPressed -= OnButtonPressed_ForSocialPage;
     _helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
+    _helper.Events.Multiplayer.ModMessageReceived -= OnModMessageReceived;
 
     if (showLocations)
     {
@@ -55,6 +78,7 @@ internal class LocationOfTownsfolk : IDisposable
       _helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu_DrawNPCLocationsOnMap;
       _helper.Events.Input.ButtonPressed += OnButtonPressed_ForSocialPage;
       _helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+      _helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
     }
   }
 
@@ -114,14 +138,51 @@ internal class LocationOfTownsfolk : IDisposable
       return;
     }
 
+    // We only need to check the NPC locations if the player is the main player
+
     foreach (GameLocation? loc in Game1.locations)
     {
       foreach (NPC? character in loc.characters)
       {
-        if (character.isVillager())
+        if (character.IsVillager)
         {
           _townsfolk.Add(character);
+
+          if (Game1.server != null && Context.IsMainPlayer)
+          {
+            try{
+              _townsfolkTilePointMPSync.TryAdd(character.Name, new MultiplayerSyncData(
+                character.TilePoint.X, 
+                character.TilePoint.Y,
+                character.currentLocation.mapPath.Value,
+                character.currentLocation.Name)
+              );
+            } catch (ArgumentNullException)
+            {
+              _townsfolkTilePointMPSync[character.Name] = 
+              new MultiplayerSyncData(
+                character.TilePoint.X, 
+                character.TilePoint.Y,
+                character.currentLocation.mapPath.Value,
+                character.currentLocation.Name
+              );
+            }
+          }
         }
+      }
+    }
+      
+    if (Game1.server != null && Context.IsMainPlayer)
+      _helper.Multiplayer.SendMessage(_townsfolkTilePointMPSync, ModConstants.MessageIds.TownFolksMultiplayerSync, modIDs: new[] { _helper.ModRegistry.ModID });
+  }
+
+  private void OnModMessageReceived(object? sender, ModMessageReceivedEventArgs e)
+  {
+    if (!Context.IsMainPlayer && e.FromModID == _helper.ModRegistry.ModID && e.FromPlayerID == Game1.MasterPlayer.UniqueMultiplayerID)
+    {
+      if (e.Type == ModConstants.MessageIds.TownFolksMultiplayerSync)
+      {
+        _townsfolkTilePointMPSync = e.ReadAs<Dictionary<string, MultiplayerSyncData>>();
       }
     }
   }
@@ -368,9 +429,30 @@ internal class LocationOfTownsfolk : IDisposable
     //  Game1.player.currentLocation.GetParentLocation() would be the safer long-term bet.  But rule number 1 of modding is this:
     //  the game code is always right, even when it's wrong.
 
-    var characterNormalizedTile = new Point(Math.Max(0, character.TilePoint.X), Math.Max(0, character.TilePoint.Y));
-    MapAreaPosition characterMapAreaPosition =
-      WorldMapManager.GetPositionData(character.currentLocation, characterNormalizedTile);
+    Point characterNormalizedTile;
+    MapAreaPosition characterMapAreaPosition;
+
+    // Checking if the player is the main player.
+    // If it is, do as we normally did.
+    if (Context.IsMainPlayer)
+    {
+      characterNormalizedTile = new Point(Math.Max(0, character.TilePoint.X), Math.Max(0, character.TilePoint.Y));
+      characterMapAreaPosition =
+        WorldMapManager.GetPositionData(character.currentLocation, characterNormalizedTile);
+    }
+    // Multiplayer Sync
+    else
+    {
+      characterNormalizedTile = new Point(
+        Math.Max(0, _townsfolkTilePointMPSync[character.Name].X), 
+        Math.Max(0, _townsfolkTilePointMPSync[character.Name].Y)
+      );
+
+      characterMapAreaPosition = WorldMapManager.GetPositionData(
+        new GameLocation(_townsfolkTilePointMPSync[character.Name].MapPath, _townsfolkTilePointMPSync[character.Name].Name),
+        characterNormalizedTile
+      );
+    }
 
     if (playerMapAreaPosition != null &&
         characterMapAreaPosition != null &&
