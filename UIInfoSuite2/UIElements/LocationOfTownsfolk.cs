@@ -435,7 +435,9 @@ internal class LocationOfTownsfolk : IDisposable
 
     // Checking if the player is the main player.
     // If it is, do as we normally do.
-    if (Context.IsMainPlayer)
+    // The second check is to prevent spam on the other players side if the mod is not updated
+    // on the MainPlayer side.
+    if (Context.IsMainPlayer || multiPlayerSyncData.Keys.Count == 0)
     {
       characterNormalizedTile = new Point(Math.Max(0, character.TilePoint.X), Math.Max(0, character.TilePoint.Y));
       characterMapAreaPosition =
