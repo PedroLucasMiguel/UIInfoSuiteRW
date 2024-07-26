@@ -162,19 +162,6 @@ internal class LocationOfTownsfolk : IDisposable
                 _multiPlayerSyncData.Add(GetMpSyncKey(character), MultiPlayerSyncData.Create(
                     character.TilePoint, 
                     character.currentLocation));
-                /*
-                if (!_multiPlayerSyncData.ContainsKey(character.Name))
-                {
-                  _multiPlayerSyncData.Add(character.Name, MultiPlayerSyncData.Create(
-                    character.TilePoint, 
-                    character.currentLocation));
-                }
-                else
-                {
-                  _multiPlayerSyncData[character.Name] = MultiPlayerSyncData.Create(
-                    character.TilePoint, 
-                    character.currentLocation);
-                }*/
             }
           }
         }
