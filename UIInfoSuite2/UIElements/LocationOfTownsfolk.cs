@@ -22,16 +22,21 @@ internal class LocationOfTownsfolk : IDisposable
 #region Internal record
 
   // Inspired by Bouhm "NPCMapLocations"
-  public record MultiPlayerSyncData(int X, int Y)
+  public record MultiPlayerSyncData(string MapPath, string Name, int Tx, int Ty)
   {
     // GameLocation data
     public static MultiPlayerSyncData Create(Point tile, GameLocation gameLocation)
     {
+      string MapPath = gameLocation.mapPath.Value;
+      string Name = gameLocation.Name;
+      int Tx = tile.X;
+      int Ty = tile.Y;
+      /*
       var aux = WorldMapManager.GetPositionData(gameLocation, tile);
       int X = (int)aux.GetMapPixelPosition(gameLocation, tile).X;
-      int Y = (int)aux.GetMapPixelPosition(gameLocation, tile).Y;
+      int Y = (int)aux.GetMapPixelPosition(gameLocation, tile).Y;*/
 
-      return new MultiPlayerSyncData(X, Y);
+      return new MultiPlayerSyncData(MapPath, Name, Tx, Ty);
     }
   }
 #endregion
@@ -454,38 +459,18 @@ internal class LocationOfTownsfolk : IDisposable
         // Checking if the NPC is in the same region to show the updated location on the map
         if (!(characterMapAreaPosition.Region.Id != playerMapAreaPosition.Region.Id))
         {
-
-          /*
-            Now, we need to check if the main player is not on the Ginger Islands
-          */
-          Farmer[] farmers = Game1.getAllFarmers().ToArray();
-          int mainPlayerIndex;
+          GameLocation mpLocation = new GameLocation(
+            _multiPlayerSyncData[character.Name].MapPath,
+            _multiPlayerSyncData[character.Name].Name);
           
-          for(mainPlayerIndex = 0; mainPlayerIndex < farmers.Length; mainPlayerIndex++)
-          {
-            if (farmers[mainPlayerIndex].IsMainPlayer)
-              break;
-          }
+          Point mpTile = new Point(
+            _multiPlayerSyncData[character.Name].Tx,
+            _multiPlayerSyncData[character.Name].Ty
+          );
 
-          // 1st - If all players are not on ginger island, update location normally;
-          if (!farmers[mainPlayerIndex].currentLocation.InIslandContext() && !Game1.player.currentLocation.InIslandContext())
-          {
-            return new Vector2(_multiPlayerSyncData[character.Name].X, _multiPlayerSyncData[character.Name].Y);
-          }
-
-          // 2nd - If the main player IS on ginger islands and the other player are NOT;
-          else if (farmers[mainPlayerIndex].currentLocation.InIslandContext() && !Game1.player.currentLocation.InIslandContext())
-          {
-            // Check if the current character that we are trying to update is on ginger island.
-            // If is not, update normally;
-            if (!character.currentLocation.InIslandContext())
-            {
-              return new Vector2(_multiPlayerSyncData[character.Name].X, _multiPlayerSyncData[character.Name].Y);
-            }
-          }
-
-          // 3rd - If the other players are on ginger island and the main player is not, fallback.
-          return characterMapAreaPosition.GetMapPixelPosition(character.currentLocation, characterNormalizedTile);
+          var aux = WorldMapManager.GetPositionData(mpLocation, mpTile);
+          
+          return aux.GetMapPixelPosition(mpLocation, mpTile);
         }
       }
     }
