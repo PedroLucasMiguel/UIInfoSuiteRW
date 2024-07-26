@@ -433,8 +433,8 @@ internal class LocationOfTownsfolk : IDisposable
     //  Game1.player.currentLocation.GetParentLocation() would be the safer long-term bet.  But rule number 1 of modding is this:
     //  the game code is always right, even when it's wrong.
 
-    Point characterNormalizedTile;
-    MapAreaPosition characterMapAreaPosition;
+    Point characterNormalizedTile = new Point(Math.Max(0, character.TilePoint.X), Math.Max(0, character.TilePoint.Y));
+    MapAreaPosition characterMapAreaPosition = WorldMapManager.GetPositionData(character.currentLocation, characterNormalizedTile);
 
     // Checking if the player is the main player.
     // If it is, do as we normally do.
@@ -442,10 +442,6 @@ internal class LocationOfTownsfolk : IDisposable
     // mod on the last version.
     if (Context.IsMainPlayer || _multiPlayerSyncData.Keys.Count == 0)
     {
-      characterNormalizedTile = new Point(Math.Max(0, character.TilePoint.X), Math.Max(0, character.TilePoint.Y));
-      characterMapAreaPosition =
-        WorldMapManager.GetPositionData(character.currentLocation, characterNormalizedTile);
-
       if (playerMapAreaPosition != null &&
           characterMapAreaPosition != null &&
           !(characterMapAreaPosition.Region.Id != playerMapAreaPosition.Region.Id))
@@ -465,11 +461,19 @@ internal class LocationOfTownsfolk : IDisposable
           _multiPlayerSyncData[character.Name].Tx, 
           _multiPlayerSyncData[character.Name].Ty));
 
-      if (playerMapAreaPosition != null &&
-          characterMapAreaPosition != null &&
-          !(characterMapAreaPosition.Region.Id != playerMapAreaPosition.Region.Id))
+      if (playerMapAreaPosition != null && characterMapAreaPosition != null)
       {
-        return new Vector2(_multiPlayerSyncData[character.Name].X, _multiPlayerSyncData[character.Name].Y);
+        // Checking if the NPC is in the same region to show the updated location on the map
+        if (!(characterMapAreaPosition.Region.Id != playerMapAreaPosition.Region.Id))
+        {
+          return new Vector2(_multiPlayerSyncData[character.Name].X, _multiPlayerSyncData[character.Name].Y);
+        }
+
+        // If the NPC is not in the same position as the player 
+        // (for example, host on ginger island and the other player on pelican town),
+        // fallback to the previous method to not miss represent npc locations
+        else
+          return characterMapAreaPosition.GetMapPixelPosition(character.currentLocation, characterNormalizedTile);
       }
     }
 
