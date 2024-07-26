@@ -151,7 +151,7 @@ internal class LocationOfTownsfolk : IDisposable
 
             // Creating the MultiPlayerSyncData
             if (Game1.server != null && Context.IsMainPlayer)
-            {
+            {   
                 if (!_multiPlayerSyncData.ContainsKey(character.Name))
                 {
                   _multiPlayerSyncData.Add(character.Name, MultiPlayerSyncData.Create(
@@ -454,14 +454,37 @@ internal class LocationOfTownsfolk : IDisposable
         // Checking if the NPC is in the same region to show the updated location on the map
         if (!(characterMapAreaPosition.Region.Id != playerMapAreaPosition.Region.Id))
         {
-          // If the NPC is on ginger island but the other player are not
-          // we just fall back to the "bugged" version to not show the ginger island NPC on the
-          // pelican town map.
-          if (!character.currentLocation.InIslandContext() || Game1.player.currentLocation.InIslandContext())
+
+          /*
+            Now, we need to check if the main player is not on the Ginger Islands
+          */
+          Farmer[] farmers = Game1.getAllFarmers().ToArray();
+          int mainPlayerIndex;
+          
+          for(mainPlayerIndex = 0; mainPlayerIndex < farmers.Length; mainPlayerIndex++)
+          {
+            if (farmers[mainPlayerIndex].IsMainPlayer)
+              break;
+          }
+
+          // 1st - If all players are not on ginger island, update location normally;
+          if (!farmers[mainPlayerIndex].currentLocation.InIslandContext() && !Game1.player.currentLocation.InIslandContext())
           {
             return new Vector2(_multiPlayerSyncData[character.Name].X, _multiPlayerSyncData[character.Name].Y);
           }
 
+          // 2nd - If the main player IS on ginger islands and the other player are NOT;
+          else if (farmers[mainPlayerIndex].currentLocation.InIslandContext() && !Game1.player.currentLocation.InIslandContext())
+          {
+            // Check if the current character that we are trying to update is on ginger island.
+            // If is not, update normally;
+            if (!character.currentLocation.InIslandContext())
+            {
+              return new Vector2(_multiPlayerSyncData[character.Name].X, _multiPlayerSyncData[character.Name].Y);
+            }
+          }
+
+          // 3rd - If the other players are on ginger island and the main player is not, fallback.
           return characterMapAreaPosition.GetMapPixelPosition(character.currentLocation, characterNormalizedTile);
         }
       }
