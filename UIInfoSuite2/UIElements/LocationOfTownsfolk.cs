@@ -22,20 +22,16 @@ internal class LocationOfTownsfolk : IDisposable
 #region Internal record
 
   // Inspired by Bouhm "NPCMapLocations"
-  public record MultiPlayerSyncData(int X, int Y, int Tx, int Ty, string MapPath, string Value)
+  public record MultiPlayerSyncData(int X, int Y)
   {
     // GameLocation data
     public static MultiPlayerSyncData Create(Point tile, GameLocation gameLocation)
     {
-      string Value = gameLocation.Name;
-      string MapPath = gameLocation.mapPath.Value;
-      int Tx = tile.X;
-      int Ty = tile.Y;
       var aux = WorldMapManager.GetPositionData(gameLocation, tile);
       int X = (int)aux.GetMapPixelPosition(gameLocation, tile).X;
       int Y = (int)aux.GetMapPixelPosition(gameLocation, tile).Y;
 
-      return new MultiPlayerSyncData(X, Y, Tx, Ty, MapPath, Value);
+      return new MultiPlayerSyncData(X, Y);
     }
   }
 #endregion
@@ -453,27 +449,21 @@ internal class LocationOfTownsfolk : IDisposable
     // Multiplayer Sync
     else if (_multiPlayerSyncData.ContainsKey(character.Name))
     {
-      characterMapAreaPosition = WorldMapManager.GetPositionData(
-        new GameLocation(
-          _multiPlayerSyncData[character.Name].MapPath,
-          _multiPlayerSyncData[character.Name].Value), 
-        new Point(
-          _multiPlayerSyncData[character.Name].Tx, 
-          _multiPlayerSyncData[character.Name].Ty));
-
       if (playerMapAreaPosition != null && characterMapAreaPosition != null)
       {
         // Checking if the NPC is in the same region to show the updated location on the map
         if (!(characterMapAreaPosition.Region.Id != playerMapAreaPosition.Region.Id))
         {
-          return new Vector2(_multiPlayerSyncData[character.Name].X, _multiPlayerSyncData[character.Name].Y);
-        }
+          // If the NPC is on ginger island but the other player are not
+          // we just fall back to the "bugged" version to not show the ginger island NPC on the
+          // pelican town map.
+          if (!character.currentLocation.InIslandContext() || Game1.player.currentLocation.InIslandContext())
+          {
+            return new Vector2(_multiPlayerSyncData[character.Name].X, _multiPlayerSyncData[character.Name].Y);
+          }
 
-        // If the NPC is not in the same position as the player 
-        // (for example, host on ginger island and the other player on pelican town),
-        // fallback to the previous method to not miss represent npc locations
-        else
           return characterMapAreaPosition.GetMapPixelPosition(character.currentLocation, characterNormalizedTile);
+        }
       }
     }
 
