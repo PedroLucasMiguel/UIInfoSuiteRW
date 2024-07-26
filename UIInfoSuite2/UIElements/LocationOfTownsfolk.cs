@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -22,16 +24,21 @@ internal class LocationOfTownsfolk : IDisposable
 #region Internal record
 
   // Inspired by Bouhm "NPCMapLocations"
-  public record MultiPlayerSyncData(int X, int Y)
+  public record MultiPlayerSyncData(string MapPath, string Name, int Tx, int Ty)
   {
     // GameLocation data
     public static MultiPlayerSyncData Create(Point tile, GameLocation gameLocation)
     {
+      string MapPath = gameLocation.mapPath.Value;
+      string Name = gameLocation.Name;
+      int Tx = tile.X;
+      int Ty = tile.Y;
+      /*
       var aux = WorldMapManager.GetPositionData(gameLocation, tile);
       int X = (int)aux.GetMapPixelPosition(gameLocation, tile).X;
-      int Y = (int)aux.GetMapPixelPosition(gameLocation, tile).Y;
+      int Y = (int)aux.GetMapPixelPosition(gameLocation, tile).Y;*/
 
-      return new MultiPlayerSyncData(X, Y);
+      return new MultiPlayerSyncData(MapPath, Name, Tx, Ty);
     }
   }
 #endregion
@@ -152,18 +159,9 @@ internal class LocationOfTownsfolk : IDisposable
             // Creating the MultiPlayerSyncData
             if (Game1.server != null && Context.IsMainPlayer)
             {   
-                if (!_multiPlayerSyncData.ContainsKey(character.Name))
-                {
-                  _multiPlayerSyncData.Add(character.Name, MultiPlayerSyncData.Create(
+                _multiPlayerSyncData.Add(GetMpSyncKey(character), MultiPlayerSyncData.Create(
                     character.TilePoint, 
                     character.currentLocation));
-                }
-                else
-                {
-                  _multiPlayerSyncData[character.Name] = MultiPlayerSyncData.Create(
-                    character.TilePoint, 
-                    character.currentLocation);
-                }
             }
           }
         }
@@ -429,15 +427,13 @@ internal class LocationOfTownsfolk : IDisposable
     //  Game1.player.currentLocation.GetParentLocation() would be the safer long-term bet.  But rule number 1 of modding is this:
     //  the game code is always right, even when it's wrong.
 
-    Point characterNormalizedTile = new Point(Math.Max(0, character.TilePoint.X), Math.Max(0, character.TilePoint.Y));
-    MapAreaPosition characterMapAreaPosition = WorldMapManager.GetPositionData(character.currentLocation, characterNormalizedTile);
-
     // Checking if the player is the main player.
     // If it is, do as we normally do.
-    // The second check is a "fallback" to prevent errors if the MainPlayer doesn't have the
-    // mod on the last version.
     if (Context.IsMainPlayer || _multiPlayerSyncData.Keys.Count == 0)
     {
+      Point characterNormalizedTile = new Point(Math.Max(0, character.TilePoint.X), Math.Max(0, character.TilePoint.Y));
+      MapAreaPosition characterMapAreaPosition = WorldMapManager.GetPositionData(character.currentLocation, characterNormalizedTile);
+
       if (playerMapAreaPosition != null &&
           characterMapAreaPosition != null &&
           !(characterMapAreaPosition.Region.Id != playerMapAreaPosition.Region.Id))
@@ -447,45 +443,28 @@ internal class LocationOfTownsfolk : IDisposable
     }
     
     // Multiplayer Sync
-    else if (_multiPlayerSyncData.ContainsKey(character.Name))
+    else if (_multiPlayerSyncData.ContainsKey(GetMpSyncKey(character)))
     {
-      if (playerMapAreaPosition != null && characterMapAreaPosition != null)
+      GameLocation mpLocation = new GameLocation(
+        _multiPlayerSyncData[GetMpSyncKey(character)].MapPath,
+        _multiPlayerSyncData[GetMpSyncKey(character)].Name
+      );
+          
+      Point mpTile = new Point(
+        Math.Max(0, _multiPlayerSyncData[GetMpSyncKey(character)].Tx),
+        Math.Max(0, _multiPlayerSyncData[GetMpSyncKey(character)].Ty)
+      );
+
+      MapAreaPosition characterMPMapAreaPosition = WorldMapManager.GetPositionData(mpLocation, mpTile);
+
+      if (playerMapAreaPosition != null && characterMPMapAreaPosition != null)
       {
         // Checking if the NPC is in the same region to show the updated location on the map
-        if (!(characterMapAreaPosition.Region.Id != playerMapAreaPosition.Region.Id))
+        if (!(characterMPMapAreaPosition.Region.Id != playerMapAreaPosition.Region.Id))
         {
-
-          /*
-            Now, we need to check if the main player is not on the Ginger Islands
-          */
-          Farmer[] farmers = Game1.getAllFarmers().ToArray();
-          int mainPlayerIndex;
+          var aux = WorldMapManager.GetPositionData(mpLocation, mpTile);
           
-          for(mainPlayerIndex = 0; mainPlayerIndex < farmers.Length; mainPlayerIndex++)
-          {
-            if (farmers[mainPlayerIndex].IsMainPlayer)
-              break;
-          }
-
-          // 1st - If all players are not on ginger island, update location normally;
-          if (!farmers[mainPlayerIndex].currentLocation.InIslandContext() && !Game1.player.currentLocation.InIslandContext())
-          {
-            return new Vector2(_multiPlayerSyncData[character.Name].X, _multiPlayerSyncData[character.Name].Y);
-          }
-
-          // 2nd - If the main player IS on ginger islands and the other player are NOT;
-          else if (farmers[mainPlayerIndex].currentLocation.InIslandContext() && !Game1.player.currentLocation.InIslandContext())
-          {
-            // Check if the current character that we are trying to update is on ginger island.
-            // If is not, update normally;
-            if (!character.currentLocation.InIslandContext())
-            {
-              return new Vector2(_multiPlayerSyncData[character.Name].X, _multiPlayerSyncData[character.Name].Y);
-            }
-          }
-
-          // 3rd - If the other players are on ginger island and the main player is not, fallback.
-          return characterMapAreaPosition.GetMapPixelPosition(character.currentLocation, characterNormalizedTile);
+          return aux.GetMapPixelPosition(mpLocation, mpTile);
         }
       }
     }
@@ -558,6 +537,11 @@ internal class LocationOfTownsfolk : IDisposable
       new Vector2(windowPos.X + 15, windowPos.Y + 15),
       Game1.textColor
     );
+  }
+
+  private static string GetMpSyncKey(Character character)
+  {
+    return $"{character.Name}@{character.currentLocation.GetLocationContextId()}";
   }
 #endregion
 }
