@@ -33,10 +33,6 @@ internal class LocationOfTownsfolk : IDisposable
       string Name = gameLocation.Name;
       int Tx = tile.X;
       int Ty = tile.Y;
-      /*
-      var aux = WorldMapManager.GetPositionData(gameLocation, tile);
-      int X = (int)aux.GetMapPixelPosition(gameLocation, tile).X;
-      int Y = (int)aux.GetMapPixelPosition(gameLocation, tile).Y;*/
 
       return new MultiPlayerSyncData(MapPath, Name, Tx, Ty);
     }
