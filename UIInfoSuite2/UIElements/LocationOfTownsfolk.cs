@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -26,7 +24,7 @@ internal class LocationOfTownsfolk : IDisposable
   // Inspired by Bouhm "NPCMapLocations"
   public record MultiPlayerSyncData(string MapPath, string Name, int Tx, int Ty)
   {
-    // GameLocation data
+    // Sync data record
     public static MultiPlayerSyncData Create(Point tile, GameLocation gameLocation)
     {
       string MapPath = gameLocation.mapPath.Value;
@@ -535,6 +533,7 @@ internal class LocationOfTownsfolk : IDisposable
     );
   }
 
+  // This method is used to create "unique keys" for each entry in the MP Sync data.
   private static string GetMpSyncKey(Character character)
   {
     return $"{character.Name}@{character.currentLocation.GetLocationContextId()}";
