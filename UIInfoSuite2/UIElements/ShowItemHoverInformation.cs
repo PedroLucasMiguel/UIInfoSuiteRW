@@ -28,6 +28,7 @@ internal class ShowItemHoverInformation : IDisposable
 
   private readonly PerScreen<Item?> _hoverItem = new();
   private readonly ClickableTextureComponent _museumIcon;
+  private readonly ClickableTextureComponent _islandFieldOfficeIcon;
 
   private readonly ClickableTextureComponent _shippingBottomIcon = new(
     new Rectangle(0, 0, Game1.tileSize, Game1.tileSize),
@@ -44,25 +45,27 @@ internal class ShowItemHoverInformation : IDisposable
   );
 
   private LibraryMuseum _libraryMuseum;
+  private IslandFieldOffice _islandFieldOffice;
 
   public ShowItemHoverInformation(IModHelper helper)
   {
     _helper = helper;
-
-    NPC? gunther = Game1.getCharacterFromName("Gunther");
-    if (gunther == null)
-    {
-      ModEntry.MonitorObject.Log(
-        $"{GetType().Name}: Could not find Gunther in the game, creating a fake one for ourselves.",
-        LogLevel.Warn
-      );
-      gunther = new NPC { Name = "Gunther", Age = 0, Sprite = new AnimatedSprite("Characters\\Gunther") };
-    }
+    
+    // Just create both NPCs to show the indicator from day one
+    NPC gunther = new NPC { Name = "Gunther", Age = 0, Sprite = new AnimatedSprite("Characters\\Gunther") };
+    NPC professorSnail = new NPC { Name = "SafariGuy", Age = 0, Sprite = new AnimatedSprite("Characters\\SafariGuy") };
 
     _museumIcon = new ClickableTextureComponent(
       new Rectangle(0, 0, Game1.tileSize, Game1.tileSize),
       gunther.Sprite.Texture,
       gunther.GetHeadShot(),
+      Game1.pixelZoom
+    );
+
+    _islandFieldOfficeIcon = new ClickableTextureComponent(
+      new Rectangle(0, 0, Game1.tileSize, Game1.tileSize),
+      professorSnail.Sprite.Texture,
+      professorSnail.GetHeadShot(),
       Game1.pixelZoom
     );
   }
@@ -81,6 +84,7 @@ internal class ShowItemHoverInformation : IDisposable
     if (showItemHoverInformation)
     {
       _libraryMuseum = Game1.getLocationFromName("ArchaeologyHouse") as LibraryMuseum;
+      _islandFieldOffice = Game1.getLocationFromName("IslandFieldOffice") as IslandFieldOffice;
 
       _helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
       _helper.Events.Display.RenderedHud += OnRenderedHud;
@@ -147,6 +151,7 @@ internal class ShowItemHoverInformation : IDisposable
 
       bool notDonatedYet = _libraryMuseum.isItemSuitableForDonation(_hoverItem.Value);
 
+      int fieldOfficeDonationSlot = FieldOfficeMenu.getPieceIndexForDonationItem($"(O){_hoverItem.Value.ItemId}");
 
       bool notShippedYet = hoveredObject != null &&
                            hoveredObject.countsForShippedCollection() &&
@@ -246,7 +251,8 @@ internal class ShowItemHoverInformation : IDisposable
           cropPrice > 0 ||
           !string.IsNullOrEmpty(requiredBundleName) ||
           notDonatedYet ||
-          notShippedYet)
+          notShippedYet ||
+          fieldOfficeDonationSlot >= 0)
       {
         IClickableMenu.drawTextureBox(
           spriteBatch,
@@ -340,6 +346,24 @@ internal class ShowItemHoverInformation : IDisposable
           SpriteEffects.None,
           0.86f
         );
+      }
+
+      if (fieldOfficeDonationSlot >= 0)
+      {
+        if(_islandFieldOffice.piecesDonated[fieldOfficeDonationSlot] == false)
+        {
+          spriteBatch.Draw(
+            _islandFieldOfficeIcon.texture,
+            windowPos + new Vector2(2, windowHeight + 8),
+            _islandFieldOfficeIcon.sourceRect,
+            Color.White,
+            0f,
+            new Vector2(_islandFieldOfficeIcon.sourceRect.Width / 2, _islandFieldOfficeIcon.sourceRect.Height),
+            2,
+            SpriteEffects.None,
+            0.86f
+          );
+        }
       }
 
       if (!string.IsNullOrEmpty(requiredBundleName))
