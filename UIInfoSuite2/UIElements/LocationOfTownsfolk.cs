@@ -19,10 +19,29 @@ namespace UIInfoSuite2.UIElements;
 
 internal class LocationOfTownsfolk : IDisposable
 {
+#region Internal record
+
+  // Inspired by Bouhm "NPCMapLocations"
+  public record MultiPlayerSyncData(string MapPath, string Name, int Tx, int Ty)
+  {
+    // Sync data record
+    public static MultiPlayerSyncData Create(Point tile, GameLocation gameLocation)
+    {
+      string MapPath = gameLocation.mapPath.Value;
+      string Name = gameLocation.Name;
+      int Tx = tile.X;
+      int Ty = tile.Y;
+
+      return new MultiPlayerSyncData(MapPath, Name, Tx, Ty);
+    }
+  }
+#endregion
+
 #region Properties
   private SocialPage _socialPage = null!;
   private string[] _friendNames = null!;
   private readonly List<NPC> _townsfolk = new();
+  private static Dictionary<string, MultiPlayerSyncData> _multiPlayerSyncData = new();
   private readonly List<OptionsCheckbox> _checkboxes = new();
 
   private readonly ModOptions _options;
@@ -47,6 +66,7 @@ internal class LocationOfTownsfolk : IDisposable
     _helper.Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu_DrawNPCLocationsOnMap;
     _helper.Events.Input.ButtonPressed -= OnButtonPressed_ForSocialPage;
     _helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
+    _helper.Events.Multiplayer.ModMessageReceived -= OnModMessageReceived;
 
     if (showLocations)
     {
@@ -55,6 +75,7 @@ internal class LocationOfTownsfolk : IDisposable
       _helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu_DrawNPCLocationsOnMap;
       _helper.Events.Input.ButtonPressed += OnButtonPressed_ForSocialPage;
       _helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+      _helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
     }
   }
 
@@ -102,8 +123,6 @@ internal class LocationOfTownsfolk : IDisposable
       return;
     }
 
-    _townsfolk.Clear();
-
     // We shouldn't render if the RSV map is open, it already does its own NPC Tracking
     bool isRsvWorldMap =
       Game1.activeClickableMenu?.GetChildMenu()?.GetType().FullName?.Equals("RidgesideVillage.RSVWorldMap") ?? false;
@@ -114,14 +133,48 @@ internal class LocationOfTownsfolk : IDisposable
       return;
     }
 
-    foreach (GameLocation? loc in Game1.locations)
+    // For now on, it's good to update the map every 5 ticks, just to not flood the player
+    if (e.IsMultipleOf(5))
     {
-      foreach (NPC? character in loc.characters)
+      _townsfolk.Clear();
+
+      // Clearing the syncData for the main player
+      if (Game1.server != null && Context.IsMainPlayer)
+        _multiPlayerSyncData.Clear();
+
+      foreach (GameLocation? loc in Game1.locations)
       {
-        if (character.isVillager())
+        foreach (NPC? character in loc.characters)
         {
-          _townsfolk.Add(character);
+          if (character.IsVillager)
+          {
+            _townsfolk.Add(character);
+
+            // Creating the MultiPlayerSyncData
+            if (Game1.server != null && Context.IsMainPlayer)
+            {   
+                _multiPlayerSyncData.Add(GetMpSyncKey(character), MultiPlayerSyncData.Create(
+                    character.TilePoint, 
+                    character.currentLocation));
+            }
+          }
         }
+      }
+      
+      // Sending the data to the other players
+      if (Game1.server != null && Context.IsMainPlayer)
+        _helper.Multiplayer.SendMessage(_multiPlayerSyncData, ModConstants.MessageIds.TownFolksMultiplayerSync, modIDs: new[] { _helper.ModRegistry.ModID });
+    }
+  }
+
+  private void OnModMessageReceived(object? sender, ModMessageReceivedEventArgs e)
+  {
+    // Recieving and parsing data
+    if (!Context.IsMainPlayer && e.FromModID == _helper.ModRegistry.ModID && e.FromPlayerID == Game1.MasterPlayer.UniqueMultiplayerID)
+    {
+      if (e.Type == ModConstants.MessageIds.TownFolksMultiplayerSync)
+      {
+        _multiPlayerSyncData = e.ReadAs<Dictionary<string, MultiPlayerSyncData>>();
       }
     }
   }
@@ -368,15 +421,46 @@ internal class LocationOfTownsfolk : IDisposable
     //  Game1.player.currentLocation.GetParentLocation() would be the safer long-term bet.  But rule number 1 of modding is this:
     //  the game code is always right, even when it's wrong.
 
-    var characterNormalizedTile = new Point(Math.Max(0, character.TilePoint.X), Math.Max(0, character.TilePoint.Y));
-    MapAreaPosition characterMapAreaPosition =
-      WorldMapManager.GetPositionData(character.currentLocation, characterNormalizedTile);
-
-    if (playerMapAreaPosition != null &&
-        characterMapAreaPosition != null &&
-        !(characterMapAreaPosition.Region.Id != playerMapAreaPosition.Region.Id))
+    // Checking if the player is the main player.
+    // If it is, do as we normally do.
+    if (Context.IsMainPlayer || _multiPlayerSyncData.Keys.Count == 0)
     {
-      return characterMapAreaPosition.GetMapPixelPosition(character.currentLocation, characterNormalizedTile);
+      Point characterNormalizedTile = new Point(Math.Max(0, character.TilePoint.X), Math.Max(0, character.TilePoint.Y));
+      MapAreaPosition characterMapAreaPosition = WorldMapManager.GetPositionData(character.currentLocation, characterNormalizedTile);
+
+      if (playerMapAreaPosition != null &&
+          characterMapAreaPosition != null &&
+          !(characterMapAreaPosition.Region.Id != playerMapAreaPosition.Region.Id))
+      {
+        return characterMapAreaPosition.GetMapPixelPosition(character.currentLocation, characterNormalizedTile);
+      }
+    }
+    
+    // Multiplayer Sync
+    else if (_multiPlayerSyncData.ContainsKey(GetMpSyncKey(character)))
+    {
+      GameLocation mpLocation = new GameLocation(
+        _multiPlayerSyncData[GetMpSyncKey(character)].MapPath,
+        _multiPlayerSyncData[GetMpSyncKey(character)].Name
+      );
+          
+      Point mpTile = new Point(
+        Math.Max(0, _multiPlayerSyncData[GetMpSyncKey(character)].Tx),
+        Math.Max(0, _multiPlayerSyncData[GetMpSyncKey(character)].Ty)
+      );
+
+      MapAreaPosition characterMPMapAreaPosition = WorldMapManager.GetPositionData(mpLocation, mpTile);
+
+      if (playerMapAreaPosition != null && characterMPMapAreaPosition != null)
+      {
+        // Checking if the NPC is in the same region to show the updated location on the map
+        if (!(characterMPMapAreaPosition.Region.Id != playerMapAreaPosition.Region.Id))
+        {
+          var aux = WorldMapManager.GetPositionData(mpLocation, mpTile);
+          
+          return aux.GetMapPixelPosition(mpLocation, mpTile);
+        }
+      }
     }
 
     return null;
@@ -447,6 +531,12 @@ internal class LocationOfTownsfolk : IDisposable
       new Vector2(windowPos.X + 15, windowPos.Y + 15),
       Game1.textColor
     );
+  }
+
+  // This method is used to create "unique keys" for each entry in the MP Sync data.
+  private static string GetMpSyncKey(Character character)
+  {
+    return $"{character.Name}@{character.currentLocation.GetLocationContextId()}";
   }
 #endregion
 }
