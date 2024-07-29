@@ -3,7 +3,7 @@
   "Author": "Predo",
   "Version": "2.3.5",
   "Description": "Adds a useful information to the user interface. Based on Cdaragorn's excellent UI Info Suite.",
-  "UniqueID": "Predo.UiInfoSuiteRW",
+  "UniqueID": "Predo.UIInfoSuiteRW",
   "EntryDll": "UIInfoSuiteRW.dll",
   "MinimumApiVersion": "4.0.5",
   "UpdateKeys": [
