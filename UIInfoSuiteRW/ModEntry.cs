@@ -10,7 +10,7 @@ namespace UIInfoSuiteRW
   internal sealed class ModEntry : Mod
   {
     //private static SkipIntro _skipIntro; // Needed so GC won't throw away object with subscriptions
-    public static ModConfigManager ModCFG = null!;
+    public static ModConfigManager ModCFMGR = null!;
     public static IMonitor MonitorObject = null!;
     public static IReflectionHelper Reflection { get; private set; } = null!;
     private static FeatureManager FMGR = null!;
@@ -32,7 +32,11 @@ namespace UIInfoSuiteRW
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
       // Initializing configuration
-      ModCFG = new ModConfigManager(Helper, ModManifest);
+      ModCFMGR = new ModConfigManager(Helper, ModManifest);
+      
+      if (ModCFMGR.Gmcm != null)
+        ModCFMGR.Gmcm.OnFieldChanged(ModManifest, (string id, object obj) => FMGR.ToggleFeature(id));
+
       FMGR = new FeatureManager(Helper);
     }
 
@@ -41,11 +45,11 @@ namespace UIInfoSuiteRW
       if (!Context.IsWorldReady)
         return;
 
-      if (ModCFG.Settings.OpenCalendarKeybind.JustPressed())
+      if (ModCFMGR.Settings.OpenCalendarKeybind.JustPressed())
       {
         Game1.activeClickableMenu = new Billboard();
       }
-      else if (ModCFG.Settings.OpenQuestBoardKeybind.JustPressed())
+      else if (ModCFMGR.Settings.OpenQuestBoardKeybind.JustPressed())
       {
         Game1.RefreshQuestOfTheDay();
         Game1.activeClickableMenu = new Billboard(true);
@@ -54,9 +58,9 @@ namespace UIInfoSuiteRW
 
     private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
     {
-      foreach(var featureConfig in ModCFG.Settings.FeaturesConfig)
+      foreach(var features in FMGR.Features)
       {
-        FMGR.ToggleFeature(featureConfig.Key);
+        FMGR.ToggleFeature(features.Key);
       }
     }
   }
