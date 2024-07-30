@@ -15,7 +15,6 @@ namespace UIInfoSuiteRW.Features
     #region Properties
     private readonly PerScreen<string> _hoverText = new(() => string.Empty);
     private readonly PerScreen<Color> _color = new(() => new Color(Color.White.ToVector4()));
-
     private int _sourceRectX = 0;
     private int _sourceRectY = 0;
 
@@ -25,7 +24,6 @@ namespace UIInfoSuiteRW.Features
         new Rectangle(Tools.GetWidthInPlayArea() - 134, 290, 10 * Game1.pixelZoom, 10 * Game1.pixelZoom),
         "",
         "",
-        //Game1.mouseCursors,
         Game1.content.Load<Texture2D>("Characters\\Junimo"),
         new Rectangle(0, 0, 16, 16),
         Game1.pixelZoom * 0.6f // Scaling to make junimo fit
@@ -33,9 +31,6 @@ namespace UIInfoSuiteRW.Features
     );
 
     private readonly IModHelper _helper;
-
-    private bool Enabled { get; set; }
-    private bool ShowExactValue { get; set; }
 
     private static readonly Color Luck1Color = new(87, 255, 106, 255);
     private static readonly Color Luck2Color = new(148, 255, 210, 255);
@@ -58,8 +53,6 @@ namespace UIInfoSuiteRW.Features
 
     public void ToggleOption(bool showLuckOfDay)
     {
-      Enabled = showLuckOfDay;
-
       _helper.Events.Player.Warped -= OnWarped;
       _helper.Events.Display.RenderingHud -= OnRenderingHud;
       _helper.Events.Display.RenderedHud -= OnRenderedHud;
@@ -73,12 +66,6 @@ namespace UIInfoSuiteRW.Features
         _helper.Events.Display.RenderingHud += OnRenderingHud;
         _helper.Events.Display.RenderedHud += OnRenderedHud;
       }
-    }
-
-    public void ToggleShowExactValueOption(bool showExactValue)
-    {
-      ShowExactValue = showExactValue;
-      ToggleOption(Enabled);
     }
     #endregion
 
@@ -131,56 +118,47 @@ namespace UIInfoSuiteRW.Features
         switch (Game1.player.DailyLuck)
         {
           // Spirits are very happy (FeelingLucky)
-          case var l when l > 0.07:
-            _hoverText.Value = I18n.LuckStatus1();
+          case > 0.07:
+            _hoverText.Value = $"{I18n.LuckStatus1()}\n({Game1.player.DailyLuck*1000}/125)";
             _color.Value = Luck1Color;
             _sourceRectX = 80;
             _sourceRectY = 80;
             break;
           // Spirits are in good humor (LuckyButNotTooLucky)
-          case var l when l > 0.02 && l <= 0.07:
-            _hoverText.Value = I18n.LuckStatus2();
+          case <= 0.07 and > 0.02:
+            _hoverText.Value = $"{I18n.LuckStatus2()}\n({Game1.player.DailyLuck*1000}/125)";
             _color.Value = Luck2Color;
             _sourceRectX = 64;
             _sourceRectY = 80;
             break;
-          // The spirits feel neutral
-          case var l when l >= -0.02 && l <= 0.02 && l != 0:
-            _hoverText.Value = I18n.LuckStatus3();
-            _color.Value = Luck3Color;
-            _sourceRectX = 0;
-            _sourceRectY = 0;
-            break;
           // The spirits feel absolutely neutral
-          case var l when l == 0:
-            _hoverText.Value = I18n.LuckStatus4();
+          case 0:
+            _hoverText.Value = $"{I18n.LuckStatus4()}\n({Game1.player.DailyLuck*1000}/125)";
             _color.Value = Luck4Color;
             _sourceRectX = 48;
             _sourceRectY = 16;
             break;
+          // The spirits feel neutral
+          case <= 0.02 and >= -0.02 :
+            _hoverText.Value = $"{I18n.LuckStatus3()}\n({Game1.player.DailyLuck*1000}/125)";
+            _color.Value = Luck3Color;
+            _sourceRectX = 0;
+            _sourceRectY = 0;
+            break;
           // The spirits are somewhat annoyed (NotFeelingLuckyAtAll)
-          case var l when l >= -0.07 && l < -0.02:
-            _hoverText.Value =I18n.LuckStatus5();
+          case >= -0.07 and  < -0.02:
+            _hoverText.Value = $"{I18n.LuckStatus5()}\n({Game1.player.DailyLuck*1000}/125)";
             _color.Value = Luck5Color;
             _sourceRectX = 64;
             _sourceRectY = 16;
             break;
           // The spirits are very displeased (MaybeStayHome)
-          case var l when l < -0.07:
-            _hoverText.Value = I18n.LuckStatus6();
+          case < -0.07:
+            _hoverText.Value = $"{I18n.LuckStatus6()}\n({Game1.player.DailyLuck*1000}/125)";
             _color.Value = Luck6Color;
             _sourceRectX = 112;
             _sourceRectY = 16;
             break;
-        }
-
-        // Rewrite the text, but keep the color
-        if (ShowExactValue)
-        {
-          _hoverText.Value = string.Format(
-            I18n.DailyLuckValue(),
-            Game1.player.DailyLuck.ToString("N3")
-          );
         }
       }
     }
