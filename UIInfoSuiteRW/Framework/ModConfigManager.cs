@@ -7,7 +7,7 @@ namespace UIInfoSuiteRW.Framework
   internal class ModConfigManager
   {
     private const string GENERIC_MOD_MENU_CONFIG_UID = "spacechase0.GenericModConfigMenu";
-    public ModConfig Settings { get; set; } = null!;
+    public ModConfig Config { get; set; } = null!;
     public IGenericModConfigMenuApi? Gmcm { get; set; }
     private IManifest Manifest { get; set; } = null!;
     private IModHelper Helper { get; set; } = null!;
@@ -16,7 +16,7 @@ namespace UIInfoSuiteRW.Framework
     {
       Manifest = manifest;
       Helper = helper;
-      Settings = helper.ReadConfig<ModConfig>();
+      Config = helper.ReadConfig<ModConfig>();
       Gmcm = helper.ModRegistry.GetApi<IGenericModConfigMenuApi>(GENERIC_MOD_MENU_CONFIG_UID);
 
       if (Gmcm == null)
@@ -27,7 +27,7 @@ namespace UIInfoSuiteRW.Framework
 
     private void CreateMenu()
     {
-      Gmcm!.Register(Manifest, () => Settings = new ModConfig(), () => Helper.WriteConfig(Settings));
+      Gmcm!.Register(Manifest, () => Config = new ModConfig(), () => Helper.WriteConfig(Config));
 
       // Keybinds
       Gmcm.AddSectionTitle(
@@ -39,15 +39,15 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Keybinds_OpenCalendar(),
         tooltip: () => I18n.ConfigMenu_Keybinds_OpenCalendarTooltip(),
-        getValue: () => Settings.OpenCalendarKeybind,
-        setValue: value => Settings.OpenCalendarKeybind = value
+        getValue: () => Config.OpenCalendarKeybind,
+        setValue: value => Config.OpenCalendarKeybind = value
       );
       Gmcm.AddKeybindList(
         Manifest,
         name: () => I18n.ConfigMenu_Keybinds_OpenQuestBoard(),
         tooltip: () => I18n.ConfigMenu_Keybinds_OpenQuestBoard(),
-        getValue: () => Settings.OpenQuestBoardKeybind,
-        setValue: value => Settings.OpenQuestBoardKeybind = value
+        getValue: () => Config.OpenQuestBoardKeybind,
+        setValue: value => Config.OpenQuestBoardKeybind = value
       );
 
       // Tweaks
@@ -61,8 +61,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_XpBar_Show(),
         tooltip: () => I18n.ConfigMenu_Features_XpBar_Show_Tooltip(),
-        getValue: () => Settings.XPBar,
-        setValue: value => Settings.XPBar = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.XP_BAR],
+        setValue: value => Config.FeatureConfig[FeatureIds.XP_BAR] = value,
         fieldId: FeatureIds.XP_BAR
       );
       // XP Bar fadeout
@@ -70,8 +70,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_XpBar_Fadeout(),
         tooltip: () => I18n.ConfigMenu_Features_XpBar_Fadeout_Tooltip(),
-        getValue: () => Settings.XPBFadeout,
-        setValue: value => Settings.XPBFadeout = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.XP_BAR_FADEOUT],
+        setValue: value => Config.FeatureConfig[FeatureIds.XP_BAR_FADEOUT] = value,
         fieldId: FeatureIds.XP_BAR_FADEOUT
       );
       // Xp Gain
@@ -79,8 +79,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_XpGain_Show(),
         tooltip: () => I18n.ConfigMenu_Features_XpBar_Show_Tooltip(),
-        getValue: () => Settings.XPGain,
-        setValue: value => Settings.XPGain = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.XP_GAIN],
+        setValue: value => Config.FeatureConfig[FeatureIds.XP_GAIN] = value,
         fieldId: FeatureIds.XP_GAIN
       );
       // Level up animation
@@ -88,8 +88,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_LevelUpAnimation_Show(),
         tooltip: () => I18n.ConfigMenu_Features_LevelUpAnimation_Show_Tooltip(),
-        getValue: () => Settings.LvlUpAnimation,
-        setValue: value => Settings.LvlUpAnimation = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.LVL_UP_ANIMATION],
+        setValue: value => Config.FeatureConfig[FeatureIds.LVL_UP_ANIMATION] = value,
         fieldId: FeatureIds.LVL_UP_ANIMATION
       );
       // Heart Fill
@@ -97,8 +97,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_HeartFills_Show(),
         tooltip: () => I18n.ConfigMenu_Features_HeartFills_Show_Tooltip(),
-        getValue: () => Settings.HeartFill,
-        setValue: value => Settings.HeartFill = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.HEART_FILL],
+        setValue: value => Config.FeatureConfig[FeatureIds.HEART_FILL] = value,
         fieldId: FeatureIds.HEART_FILL
       );
       // Extra item information
@@ -106,8 +106,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_ExtraItemInfo_Show(),
         tooltip: () => I18n.ConfigMenu_Features_ExtraItemInfo_Show_Tooltip(),
-        getValue: () => Settings.ExtraItemInformation,
-        setValue: value => Settings.ExtraItemInformation = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.EXTRA_ITEM_INFORMATION],
+        setValue: value => Config.FeatureConfig[FeatureIds.EXTRA_ITEM_INFORMATION] = value,
         fieldId: FeatureIds.EXTRA_ITEM_INFORMATION
       );
       // Show NPC location on map
@@ -115,8 +115,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_NpcOnMap_Show(),
         tooltip: () => I18n.ConfigMenu_Features_NpcOnMap_Show_Tooltip(),
-        getValue: () => Settings.NpcLocationOnMap,
-        setValue: value => Settings.NpcLocationOnMap = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.NPC_LOCATION_ON_MAP],
+        setValue: value => Config.FeatureConfig[FeatureIds.NPC_LOCATION_ON_MAP] = value,
         fieldId: FeatureIds.NPC_LOCATION_ON_MAP
       );
       // Show luck icon
@@ -124,8 +124,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_LuckIcon_Show(),
         tooltip: () => I18n.ConfigMenu_Features_LuckIcon_Show_Tooltip(),
-        getValue: () => Settings.ShowLuckIcon,
-        setValue: value => Settings.ShowLuckIcon = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_LUCK_ICON],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_LUCK_ICON] = value,
         fieldId: FeatureIds.SHOW_LUCK_ICON
       );
       // Show traveler merchant icon
@@ -133,8 +133,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_TravelerMerchantIcon_Show(),
         tooltip: () => I18n.ConfigMenu_Features_TravelerMerchantIcon_Show_Tooltip(),
-        getValue: () => Settings.ShowTravelerMerchantIcon,
-        setValue: value => Settings.ShowTravelerMerchantIcon = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_TRAVELER_MERCHANT_ICON],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_TRAVELER_MERCHANT_ICON] = value,
         fieldId: FeatureIds.SHOW_TRAVELER_MERCHANT_ICON
       );
       // Show rainy day icon
@@ -142,8 +142,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_RayniDayIcon_Show(),
         tooltip: () => I18n.ConfigMenu_Features_RayniDayIcon_Show_Tooltip(),
-        getValue: () => Settings.ShowRainyDayIcon,
-        setValue: value => Settings.ShowRainyDayIcon = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_RAINY_DAY_ICON],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_RAINY_DAY_ICON] = value,
         fieldId: FeatureIds.SHOW_RAINY_DAY_ICON
       );
       // Show birthday icon
@@ -151,8 +151,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_BirthdayIcon_Show(),
         tooltip: () => I18n.ConfigMenu_Features_BirthdayIcon_Show_Tooltip(),
-        getValue: () => Settings.ShowBirthdayIcon,
-        setValue: value => Settings.ShowBirthdayIcon = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_BIRTHDAY_ICON],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_BIRTHDAY_ICON] = value,
         fieldId: FeatureIds.SHOW_BIRTHDAY_ICON
       );
       // Show today gift icon
@@ -160,8 +160,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_TodaysGiftIcon_Show(),
         tooltip: () => I18n.ConfigMenu_Features_TodaysGiftIcon_Show_Tooltip(),
-        getValue: () => Settings.ShowTodaysGiftsIcon,
-        setValue: value => Settings.ShowTodaysGiftsIcon = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_TODAYS_GIFT_ICON],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_TODAYS_GIFT_ICON] = value,
         fieldId: FeatureIds.SHOW_TODAYS_GIFT_ICON
       );
       // Show when new recipes are available icon
@@ -169,8 +169,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_NewRecipeIcon_Show(),
         tooltip: () => I18n.ConfigMenu_Features_NewRecipeIcon_Show_Tooltip(),
-        getValue: () => Settings.ShowNewRecipesIcon,
-        setValue: value => Settings.ShowNewRecipesIcon = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_NEW_RECIPES_ICON],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_NEW_RECIPES_ICON] = value,
         fieldId: FeatureIds.SHOW_NEW_RECIPES_ICON
       );
       // Show tool upgrade status icon
@@ -178,8 +178,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_ToolUpgradeIcon_Show(),
         tooltip: () => I18n.ConfigMenu_Features_ToolUpgradeIcon_Show_Tooltip(),
-        getValue: () => Settings.ShowToolUpgradeStatusIcon,
-        setValue: value => Settings.ShowToolUpgradeStatusIcon = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_TOOL_UPGRADE_STATUS_ICON],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_TOOL_UPGRADE_STATUS_ICON] = value,
         fieldId: FeatureIds.SHOW_TOOL_UPGRADE_STATUS_ICON
       );
       // Show Robin building status icon
@@ -187,8 +187,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_RobinIcon_Show(),
         tooltip: () => I18n.ConfigMenu_Features_RobinIcon_Show_Tooltip(),
-        getValue: () => Settings.ShowRobinBuildingStatusIcon,
-        setValue: value => Settings.ShowRobinBuildingStatusIcon = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_ROBIN_BUILDING_STATUS],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_ROBIN_BUILDING_STATUS] = value,
         fieldId: FeatureIds.SHOW_ROBIN_BUILDING_STATUS
       );
       //Show seasonal berry icon
@@ -196,8 +196,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_SeasonalBerryIcon_Show(),
         tooltip: () => I18n.ConfigMenu_Features_SeasonalBerryIcon_Show_Tooltip(),
-        getValue: () => Settings.ShowSeasonalBerryIcon,
-        setValue: value => Settings.ShowSeasonalBerryIcon = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_SEASONAL_BERRY_ICON],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_SEASONAL_BERRY_ICON] = value,
         fieldId: FeatureIds.SHOW_SEASONAL_BERRY_ICON
       );
       // Show crop/barrel tooltip
@@ -205,8 +205,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_CropBarrelTooltip_Show(),
         tooltip: () => I18n.ConfigMenu_Features_CropBarrelTooltip_Show_Tooltip(),
-        getValue: () => Settings.ShowCropAndBarrelTooltip,
-        setValue: value => Settings.ShowCropAndBarrelTooltip = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP] = value,
         fieldId: FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP
       );
       // Show animals need pets
@@ -214,8 +214,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_AnimalPets_Show(),
         tooltip: () => I18n.ConfigMenu_Features_AnimalPets_Show_Tooltip(),
-        getValue: () => Settings.ShowAnimalsNeedsPets,
-        setValue: value => Settings.ShowAnimalsNeedsPets = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_ANIMALS_NEED_PETS],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_ANIMALS_NEED_PETS] = value,
         fieldId: FeatureIds.SHOW_ANIMALS_NEED_PETS
       );
       // Show item effect ranges
@@ -223,8 +223,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_ItemEffectRange_Show(),
         tooltip: () => I18n.ConfigMenu_Features_ItemEffectRange_Show_Tooltip(),
-        getValue: () => Settings.ShowItemEffectRanges,
-        setValue: value => Settings.ShowItemEffectRanges = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_ITEM_EFFECT_RANGE],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_ITEM_EFFECT_RANGE] = value,
         fieldId: FeatureIds.SHOW_ITEM_EFFECT_RANGE
       );
       // Show items required for bundles
@@ -232,8 +232,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_ItemBundle_Show(),
         tooltip: () => I18n.ConfigMenu_Features_ItemBundle_Show_Tooltip(),
-        getValue: () => Settings.ShowItemsRequiredForBundle,
-        setValue: value => Settings.ShowItemsRequiredForBundle = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_ITEMS_REQUIRED_FOR_BUNDLES],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_ITEMS_REQUIRED_FOR_BUNDLES] = value,
         fieldId: FeatureIds.SHOW_ITEMS_REQUIRED_FOR_BUNDLES
       );
       // Show harvest prices in shop
@@ -241,8 +241,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_HarvestPriceInShop_Show(),
         tooltip: () => I18n.ConfigMenu_Features_HarvestPriceInShop_Show_Tooltip(),
-        getValue: () => Settings.ShowHarvestPricesInShop,
-        setValue: value => Settings.ShowHarvestPricesInShop = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_HARVEST_PRICES_IN_SHOP],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_HARVEST_PRICES_IN_SHOP] = value,
         fieldId: FeatureIds.SHOW_HARVEST_PRICES_IN_SHOP
       );
       // Display calendar and billboard
@@ -250,8 +250,8 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_CalendarBilboard_Show(),
         tooltip: () => I18n.ConfigMenu_Features_CalendarBilboard_Show_Tooltip(),
-        getValue: () => Settings.DisplayCalendarAndBilboard,
-        setValue: value => Settings.DisplayCalendarAndBilboard = value,
+        getValue: () => Config.FeatureConfig[FeatureIds.DISPLAY_CALENDAR_AND_BILBOARD],
+        setValue: value => Config.FeatureConfig[FeatureIds.DISPLAY_CALENDAR_AND_BILBOARD] = value,
         fieldId: FeatureIds.DISPLAY_CALENDAR_AND_BILBOARD
       );
     }

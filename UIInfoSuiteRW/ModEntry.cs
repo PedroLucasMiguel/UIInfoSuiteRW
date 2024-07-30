@@ -45,11 +45,11 @@ namespace UIInfoSuiteRW
       if (!Context.IsWorldReady)
         return;
 
-      if (ModCFMGR.Settings.OpenCalendarKeybind.JustPressed())
+      if (ModCFMGR.Config.OpenCalendarKeybind.JustPressed())
       {
         Game1.activeClickableMenu = new Billboard();
       }
-      else if (ModCFMGR.Settings.OpenQuestBoardKeybind.JustPressed())
+      else if (ModCFMGR.Config.OpenQuestBoardKeybind.JustPressed())
       {
         Game1.RefreshQuestOfTheDay();
         Game1.activeClickableMenu = new Billboard(true);
