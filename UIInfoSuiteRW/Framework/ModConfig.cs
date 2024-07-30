@@ -4,7 +4,7 @@ using StardewModdingAPI.Utilities;
 
 namespace UIInfoSuiteRW.Framework
 {
-  internal class ModConfig
+  public sealed class ModConfig
   {
     //public bool ShowOptionsTabInMenu { get; set; } = true;
     public KeybindList OpenCalendarKeybind { get; set; } = KeybindList.ForSingle(SButton.B);

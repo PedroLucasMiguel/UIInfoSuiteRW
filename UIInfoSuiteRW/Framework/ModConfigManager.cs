@@ -7,7 +7,7 @@ namespace UIInfoSuiteRW.Framework
   internal class ModConfigManager
   {
     private const string GENERIC_MOD_MENU_CONFIG_UID = "spacechase0.GenericModConfigMenu";
-    public ModConfig Settings { get; set; } = new();
+    public ModConfig Settings { get; set; } = null!;
     public IGenericModConfigMenuApi? Gmcm { get; set; }
     private IManifest Manifest { get; set; } = null!;
     private IModHelper Helper { get; set; } = null!;
@@ -16,6 +16,7 @@ namespace UIInfoSuiteRW.Framework
     {
       Manifest = manifest;
       Helper = helper;
+      Settings = helper.ReadConfig<ModConfig>();
       Gmcm = helper.ModRegistry.GetApi<IGenericModConfigMenuApi>(GENERIC_MOD_MENU_CONFIG_UID);
 
       if (Gmcm == null)
