@@ -9,11 +9,10 @@ namespace UIInfoSuiteRW
 {
   internal sealed class ModEntry : Mod
   {
-    //private static SkipIntro _skipIntro; // Needed so GC won't throw away object with subscriptions
-    public static ModConfigManager ModCFMGR = null!;
     public static IMonitor MonitorObject = null!;
     public static IReflectionHelper Reflection { get; private set; } = null!;
-    private static FeatureManager FMGR = null!;
+    private static ModConfigManager ModConfigM = null!;
+    private static FeatureManager FeatureM = null!;
 
     public override void Entry(IModHelper helper)
     {
@@ -31,13 +30,14 @@ namespace UIInfoSuiteRW
 
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
-      // Initializing configuration
-      ModCFMGR = new ModConfigManager(Helper, ModManifest);
+      ModConfigM = new ModConfigManager(Helper, ModManifest);
       
-      if (ModCFMGR.Gmcm != null)
-        ModCFMGR.Gmcm.OnFieldChanged(ModManifest, (string id, object obj) => FMGR.ToggleFeature(id));
+      ModConfigM.GenericModConfigMenu?.OnFieldChanged(
+        ModManifest, 
+        (string id, object obj) => FeatureM.ToggleFeature(id, ModConfigM.Config)
+      );
 
-      FMGR = new FeatureManager(Helper);
+      FeatureM = new FeatureManager(Helper, ModConfigM.Config);
     }
 
     private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
@@ -45,11 +45,11 @@ namespace UIInfoSuiteRW
       if (!Context.IsWorldReady)
         return;
 
-      if (ModCFMGR.Config.OpenCalendarKeybind.JustPressed())
+      if (ModConfigM.Config.OpenCalendarKeybind.JustPressed())
       {
         Game1.activeClickableMenu = new Billboard();
       }
-      else if (ModCFMGR.Config.OpenQuestBoardKeybind.JustPressed())
+      else if (ModConfigM.Config.OpenQuestBoardKeybind.JustPressed())
       {
         Game1.RefreshQuestOfTheDay();
         Game1.activeClickableMenu = new Billboard(true);
@@ -58,9 +58,9 @@ namespace UIInfoSuiteRW
 
     private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
     {
-      foreach(var features in FMGR.Features)
+      foreach(var feature in FeatureM.Features)
       {
-        FMGR.ToggleFeature(features.Key);
+        FeatureM.ToggleFeature(feature.Key, ModConfigM.Config);
       }
     }
   }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using StardewModdingAPI;
 using UIInfoSuiteRW.Features;
@@ -6,13 +7,13 @@ namespace UIInfoSuiteRW.Framework
 {
     internal class FeatureManager
     {
-      public Dictionary<string, object> Features = null!;
+      public Dictionary<string, IDisposable> Features = null!;
 
-      public FeatureManager(IModHelper helper)
+      public FeatureManager(IModHelper helper, ModConfig config)
       {
         Features = new(){
           { FeatureIds.XP_BAR, new ExperienceBar(helper) },
-          { FeatureIds.NPC_LOCATION_ON_MAP, new LocationOfTownsfolk(helper, ModEntry.ModCFMGR.Config) },
+          { FeatureIds.NPC_LOCATION_ON_MAP, new LocationOfTownsfolk(helper, config) },
           { FeatureIds.SHOW_LUCK_ICON, new LuckOfDay(helper) },
           { FeatureIds.SHOW_HARVEST_PRICES_IN_SHOP, new ShopHarvestPrices(helper) },
           { FeatureIds.HEART_FILL, new ShowAccurateHearts(helper.Events) },
@@ -32,101 +33,101 @@ namespace UIInfoSuiteRW.Framework
         };
       }
 
-      public void ToggleFeature(string featureId)
+      public void ToggleFeature(string featureId, ModConfig config)
       {
         switch (featureId)
         {
           case FeatureIds.XP_BAR:
            ((ExperienceBar)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.XP_BAR],
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.XP_BAR_FADEOUT],
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.XP_GAIN],
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.LVL_UP_ANIMATION]
+              config.FeatureConfig[FeatureIds.XP_BAR],
+              config.FeatureConfig[FeatureIds.XP_BAR_FADEOUT],
+              config.FeatureConfig[FeatureIds.XP_GAIN],
+              config.FeatureConfig[FeatureIds.LVL_UP_ANIMATION]
             );
             break;
           case FeatureIds.NPC_LOCATION_ON_MAP:
             ((LocationOfTownsfolk)Features[featureId]).ToggleShowNPCLocationsOnMap(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.NPC_LOCATION_ON_MAP]
+              config.FeatureConfig[FeatureIds.NPC_LOCATION_ON_MAP]
             );
             break;
           case FeatureIds.SHOW_LUCK_ICON:
             ((LuckOfDay)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.SHOW_LUCK_ICON]
+              config.FeatureConfig[FeatureIds.SHOW_LUCK_ICON]
             );
             break;
           case FeatureIds.SHOW_HARVEST_PRICES_IN_SHOP:
             ((ShopHarvestPrices)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.SHOW_HARVEST_PRICES_IN_SHOP]
+              config.FeatureConfig[FeatureIds.SHOW_HARVEST_PRICES_IN_SHOP]
             );
             break;
           case FeatureIds.HEART_FILL:
             ((ShowAccurateHearts)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.HEART_FILL]
+              config.FeatureConfig[FeatureIds.HEART_FILL]
             );
             break;
           case FeatureIds.SHOW_BIRTHDAY_ICON:
             ((ShowBirthdayIcon)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.SHOW_BIRTHDAY_ICON]
+              config.FeatureConfig[FeatureIds.SHOW_BIRTHDAY_ICON]
             );
             break;
           case FeatureIds.DISPLAY_CALENDAR_AND_BILBOARD:
             ((ShowCalendarAndBillboardOnGameMenuButton)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.DISPLAY_CALENDAR_AND_BILBOARD]
+              config.FeatureConfig[FeatureIds.DISPLAY_CALENDAR_AND_BILBOARD]
             );
             break;
           case FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP:
             ((ShowCropAndBarrelTime)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP]
+              config.FeatureConfig[FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP]
             );
             break;
           case FeatureIds.SHOW_ITEM_EFFECT_RANGE:
             ((ShowItemEffectRanges)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.SHOW_ITEM_EFFECT_RANGE]
+              config.FeatureConfig[FeatureIds.SHOW_ITEM_EFFECT_RANGE]
             );
             break;
           case FeatureIds.EXTRA_ITEM_INFORMATION:
             ((ShowItemHoverInformation)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.EXTRA_ITEM_INFORMATION]
+              config.FeatureConfig[FeatureIds.EXTRA_ITEM_INFORMATION]
             );
             break;
           case FeatureIds.SHOW_NEW_RECIPES_ICON:
             ((ShowQueenOfSauceIcon)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.SHOW_NEW_RECIPES_ICON]
+              config.FeatureConfig[FeatureIds.SHOW_NEW_RECIPES_ICON]
             );
             break;
           case FeatureIds.SHOW_RAINY_DAY_ICON:
             ((ShowRainyDayIcon)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.SHOW_RAINY_DAY_ICON]
+              config.FeatureConfig[FeatureIds.SHOW_RAINY_DAY_ICON]
             );
             break;
           case FeatureIds.SHOW_ROBIN_BUILDING_STATUS:
             ((ShowRobinBuildingStatusIcon)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.SHOW_ROBIN_BUILDING_STATUS]
+              config.FeatureConfig[FeatureIds.SHOW_ROBIN_BUILDING_STATUS]
             );
             break;
           case FeatureIds.SHOW_SEASONAL_BERRY_ICON:
             ((ShowSeasonalBerry)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.SHOW_SEASONAL_BERRY_ICON]
+              config.FeatureConfig[FeatureIds.SHOW_SEASONAL_BERRY_ICON]
             );
             break;
           case FeatureIds.SHOW_TODAYS_GIFT_ICON:
             ((ShowTodaysGifts)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.SHOW_TODAYS_GIFT_ICON]
+              config.FeatureConfig[FeatureIds.SHOW_TODAYS_GIFT_ICON]
             );
             break;
           case FeatureIds.SHOW_TOOL_UPGRADE_STATUS_ICON:
             ((ShowToolUpgradeStatus)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.SHOW_TOOL_UPGRADE_STATUS_ICON]
+              config.FeatureConfig[FeatureIds.SHOW_TOOL_UPGRADE_STATUS_ICON]
             );
             break;
           case FeatureIds.SHOW_TRAVELER_MERCHANT_ICON:
             ((ShowTravelingMerchant)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.SHOW_TRAVELER_MERCHANT_ICON]
+              config.FeatureConfig[FeatureIds.SHOW_TRAVELER_MERCHANT_ICON]
             );
             break;
           case FeatureIds.SHOW_ANIMALS_NEED_PETS:
             ((ShowWhenAnimalNeedsPet)Features[featureId]).ToggleOption(
-              ModEntry.ModCFMGR.Config.FeatureConfig[FeatureIds.SHOW_ANIMALS_NEED_PETS]
+              config.FeatureConfig[FeatureIds.SHOW_ANIMALS_NEED_PETS]
             );
             break;
         }
