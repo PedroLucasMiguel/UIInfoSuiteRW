@@ -17,7 +17,7 @@ using UIInfoSuiteRW.Framework;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class LocationOfTownsfolk : IDisposable
+internal class LocationOfTownsfolk : IFeature
 {
 #region Internal record
 
@@ -58,7 +58,7 @@ internal class LocationOfTownsfolk : IDisposable
     _options = options;
   }
 
-  public void ToggleShowNPCLocationsOnMap(bool showLocations)
+  public void ToggleOption(bool toggle)
   {
     InitializeProperties();
     _helper.Events.Display.MenuChanged -= OnMenuChanged;
@@ -68,7 +68,7 @@ internal class LocationOfTownsfolk : IDisposable
     _helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
     _helper.Events.Multiplayer.ModMessageReceived -= OnModMessageReceived;
 
-    if (showLocations)
+    if (toggle)
     {
       _helper.Events.Display.MenuChanged += OnMenuChanged;
       _helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu_DrawSocialPageOptions;
@@ -77,11 +77,6 @@ internal class LocationOfTownsfolk : IDisposable
       _helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
       _helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
     }
-  }
-
-  public void Dispose()
-  {
-    ToggleShowNPCLocationsOnMap(false);
   }
 #endregion
 

@@ -9,7 +9,7 @@ using StardewValley.Menus;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class ShowTodaysGifts : IDisposable
+internal class ShowTodaysGifts : IFeature
 {
 #region Properties
   private SocialPage? _socialPage;
@@ -22,17 +22,12 @@ internal class ShowTodaysGifts : IDisposable
     _helper = helper;
   }
 
-  public void Dispose()
-  {
-    ToggleOption(false);
-  }
-
-  public void ToggleOption(bool showTodaysGift)
+  public void ToggleOption(bool toggle)
   {
     _helper.Events.Display.MenuChanged -= OnMenuChanged;
     _helper.Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu;
 
-    if (showTodaysGift)
+    if (toggle)
     {
       _helper.Events.Display.MenuChanged += OnMenuChanged;
       _helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;

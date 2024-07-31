@@ -12,7 +12,7 @@ using UIInfoSuiteRW.Infrastructure.Extensions;
 
 namespace UIInfoSuiteRW.Features;
 
-public class ShowTravelingMerchant : IDisposable
+public class ShowTravelingMerchant : IFeature
 {
 #region Properties
   private bool _travelingMerchantIsHere;
@@ -32,21 +32,14 @@ public class ShowTravelingMerchant : IDisposable
     _helper = helper;
   }
 
-  public void Dispose()
+  public void ToggleOption(bool toggle)
   {
-    ToggleOption(false);
-  }
-
-  public void ToggleOption(bool showTravelingMerchant)
-  {
-    Enabled = showTravelingMerchant;
-
     _helper.Events.Display.RenderingHud -= OnRenderingHud;
     _helper.Events.Display.RenderedHud -= OnRenderedHud;
     _helper.Events.GameLoop.DayStarted -= OnDayStarted;
     _helper.Events.Display.MenuChanged -= OnMenuChanged;
 
-    if (showTravelingMerchant)
+    if (toggle)
     {
       UpdateTravelingMerchant();
       _helper.Events.Display.RenderingHud += OnRenderingHud;

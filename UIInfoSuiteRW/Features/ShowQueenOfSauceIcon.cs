@@ -12,7 +12,7 @@ using UIInfoSuiteRW.Infrastructure.Extensions;
 
 namespace UIInfoSuiteRW.Features
 {
-  internal class ShowQueenOfSauceIcon : IDisposable
+  internal class ShowQueenOfSauceIcon : IFeature
   {
     private class QueenOfSauceTV : TV
     {
@@ -40,12 +40,7 @@ namespace UIInfoSuiteRW.Features
       _helper = helper;
     }
 
-    public void Dispose()
-    {
-      ToggleOption(false);
-    }
-
-    public void ToggleOption(bool showQueenOfSauceIcon)
+    public void ToggleOption(bool toggle)
     {
       _helper.Events.Display.RenderingHud -= OnRenderingHud;
       _helper.Events.Display.RenderedHud -= OnRenderedHud;
@@ -53,7 +48,7 @@ namespace UIInfoSuiteRW.Features
       _helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
       _helper.Events.GameLoop.SaveLoaded -= OnSaveLoaded;
 
-      if (showQueenOfSauceIcon)
+      if (toggle)
       {
         LoadRecipes();
         CheckForNewRecipe();

@@ -9,7 +9,7 @@ using UIInfoSuiteRW.Infrastructure.Extensions;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class ShowSeasonalBerry : IDisposable
+internal class ShowSeasonalBerry : IFeature
 {
 #region Logic
   private void UpdateBerryForDay()
@@ -58,21 +58,14 @@ internal class ShowSeasonalBerry : IDisposable
     _helper = helper;
   }
 
-  public void Dispose()
+  public void ToggleOption(bool toggle)
   {
-    ToggleOption(false);
-  }
-
-  public void ToggleOption(bool showSeasonalBerry)
-  {
-    Enabled = showSeasonalBerry;
-
     _berrySpriteLocation = null;
     _helper.Events.GameLoop.DayStarted -= OnDayStarted;
     _helper.Events.Display.RenderingHud -= OnRenderingHud;
     _helper.Events.Display.RenderedHud -= OnRenderedHud;
 
-    if (showSeasonalBerry)
+    if (toggle)
     {
       UpdateBerryForDay();
 

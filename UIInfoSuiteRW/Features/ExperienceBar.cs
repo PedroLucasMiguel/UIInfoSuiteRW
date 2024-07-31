@@ -9,11 +9,9 @@ using StardewValley.Tools;
 using UIInfoSuiteRW.Infrastructure;
 using UIInfoSuiteRW.Infrastructure.Extensions;
 using UIInfoSuiteRW.Features.HUDElements;
-using System;
-
 namespace UIInfoSuiteRW.Features
 {
-  public class ExperienceBar : IDisposable
+  public class ExperienceBar : IFeature
   {
     #region Properties
     private readonly PerScreen<Item> _previousItem = new();
@@ -77,18 +75,8 @@ namespace UIInfoSuiteRW.Features
     {
       _helper = helper;
     }
-
-    public void Dispose()
-    {
-      ToggleOption(false, false, false, false);
-    }
     
-    public void ToggleOption(
-      bool experienceBarEnabled,
-      bool experienceBarFadeoutEnabled,
-      bool experienceGainTextEnabled,
-      bool levelUpAnimationEnabled
-    )
+    public void ToggleOption(bool toggle)
     {
       _helper.Events.Display.RenderingHud -= OnRenderingHud;
       _helper.Events.Player.Warped -= OnWarped;
@@ -99,12 +87,7 @@ namespace UIInfoSuiteRW.Features
       _helper.Events.Player.LevelChanged -= OnLevelChanged;
       _helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked_UpdateExperience;
 
-      ExperienceBarEnabled = experienceBarEnabled;
-      ExperienceBarFadeoutEnabled = experienceBarFadeoutEnabled;
-      ExperienceGainTextEnabled = experienceGainTextEnabled;
-      LevelUpAnimationEnabled = levelUpAnimationEnabled;
-
-      if (ExperienceBarEnabled || ExperienceBarFadeoutEnabled || ExperienceGainTextEnabled || LevelUpAnimationEnabled)
+      if (toggle)
       {
         _helper.Events.Display.RenderingHud += OnRenderingHud;
         _helper.Events.Player.Warped += OnWarped;
@@ -112,12 +95,12 @@ namespace UIInfoSuiteRW.Features
         _helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
       }
 
-      if (ExperienceBarEnabled || ExperienceGainTextEnabled)
+      if (true)
       {
         _helper.Events.GameLoop.UpdateTicked += OnUpdateTicked_UpdateExperience;
       }
 
-      if (LevelUpAnimationEnabled)
+      if (true)
       {
         _helper.Events.Player.LevelChanged += OnLevelChanged;
       }

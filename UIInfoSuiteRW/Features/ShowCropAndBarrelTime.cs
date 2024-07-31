@@ -12,14 +12,13 @@ using StardewValley.ItemTypeDefinitions;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using UIInfoSuiteRW.Framework;
 using UIInfoSuiteRW.Infrastructure.Extensions;
 using UIInfoSuiteRW.Infrastructure.Helpers;
 using Object = StardewValley.Object;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class ShowCropAndBarrelTime : IDisposable
+internal class ShowCropAndBarrelTime : IFeature
 {
   private const int MAX_TREE_GROWTH_STAGE = 5;
 
@@ -48,24 +47,17 @@ internal class ShowCropAndBarrelTime : IDisposable
   {
     _helper = helper;
   }
-
-  public void Dispose()
-  {
-    ToggleOption(false);
-  }
-
-  public void ToggleOption(bool showCropAndBarrelTimes)
+  
+  public void ToggleOption(bool toggle)
   {
     _helper.Events.Display.RenderingHud -= OnRenderingHud;
     _helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
 
-    if (!showCropAndBarrelTimes)
+    if (toggle)
     {
-      return;
+      _helper.Events.Display.RenderingHud += OnRenderingHud;
+      _helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
     }
-
-    _helper.Events.Display.RenderingHud += OnRenderingHud;
-    _helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
   }
 
   /// <summary>Raised after the game state is updated (≈60 times per second).</summary>

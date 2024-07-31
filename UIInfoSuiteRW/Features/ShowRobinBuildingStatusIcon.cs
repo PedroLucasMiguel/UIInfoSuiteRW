@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -13,7 +12,7 @@ using UIInfoSuiteRW.Infrastructure.Extensions;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class ShowRobinBuildingStatusIcon : IDisposable
+internal class ShowRobinBuildingStatusIcon : IFeature
 {
 #region Properties
   private bool _IsBuildingInProgress;
@@ -31,19 +30,14 @@ internal class ShowRobinBuildingStatusIcon : IDisposable
     _helper = helper;
   }
 
-  public void Dispose()
-  {
-    ToggleOption(false);
-  }
-
-  public void ToggleOption(bool showRobinBuildingStatus)
+  public void ToggleOption(bool toggle)
   {
     _helper.Events.GameLoop.DayStarted -= OnDayStarted;
     _helper.Events.Display.RenderingHud -= OnRenderingHud;
     _helper.Events.Display.RenderedHud -= OnRenderedHud;
     _helper.Events.GameLoop.OneSecondUpdateTicked -= OnTickInRobinHouse;
 
-    if (showRobinBuildingStatus)
+    if (toggle)
     {
       UpdateRobinBuindingStatusData();
 

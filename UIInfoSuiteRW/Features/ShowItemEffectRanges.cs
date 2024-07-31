@@ -10,12 +10,11 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Network;
-using UIInfoSuiteRW.Features;
 using Object = StardewValley.Object;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class ShowItemEffectRanges : IDisposable
+internal class ShowItemEffectRanges : IFeature
 {
 #region Properties
   private readonly PerScreen<HashSet<Point>> _effectiveArea = new(() => new HashSet<Point>());
@@ -32,17 +31,12 @@ internal class ShowItemEffectRanges : IDisposable
     _helper = helper;
   }
 
-  public void Dispose()
-  {
-    ToggleOption(false);
-  }
-
-  public void ToggleOption(bool showItemEffectRanges)
+  public void ToggleOption(bool toggle)
   {
     _helper.Events.Display.RenderingHud -= OnRenderingHud;
     _helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
 
-    if (showItemEffectRanges)
+    if (toggle)
     {
       _helper.Events.Display.RenderingHud += OnRenderingHud;
       _helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;

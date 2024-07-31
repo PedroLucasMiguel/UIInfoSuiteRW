@@ -11,7 +11,7 @@ using UIInfoSuiteRW.Infrastructure.Extensions;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class ShowRainyDayIcon : IDisposable
+internal class ShowRainyDayIcon : IFeature
 {
 #region Properties
   private class LocationWeather
@@ -40,18 +40,12 @@ internal class ShowRainyDayIcon : IDisposable
     CreateTileSheet();
   }
 
-  public void Dispose()
-  {
-    ToggleOption(false);
-    _iconSheet.Dispose();
-  }
-
-  public void ToggleOption(bool showRainyDay)
+  public void ToggleOption(bool toggle)
   {
     _helper.Events.Display.RenderingHud -= OnRenderingHud;
     _helper.Events.Display.RenderedHud -= OnRenderedHud;
 
-    if (showRainyDay)
+    if (toggle)
     {
       _helper.Events.Display.RenderingHud += OnRenderingHud;
       _helper.Events.Display.RenderedHud += OnRenderedHud;

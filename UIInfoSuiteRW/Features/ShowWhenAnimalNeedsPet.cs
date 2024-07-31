@@ -13,11 +13,10 @@ using StardewValley.GameData.FarmAnimals;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.Locations;
 using StardewValley.Network;
-using UIInfoSuiteRW.Features;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class ShowWhenAnimalNeedsPet : IDisposable
+internal class ShowWhenAnimalNeedsPet : IFeature
 {
 #region Properties
   private readonly PerScreen<float> _yMovementPerDraw = new();
@@ -35,22 +34,15 @@ internal class ShowWhenAnimalNeedsPet : IDisposable
   {
     _helper = helper;
   }
-
-  public void Dispose()
+  
+  public void ToggleOption(bool toggle)
   {
-    ToggleOption(false);
-  }
-
-  public void ToggleOption(bool showWhenAnimalNeedsPet)
-  {
-    Enabled = showWhenAnimalNeedsPet;
-
     _helper.Events.Player.Warped -= OnWarped;
     _helper.Events.Display.RenderingHud -= OnRenderingHud_DrawAnimalHasProduct;
     _helper.Events.Display.RenderingHud -= OnRenderingHud_DrawNeedsPetTooltip;
     _helper.Events.GameLoop.UpdateTicked -= UpdateTicked;
 
-    if (showWhenAnimalNeedsPet)
+    if (toggle)
     {
       _helper.Events.Player.Warped += OnWarped;
       _helper.Events.Display.RenderingHud += OnRenderingHud_DrawAnimalHasProduct;

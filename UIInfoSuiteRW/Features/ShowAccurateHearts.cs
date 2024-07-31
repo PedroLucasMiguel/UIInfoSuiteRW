@@ -7,7 +7,7 @@ using StardewValley.Menus;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class ShowAccurateHearts : IDisposable
+internal class ShowAccurateHearts : IFeature
 {
 #region Properties
   private SocialPage? _socialPage;
@@ -30,17 +30,12 @@ internal class ShowAccurateHearts : IDisposable
     _events = events;
   }
 
-  public void Dispose()
-  {
-    ToggleOption(false);
-  }
-
-  public void ToggleOption(bool showAccurateHearts)
+  public void ToggleOption(bool toggle)
   {
     _events.Display.MenuChanged -= OnMenuChanged;
     _events.Display.RenderedActiveMenu -= OnRenderedActiveMenu;
 
-    if (showAccurateHearts)
+    if (toggle)
     {
       _events.Display.MenuChanged += OnMenuChanged;
       _events.Display.RenderedActiveMenu += OnRenderedActiveMenu;

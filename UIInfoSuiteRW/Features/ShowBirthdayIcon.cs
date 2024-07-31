@@ -12,7 +12,7 @@ using UIInfoSuiteRW.Infrastructure.Extensions;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class ShowBirthdayIcon : IDisposable
+internal class ShowBirthdayIcon : IFeature
 {
 #region Properties
   private readonly PerScreen<List<NPC>> _birthdayNPCs = new(() => new List<NPC>());
@@ -31,22 +31,15 @@ internal class ShowBirthdayIcon : IDisposable
   {
     _helper = helper;
   }
-
-  public void Dispose()
+  
+  public void ToggleOption(bool toggle)
   {
-    ToggleOption(false);
-  }
-
-  public void ToggleOption(bool showBirthdayIcon)
-  {
-    Enabled = showBirthdayIcon;
-
     _helper.Events.GameLoop.DayStarted -= OnDayStarted;
     _helper.Events.Display.RenderingHud -= OnRenderingHud;
     _helper.Events.Display.RenderedHud -= OnRenderedHud;
     _helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
 
-    if (showBirthdayIcon)
+    if (toggle)
     {
       CheckForBirthday();
       _helper.Events.GameLoop.DayStarted += OnDayStarted;
@@ -85,7 +78,6 @@ internal class ShowBirthdayIcon : IDisposable
       DrawBirthdayIcon();
     }
   }
-
 
   private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
   {

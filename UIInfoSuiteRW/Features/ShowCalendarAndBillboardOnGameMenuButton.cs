@@ -13,7 +13,7 @@ using UIInfoSuiteRW.Infrastructure.Extensions;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class ShowCalendarAndBillboardOnGameMenuButton : IDisposable
+internal class ShowCalendarAndBillboardOnGameMenuButton : IFeature
 {
 #region Properties
   private readonly PerScreen<ClickableTextureComponent> _showBillboardButton = new(
@@ -37,18 +37,13 @@ internal class ShowCalendarAndBillboardOnGameMenuButton : IDisposable
     _helper = helper;
   }
 
-  public void Dispose()
-  {
-    ToggleOption(false);
-  }
-
-  public void ToggleOption(bool showCalendarAndBillboard)
+  public void ToggleOption(bool toggle)
   {
     _helper.Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu;
     _helper.Events.Input.ButtonPressed -= OnButtonPressed;
     _helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
 
-    if (showCalendarAndBillboard)
+    if (toggle)
     {
       _helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
       _helper.Events.Input.ButtonPressed += OnButtonPressed;

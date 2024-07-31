@@ -15,7 +15,7 @@ using Object = StardewValley.Object;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class ShowItemHoverInformation : IDisposable
+internal class ShowItemHoverInformation : IFeature
 {
   private readonly ClickableTextureComponent _bundleIcon = new(
     new Rectangle(0, 0, Game1.tileSize, Game1.tileSize),
@@ -69,19 +69,14 @@ internal class ShowItemHoverInformation : IDisposable
       Game1.pixelZoom
     );
   }
-
-  public void Dispose()
-  {
-    ToggleOption(false);
-  }
-
-  public void ToggleOption(bool showItemHoverInformation)
+  
+  public void ToggleOption(bool toggle)
   {
     _helper.Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu;
     _helper.Events.Display.RenderedHud -= OnRenderedHud;
     _helper.Events.Display.Rendering -= OnRendering;
 
-    if (showItemHoverInformation)
+    if (toggle)
     {
       _libraryMuseum = Game1.getLocationFromName("ArchaeologyHouse") as LibraryMuseum;
       _islandFieldOffice = Game1.getLocationFromName("IslandFieldOffice") as IslandFieldOffice;

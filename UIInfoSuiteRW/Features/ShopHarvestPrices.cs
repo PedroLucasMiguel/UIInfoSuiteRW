@@ -10,7 +10,7 @@ using UIInfoSuiteRW.Infrastructure.Extensions;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class ShopHarvestPrices : IDisposable
+internal class ShopHarvestPrices : IFeature
 {
   private readonly IModHelper _helper;
 
@@ -18,17 +18,12 @@ internal class ShopHarvestPrices : IDisposable
   {
     _helper = helper;
   }
-
-  public void Dispose()
-  {
-    ToggleOption(false);
-  }
-
-  public void ToggleOption(bool shopHarvestPrices)
+  
+  public void ToggleOption(bool toggle)
   {
     _helper.Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu;
 
-    if (shopHarvestPrices)
+    if (toggle)
     {
       _helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
     }

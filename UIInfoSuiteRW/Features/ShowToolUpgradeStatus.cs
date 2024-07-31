@@ -12,7 +12,7 @@ using UIInfoSuiteRW.Infrastructure;
 
 namespace UIInfoSuiteRW.Features;
 
-internal class ShowToolUpgradeStatus : IDisposable
+internal class ShowToolUpgradeStatus : IFeature
 {
 #region Logic
   private void UpdateToolInfo()
@@ -72,20 +72,14 @@ internal class ShowToolUpgradeStatus : IDisposable
     _helper = helper;
   }
 
-  public void Dispose()
-  {
-    ToggleOption(false);
-    _toolBeingUpgraded.Value = null;
-  }
-
-  public void ToggleOption(bool showToolUpgradeStatus)
+  public void ToggleOption(bool toggle)
   {
     _helper.Events.Display.RenderingHud -= OnRenderingHud;
     _helper.Events.Display.RenderedHud -= OnRenderedHud;
     _helper.Events.GameLoop.DayStarted -= OnDayStarted;
     _helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
 
-    if (showToolUpgradeStatus)
+    if (toggle)
     {
       UpdateToolInfo();
       _helper.Events.Display.RenderingHud += OnRenderingHud;
