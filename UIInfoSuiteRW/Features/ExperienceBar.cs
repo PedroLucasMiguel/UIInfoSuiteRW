@@ -8,7 +8,7 @@ using StardewValley;
 using StardewValley.Tools;
 using UIInfoSuiteRW.Infrastructure;
 using UIInfoSuiteRW.Infrastructure.Extensions;
-using UIInfoSuiteRW.Features.ExperienceElements;
+using UIInfoSuiteRW.Features.HUDElements;
 using System;
 
 namespace UIInfoSuiteRW.Features
@@ -23,14 +23,14 @@ namespace UIInfoSuiteRW.Features
     private readonly PerScreen<int> _experienceFromPreviousLevels = new(() => -1);
     private readonly PerScreen<int> _experienceEarnedThisLevel = new(() => -1);
 
-    private readonly PerScreen<DisplayedExperienceBar> _displayedExperienceBar =
-      new(() => new DisplayedExperienceBar());
+    private readonly PerScreen<HUDExperienceBar> _displayedExperienceBar =
+      new(() => new HUDExperienceBar());
 
-    private readonly PerScreen<DisplayedLevelUpMessage> _displayedLevelUpMessage =
-      new(() => new DisplayedLevelUpMessage());
+    private readonly PerScreen<HUDLevelUpMessage> _displayedLevelUpMessage =
+      new(() => new HUDLevelUpMessage());
 
-    private readonly PerScreen<List<DisplayedExperienceValue>> _displayedExperienceValues =
-      new(() => new List<DisplayedExperienceValue>());
+    private readonly PerScreen<List<HUDExperienceValue>> _displayedExperienceValues =
+      new(() => new List<HUDExperienceValue>());
 
     private const int LevelUpVisibleTicks = 120;
     private readonly PerScreen<int> _levelUpVisibleTimer = new();
@@ -287,7 +287,7 @@ namespace UIInfoSuiteRW.Features
           if (experienceGain > 0)
           {
             _displayedExperienceValues.Value.Add(
-              new DisplayedExperienceValue(experienceGain, Game1.player.getLocalPosition(Game1.viewport))
+              new HUDExperienceValue(experienceGain, Game1.player.getLocalPosition(Game1.viewport))
             );
           }
         }

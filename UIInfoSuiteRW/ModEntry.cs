@@ -34,7 +34,13 @@ namespace UIInfoSuiteRW
       
       ModConfigM.GenericModConfigMenu?.OnFieldChanged(
         ModManifest, 
-        (string id, object obj) => FeatureM.ToggleFeature(id, ModConfigM.Config)
+        (string id, object obj) => {
+          if (obj is bool v)
+          {
+            ModConfigM.Config.FeatureConfig[id] = v;
+            FeatureM.ToggleFeature(id, ModConfigM.Config);
+          }
+        }
       );
 
       FeatureM = new FeatureManager(Helper, ModConfigM.Config);

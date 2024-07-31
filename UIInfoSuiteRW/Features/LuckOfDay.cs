@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
+using UIInfoSuiteRW.Features.HUDElements;
 using UIInfoSuiteRW.Infrastructure;
 
 namespace UIInfoSuiteRW.Features
@@ -19,15 +19,7 @@ namespace UIInfoSuiteRW.Features
     private int _sourceRectY = 0;
 
     private readonly PerScreen<ClickableTextureComponent> _icon = new(
-      () => new ClickableTextureComponent(
-        "",
-        new Rectangle(Tools.GetWidthInPlayArea() - 134, 290, 10 * Game1.pixelZoom, 10 * Game1.pixelZoom),
-        "",
-        "",
-        Game1.content.Load<Texture2D>("Characters\\Junimo"),
-        new Rectangle(0, 0, 16, 16),
-        Game1.pixelZoom * 0.6f // Scaling to make junimo fit
-      )
+      () => HUDLuckIcon.Create()
     );
 
     private readonly IModHelper _helper;
@@ -89,6 +81,7 @@ namespace UIInfoSuiteRW.Features
       // draw dice icon
       if (UIElementUtils.IsRenderingNormally())
       {
+        ModEntry.MonitorObject.Log("aaaa", LogLevel.Warn);
         Point iconPosition = IconHandler.Handler.GetNewIconPosition();
         ClickableTextureComponent icon = _icon.Value;
         icon.bounds.X = iconPosition.X;
@@ -165,16 +158,7 @@ namespace UIInfoSuiteRW.Features
 
     private void AdjustIconXToBlackBorder()
     {
-      _icon.Value = new ClickableTextureComponent(
-        "",
-        new Rectangle(Tools.GetWidthInPlayArea() - 134, 290, 10 * Game1.pixelZoom, 10 * Game1.pixelZoom),
-        "",
-        "",
-        Game1.content.Load<Texture2D>("Characters\\Junimo"),
-        //new Rectangle(50, 428, 10, 14),
-        new Rectangle(0, 0, 16, 16),
-        Game1.pixelZoom * 0.6f // Scaling to make junimo fit
-      );
+      _icon.Value = HUDLuckIcon.Create();
     }
     #endregion
   }

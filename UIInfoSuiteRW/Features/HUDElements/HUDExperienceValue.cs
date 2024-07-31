@@ -1,16 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley;
 
-namespace UIInfoSuiteRW.Features.ExperienceElements
+namespace UIInfoSuiteRW.Features.HUDElements
 {
-  internal class DisplayedExperienceValue
+  internal sealed class HUDExperienceValue
   {
     private readonly float _experiencePoints;
 
     private int _alpha = 100;
     private Vector2 _position;
 
-    public DisplayedExperienceValue(float experiencePoints, Vector2 position)
+    public HUDExperienceValue(float experiencePoints, Vector2 position)
     {
       _experiencePoints = experiencePoints;
       _position = position;

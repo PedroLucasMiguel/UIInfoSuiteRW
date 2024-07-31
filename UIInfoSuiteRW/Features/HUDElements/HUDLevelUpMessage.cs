@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace UIInfoSuiteRW.Features.ExperienceElements
+namespace UIInfoSuiteRW.Features.HUDElements
 {
-  public class DisplayedLevelUpMessage
+  public sealed class HUDLevelUpMessage
   {
     public void Draw(Rectangle levelUpIconRectangle, string levelUpMessage)
     {

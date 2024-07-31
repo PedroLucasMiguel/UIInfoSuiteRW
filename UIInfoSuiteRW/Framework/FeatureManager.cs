@@ -35,6 +35,7 @@ namespace UIInfoSuiteRW.Framework
 
       public void ToggleFeature(string featureId, ModConfig config)
       {
+        ModEntry.MonitorObject.Log($"Toggle {featureId}", LogLevel.Warn);
         switch (featureId)
         {
           case FeatureIds.XP_BAR:

@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace UIInfoSuiteRW.Features.ExperienceElements
+namespace UIInfoSuiteRW.Features.HUDElements
 {
-  public class DisplayedExperienceBar
+  public sealed class HUDExperienceBar
   {
     private const int MaxBarWidth = 175;
 
@@ -62,7 +62,7 @@ namespace UIInfoSuiteRW.Features.ExperienceElements
       if (IsMouseOverExperienceBar(leftSide))
       {
         Game1.drawWithBorder(
-          experienceEarnedThisLevel + "/" + experienceDifferenceBetweenLevels,
+          $"{experienceEarnedThisLevel}/{experienceDifferenceBetweenLevels}",
           Color.Black,
           Color.Black,
           new Vector2(leftSide + 33, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 70)
@@ -91,7 +91,7 @@ namespace UIInfoSuiteRW.Features.ExperienceElements
       }
     }
 
-  #region Static helpers
+    #region Static helpers
     private static int GetBarWidth(int experienceEarnedThisLevel, int experienceDifferenceBetweenLevels)
     {
       return (int)((double)experienceEarnedThisLevel / experienceDifferenceBetweenLevels * MaxBarWidth);
@@ -127,6 +127,6 @@ namespace UIInfoSuiteRW.Features.ExperienceElements
         Game1.pixelZoom
       );
     }
-  #endregion
+    #endregion
   }
 }
