@@ -17,9 +17,9 @@ internal class ShowRobinBuildingStatusIcon : IFeature
 #region Properties
   private bool _IsBuildingInProgress;
   private Rectangle? _buildingIconSpriteLocation;
-  private string _hoverText;
+  private string _hoverText = null!;
   private readonly PerScreen<ClickableTextureComponent> _buildingIcon = new();
-  private Texture2D _robinIconSheet;
+  private Texture2D _robinIconSheet = null!;
 
   private readonly IModHelper _helper;
 #endregion
@@ -60,12 +60,12 @@ internal class ShowRobinBuildingStatusIcon : IFeature
     UpdateRobinBuindingStatusData();
   }
 
-  private void OnDayStarted(object sender, DayStartedEventArgs e)
+  private void OnDayStarted(object? sender, DayStartedEventArgs e)
   {
     UpdateRobinBuindingStatusData();
   }
 
-  private void OnRenderingHud(object sender, RenderingHudEventArgs e)
+  private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
   {
     // Draw icon
     if (UIElementUtils.IsRenderingNormally() && _IsBuildingInProgress && _buildingIconSpriteLocation.HasValue)
@@ -81,7 +81,7 @@ internal class ShowRobinBuildingStatusIcon : IFeature
     }
   }
 
-  private void OnRenderedHud(object sender, RenderedHudEventArgs e)
+  private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
   {
     // Show text on hover
     if (_IsBuildingInProgress &&

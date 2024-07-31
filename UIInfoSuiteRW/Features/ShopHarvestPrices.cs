@@ -35,7 +35,7 @@ internal class ShopHarvestPrices : IFeature
   /// </summary>
   /// <param name="sender">The event sender.</param>
   /// <param name="e">The event arguments.</param>
-  private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
+  private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e)
   {
     if (!(Game1.activeClickableMenu is ShopMenu menu))
     {

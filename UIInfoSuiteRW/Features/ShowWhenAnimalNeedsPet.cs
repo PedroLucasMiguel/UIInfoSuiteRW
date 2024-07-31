@@ -60,9 +60,9 @@ internal class ShowWhenAnimalNeedsPet : IFeature
 
 
 #region Event subscriptions
-  private void OnWarped(object sender, WarpedEventArgs e) { }
+  private void OnWarped(object? sender, WarpedEventArgs e) { }
 
-  private void OnRenderingHud_DrawNeedsPetTooltip(object sender, RenderingHudEventArgs e)
+  private void OnRenderingHud_DrawNeedsPetTooltip(object? sender, RenderingHudEventArgs e)
   {
     if (UIElementUtils.IsRenderingNormally() &&
         Game1.activeClickableMenu == null &&
@@ -73,7 +73,7 @@ internal class ShowWhenAnimalNeedsPet : IFeature
     }
   }
 
-  private void OnRenderingHud_DrawAnimalHasProduct(object sender, RenderingHudEventArgs e)
+  private void OnRenderingHud_DrawAnimalHasProduct(object? sender, RenderingHudEventArgs e)
   {
     if (UIElementUtils.IsRenderingNormally() &&
         Game1.activeClickableMenu == null &&
@@ -83,7 +83,7 @@ internal class ShowWhenAnimalNeedsPet : IFeature
     }
   }
 
-  private void UpdateTicked(object sender, UpdateTickedEventArgs e)
+  private void UpdateTicked(object? sender, UpdateTickedEventArgs e)
   {
     if (!UIElementUtils.IsRenderingNormally() ||
         Game1.activeClickableMenu != null ||
@@ -237,17 +237,17 @@ internal class ShowWhenAnimalNeedsPet : IFeature
     );
   }
 
-  private NetLongDictionary<FarmAnimal, NetRef<FarmAnimal>> GetAnimalsInCurrentLocation()
+  private NetLongDictionary<FarmAnimal, NetRef<FarmAnimal>>? GetAnimalsInCurrentLocation()
   {
-    NetLongDictionary<FarmAnimal, NetRef<FarmAnimal>> animals = null;
+    NetLongDictionary<FarmAnimal, NetRef<FarmAnimal>>? animals = null;
 
     if (Game1.currentLocation is AnimalHouse)
     {
-      animals = (Game1.currentLocation as AnimalHouse).animals;
+      animals = (Game1.currentLocation as AnimalHouse)?.animals;
     }
     else if (Game1.currentLocation is Farm)
     {
-      animals = (Game1.currentLocation as Farm).animals;
+      animals = (Game1.currentLocation as Farm)?.animals;
     }
 
     return animals;

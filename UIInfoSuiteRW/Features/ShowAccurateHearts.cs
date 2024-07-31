@@ -44,7 +44,7 @@ internal class ShowAccurateHearts : IFeature
 #endregion
 
 #region Event subscriptions
-  private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
+  private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e)
   {
     if (_socialPage == null)
     {
@@ -61,7 +61,7 @@ internal class ShowAccurateHearts : IFeature
     }
   }
 
-  private void OnMenuChanged(object sender, MenuChangedEventArgs e)
+  private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
   {
     GetSocialPage();
   }

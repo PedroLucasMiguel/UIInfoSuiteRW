@@ -54,7 +54,7 @@ internal class ShowCalendarAndBillboardOnGameMenuButton : IFeature
 
 
 #region Event subscriptions
-  private void OnUpdateTicked(object sender, EventArgs e)
+  private void OnUpdateTicked(object? sender, EventArgs e)
   {
     // Get hovered and hold item
     _hoverItem.Value = Tools.GetHoveredItem();
@@ -69,7 +69,7 @@ internal class ShowCalendarAndBillboardOnGameMenuButton : IFeature
     }
   }
 
-  private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+  private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
   {
     if (e.Button == SButton.MouseLeft)
     {
@@ -81,7 +81,7 @@ internal class ShowCalendarAndBillboardOnGameMenuButton : IFeature
     }
   }
 
-  private void OnRenderedActiveMenu(object sender, EventArgs e)
+  private void OnRenderedActiveMenu(object? sender, EventArgs e)
   {
     if (_hoverItem.Value == null &&
         Game1.activeClickableMenu is GameMenu gameMenu &&

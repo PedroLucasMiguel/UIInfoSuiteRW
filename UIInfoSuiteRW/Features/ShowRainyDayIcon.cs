@@ -18,8 +18,8 @@ internal class ShowRainyDayIcon : IFeature
   {
     internal bool IsRainyTomorrow { get; set; }
     internal Rectangle? SpriteLocation { get; set; }
-    internal string HoverText { get; set; }
-    internal ClickableTextureComponent IconComponent { get; set; }
+    internal string HoverText { get; set; } = null!;
+    internal ClickableTextureComponent IconComponent { get; set; } = null!;
   }
 
   private readonly LocationWeather _valleyWeather = new();
@@ -54,7 +54,7 @@ internal class ShowRainyDayIcon : IFeature
 #endregion
 
 #region Event subscriptions
-  private void OnRenderingHud(object sender, RenderingHudEventArgs e)
+  private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
   {
     GetWeatherIconSpriteLocation();
 
@@ -70,7 +70,7 @@ internal class ShowRainyDayIcon : IFeature
     }
   }
 
-  private void OnRenderedHud(object sender, RenderedHudEventArgs e)
+  private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
   {
     // Show text on hover
     RenderWeatherHoverText(_valleyWeather);

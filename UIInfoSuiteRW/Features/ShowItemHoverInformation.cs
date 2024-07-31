@@ -44,8 +44,8 @@ internal class ShowItemHoverInformation : IFeature
     1.2f
   );
 
-  private LibraryMuseum _libraryMuseum;
-  private IslandFieldOffice _islandFieldOffice;
+  private LibraryMuseum _libraryMuseum = null!;
+  private IslandFieldOffice _islandFieldOffice = null!;
 
   public ShowItemHoverInformation(IModHelper helper)
   {

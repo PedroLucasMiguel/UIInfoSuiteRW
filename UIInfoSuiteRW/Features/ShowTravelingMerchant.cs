@@ -58,12 +58,12 @@ public class ShowTravelingMerchant : IFeature
 
 
 #region Event subscriptions
-  private void OnDayStarted(object sender, EventArgs e)
+  private void OnDayStarted(object? sender, EventArgs e)
   {
     UpdateTravelingMerchant();
   }
 
-  private void OnMenuChanged(object sender, MenuChangedEventArgs e)
+  private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
   {
     if (e.NewMenu is ShopMenu menu && menu.forSale.Any(s => !(s is Hat)) && Game1.currentLocation.Name == "Forest")
     {
@@ -71,7 +71,7 @@ public class ShowTravelingMerchant : IFeature
     }
   }
 
-  private void OnRenderingHud(object sender, RenderingHudEventArgs e)
+  private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
   {
     // Draw icon
     if (UIElementUtils.IsRenderingNormally() && ShouldDrawIcon())
@@ -87,7 +87,7 @@ public class ShowTravelingMerchant : IFeature
     }
   }
 
-  private void OnRenderedHud(object sender, RenderedHudEventArgs e)
+  private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
   {
     // Show text on hover
     if (ShouldDrawIcon() && (_travelingMerchantIcon?.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ?? false))

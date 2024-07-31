@@ -43,8 +43,8 @@ internal class ShowSeasonalBerry : IFeature
 #region Properties
   private Rectangle? _berrySpriteLocation;
   private float _spriteScale = 8 / 3f;
-  private string _hoverText;
-  private ClickableTextureComponent _berryIcon;
+  private string _hoverText = null!;
+  private ClickableTextureComponent _berryIcon = null!;
 
   private readonly IModHelper _helper;
 
@@ -83,12 +83,12 @@ internal class ShowSeasonalBerry : IFeature
 #endregion
 
 #region Event subscriptions
-  private void OnDayStarted(object sender, DayStartedEventArgs e)
+  private void OnDayStarted(object? sender, DayStartedEventArgs e)
   {
     UpdateBerryForDay();
   }
 
-  private void OnRenderingHud(object sender, RenderingHudEventArgs e)
+  private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
   {
     // Draw icon
     if (!UIElementUtils.IsRenderingNormally() || !_berrySpriteLocation.HasValue)
@@ -106,7 +106,7 @@ internal class ShowSeasonalBerry : IFeature
     _berryIcon.draw(Game1.spriteBatch);
   }
 
-  private void OnRenderedHud(object sender, RenderedHudEventArgs e)
+  private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
   {
     // Show text on hover
     bool hasMouse = _berryIcon?.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ?? false;

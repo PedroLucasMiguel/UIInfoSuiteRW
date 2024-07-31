@@ -35,6 +35,6 @@ public class DataCache<TKey, TValue> where TKey : IEquatable<TKey>
 
   public bool TryGet(TKey key, [NotNullWhen(true)] out TValue? value)
   {
-    return _cacheMap.TryGetValue(key, out value);
+    return _cacheMap.TryGetValue(key, out value!);
   }
 }
