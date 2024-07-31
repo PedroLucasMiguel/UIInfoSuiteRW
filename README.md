@@ -1,6 +1,27 @@
 # UI Info Suite RW
 _Major code refactoring from [UI Info Suite 2](https://github.com/Annosz/UIInfoSuite2)._
 
+# Features to update/refactor before release
+
+[X] - XPIndicators
+[X] - LuckOfDay
+[] - LocationOfTownsFolk
+[] - ShopHarvestPrices
+[] - ShowAccurateHearts
+[] - ShowBirthdayIcon
+[] - ShowCalendarAndBillboard
+[] - ShowCropAndBarrelTime
+[] - ShowItemEffectRanges
+[] - ShowItemHoverInformation
+[] - ShowQueenOfSauceIcon
+[] - ShowRainyDayIcon
+[] - ShowRobinBuildingStatucIcon
+[] - ShowSeasonalBerry
+[] - ShowTodayysGifts
+[] - ShowToolUPgradeStatus
+[] - ShowTravelingMerchant
+[] - ShowWhenAnimalNeedsPet
+
 # Translating UI Info Suite RW
 The mod can be translated into any language supported by the game, and SMAPI will automatically
 use the right translations.

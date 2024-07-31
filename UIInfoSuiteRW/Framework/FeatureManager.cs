@@ -11,7 +11,7 @@ namespace UIInfoSuiteRW.Framework
       public FeatureManager(IModHelper helper, ModConfig config)
       {
         Features = new(){
-          { FeatureIds.XP_BAR, new ExperienceBar(helper) },
+          { FeatureIds.XP_BAR, new XPIndicators(helper, config) },
           { FeatureIds.NPC_LOCATION_ON_MAP, new LocationOfTownsfolk(helper, config) },
           { FeatureIds.SHOW_LUCK_ICON, new LuckOfDay(helper) },
           { FeatureIds.SHOW_HARVEST_PRICES_IN_SHOP, new ShopHarvestPrices(helper) },

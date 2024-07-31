@@ -7,9 +7,11 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Tools;
 using UIInfoSuiteRW.Features.HUDElements;
+using UIInfoSuiteRW.Framework;
+
 namespace UIInfoSuiteRW.Features
 {
-  public class ExperienceBar : IFeature
+  public class XPIndicators : IFeature
   {
     #region Properties
     private readonly PerScreen<Item> _previousItem = new();
@@ -67,11 +69,13 @@ namespace UIInfoSuiteRW.Features
     private bool ExperienceBarEnabled { get; set; } = true;
 
     private readonly IModHelper _helper;
+    private ModConfig _config;
     #endregion
 
-    public ExperienceBar(IModHelper helper)
+    public XPIndicators(IModHelper helper, ModConfig config)
     {
       _helper = helper;
+      _config = config;
     }
     
     public void ToggleOption(bool toggle)
@@ -93,12 +97,12 @@ namespace UIInfoSuiteRW.Features
         _helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
       }
 
-      if (true)
+      if (_config.FeatureConfig[FeatureIds.XP_GAIN])
       {
         _helper.Events.GameLoop.UpdateTicked += OnUpdateTicked_UpdateExperience;
       }
 
-      if (true)
+      if (_config.FeatureConfig[FeatureIds.LVL_UP_ANIMATION])
       {
         _helper.Events.Player.LevelChanged += OnLevelChanged;
       }
