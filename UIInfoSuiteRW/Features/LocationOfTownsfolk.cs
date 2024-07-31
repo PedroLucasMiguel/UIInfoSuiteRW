@@ -19,8 +19,7 @@ namespace UIInfoSuiteRW.Features;
 
 internal class LocationOfTownsfolk : IFeature
 {
-#region Internal record
-
+  #region Internal record
   // Inspired by Bouhm "NPCMapLocations"
   public record MultiPlayerSyncData(string MapPath, string Name, int Tx, int Ty)
   {
@@ -35,23 +34,24 @@ internal class LocationOfTownsfolk : IFeature
       return new MultiPlayerSyncData(MapPath, Name, Tx, Ty);
     }
   }
-#endregion
+  #endregion
 
-#region Properties
+  #region Properties
   private SocialPage _socialPage = null!;
+   private readonly List<OptionsCheckbox> _checkboxes = new();
+
   private string[] _friendNames = null!;
   private readonly List<NPC> _townsfolk = new();
   private static Dictionary<string, MultiPlayerSyncData> _multiPlayerSyncData = new();
-  private readonly List<OptionsCheckbox> _checkboxes = new();
-
+ 
   private readonly ModConfig _options;
   private readonly IModHelper _helper;
 
   private const int SocialPanelWidth = 190;
   private const int SocialPanelXOffset = 160;
-#endregion
+  #endregion
 
-#region Lifecycle
+  #region Lifecycle
   public LocationOfTownsfolk(IModHelper helper, ModConfig options)
   {
     _helper = helper;
@@ -61,6 +61,7 @@ internal class LocationOfTownsfolk : IFeature
   public void ToggleOption(bool toggle)
   {
     InitializeProperties();
+
     _helper.Events.Display.MenuChanged -= OnMenuChanged;
     _helper.Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu_DrawSocialPageOptions;
     _helper.Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu_DrawNPCLocationsOnMap;
@@ -75,12 +76,15 @@ internal class LocationOfTownsfolk : IFeature
       _helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu_DrawNPCLocationsOnMap;
       _helper.Events.Input.ButtonPressed += OnButtonPressed_ForSocialPage;
       _helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
-      _helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
+      
+      // Don't receive messages if not playing in coop
+      if (!Context.IsMainPlayer)
+        _helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
     }
   }
-#endregion
+  #endregion
 
-#region Event subscriptions
+  #region Event subscriptions
   private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
   {
     InitializeProperties();
@@ -128,14 +132,10 @@ internal class LocationOfTownsfolk : IFeature
       return;
     }
 
-    // For now on, it's good to update the map every 5 ticks, just to not flood the player
-    if (e.IsMultipleOf(5))
+    // Only update locations after a quarter of second
+    if (e.IsMultipleOf(15))
     {
       _townsfolk.Clear();
-
-      // Clearing the syncData for the main player
-      if (Game1.server != null && Context.IsMainPlayer)
-        _multiPlayerSyncData.Clear();
 
       foreach (GameLocation? loc in Game1.locations)
       {
@@ -148,9 +148,12 @@ internal class LocationOfTownsfolk : IFeature
             // Creating the MultiPlayerSyncData
             if (Game1.server != null && Context.IsMainPlayer)
             {   
-                _multiPlayerSyncData.Add(GetMpSyncKey(character), MultiPlayerSyncData.Create(
+                _multiPlayerSyncData.Add(
+                  GetMpSyncKey(character), 
+                  MultiPlayerSyncData.Create(
                     character.TilePoint, 
-                    character.currentLocation));
+                    character.currentLocation)
+                );
             }
           }
         }
@@ -158,14 +161,18 @@ internal class LocationOfTownsfolk : IFeature
       
       // Sending the data to the other players
       if (Game1.server != null && Context.IsMainPlayer)
+      {
         _helper.Multiplayer.SendMessage(_multiPlayerSyncData, ModConstants.MessageIds.TownFolksMultiplayerSync, modIDs: new[] { _helper.ModRegistry.ModID });
+        // Clearing the syncData only for the main player in multiplayer
+        _multiPlayerSyncData.Clear();
+      }
     }
   }
 
   private void OnModMessageReceived(object? sender, ModMessageReceivedEventArgs e)
   {
     // Recieving and parsing data
-    if (!Context.IsMainPlayer && e.FromModID == _helper.ModRegistry.ModID && e.FromPlayerID == Game1.MasterPlayer.UniqueMultiplayerID)
+    if (e.FromModID == _helper.ModRegistry.ModID && e.FromPlayerID == Game1.MasterPlayer.UniqueMultiplayerID)
     {
       if (e.Type == ModConstants.MessageIds.TownFolksMultiplayerSync)
       {
@@ -173,9 +180,9 @@ internal class LocationOfTownsfolk : IFeature
       }
     }
   }
-#endregion
+  #endregion
 
-#region Logic
+  #region Logic
   private void InitializeProperties()
   {
     if (Game1.activeClickableMenu is GameMenu gameMenu)
@@ -330,9 +337,7 @@ internal class LocationOfTownsfolk : IFeature
                                    _options.ShowLocationOfFriends.ContainsKey(character.Name) ? _options.ShowLocationOfFriends[character.Name] : true &&
                                    character.id != -1;
         if (shouldDrawCharacter)
-        {
           DrawNPC(character, namesToShow);
-        }
       }
       catch (Exception ex)
       {
@@ -346,13 +351,12 @@ internal class LocationOfTownsfolk : IFeature
     Tools.DrawMouseCursor();
 
     string? hoverText = ((MapPage)gameMenu.pages[gameMenu.currentTab]).hoverText;
+
     IClickableMenu.drawHoverText(Game1.spriteBatch, hoverText, Game1.smallFont);
   }
 
   private static void DrawNPC(NPC character, List<string> namesToShow)
   {
-    // Compare with the game code - MapPage.drawMiniPortraits
-
     Vector2?
       location = GetMapCoordinatesForNPC(
         character
@@ -533,5 +537,5 @@ internal class LocationOfTownsfolk : IFeature
   {
     return $"{character.Name}@{character.currentLocation.GetLocationContextId()}";
   }
-#endregion
+  #endregion
 }
