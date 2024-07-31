@@ -6,8 +6,6 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Tools;
-using UIInfoSuiteRW.Utils;
-using UIInfoSuiteRW.Utils.Extensions;
 using UIInfoSuiteRW.Features.HUDElements;
 namespace UIInfoSuiteRW.Features
 {

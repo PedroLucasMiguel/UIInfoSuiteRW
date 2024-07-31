@@ -12,7 +12,6 @@ using StardewValley.Menus;
 using StardewValley.Quests;
 using StardewValley.WorldMaps;
 using UIInfoSuiteRW.Utils;
-using UIInfoSuiteRW.Utils.Extensions;
 using UIInfoSuiteRW.Framework;
 using UIInfoSuiteRW.Utils.Helpers;
 
@@ -200,7 +199,7 @@ internal class LocationOfTownsfolk : IFeature
         {
           // npc
           checkbox.greyedOut = false;
-          checkbox.isChecked = _options.ShowLocationOfFriends.GetOrDefault(friendName, true);
+          checkbox.isChecked = _options.ShowLocationOfFriends.ContainsKey(friendName) ? _options.ShowLocationOfFriends[friendName] : true;
         }
         else
         {
@@ -328,7 +327,7 @@ internal class LocationOfTownsfolk : IFeature
       try
       {
         bool shouldDrawCharacter = Game1.player.friendshipData.ContainsKey(character.Name) &&
-                                   _options.ShowLocationOfFriends.GetOrDefault(character.Name, true) &&
+                                   _options.ShowLocationOfFriends.ContainsKey(character.Name) ? _options.ShowLocationOfFriends[character.Name] : true &&
                                    character.id != -1;
         if (shouldDrawCharacter)
         {

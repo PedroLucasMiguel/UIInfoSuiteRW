@@ -12,7 +12,6 @@ using StardewValley.ItemTypeDefinitions;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using UIInfoSuiteRW.Utils.Extensions;
 using UIInfoSuiteRW.Utils.Helpers;
 using Object = StardewValley.Object;
 
@@ -205,7 +204,7 @@ internal class ShowCropAndBarrelTime : IFeature
     foreach (string fertilizerStr in dirtTile.fertilizer.Value.Split("|"))
     {
       string name = ItemRegistry.GetData(fertilizerStr)?.DisplayName ?? "Unknown Fertilizer";
-      int count = fertilizerNames.GetOrDefault(name);
+      int count = fertilizerNames[name];
       fertilizerNames[name] = count + 1;
     }
 
@@ -278,7 +277,7 @@ internal class ShowCropAndBarrelTime : IFeature
           continue;
         }
 
-        int count = itemCounter.GetOrDefault(outputItem.DisplayName, 0) + outputItem.Stack;
+        int count = itemCounter.ContainsKey(outputItem.DisplayName) ? itemCounter[outputItem.DisplayName] : 0 + outputItem.Stack;
         itemCounter[outputItem.DisplayName] = count;
       }
 

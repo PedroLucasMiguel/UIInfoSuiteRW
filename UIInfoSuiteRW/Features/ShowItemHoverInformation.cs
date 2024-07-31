@@ -9,7 +9,6 @@ using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Tools;
 using UIInfoSuiteRW.Utils;
-using UIInfoSuiteRW.Utils.Extensions;
 using UIInfoSuiteRW.Utils.Helpers;
 using Object = StardewValley.Object;
 
@@ -164,7 +163,10 @@ internal class ShowItemHoverInformation : IFeature
           requiredBundleName = bundleDisplayData.Name;
 
           // TODO cache these colors so we're not doing it every time
-          bundleColor = BundleHelper.GetRealColorFromIndex(bundleDisplayData.Id)?.Desaturate(0.35f);
+          bundleColor = BundleHelper.GetRealColorFromIndex(bundleDisplayData.Id);
+
+          if (bundleColor != null)
+            bundleColor = ColorHelper.Desaturate((Color)bundleColor, 0.35f);
         }
       }
 

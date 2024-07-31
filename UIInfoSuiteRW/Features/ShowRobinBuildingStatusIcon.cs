@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -8,7 +7,6 @@ using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
 using UIInfoSuiteRW.Utils;
-using UIInfoSuiteRW.Utils.Extensions;
 
 namespace UIInfoSuiteRW.Features;
 

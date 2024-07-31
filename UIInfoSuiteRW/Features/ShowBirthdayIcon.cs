@@ -8,7 +8,6 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 using UIInfoSuiteRW.Utils;
-using UIInfoSuiteRW.Utils.Extensions;
 using UIInfoSuiteRW.Utils.Helpers;
 
 namespace UIInfoSuiteRW.Features;

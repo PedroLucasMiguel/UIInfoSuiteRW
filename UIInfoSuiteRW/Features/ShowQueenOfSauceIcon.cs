@@ -8,7 +8,6 @@ using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using UIInfoSuiteRW.Utils;
-using UIInfoSuiteRW.Utils.Extensions;
 
 namespace UIInfoSuiteRW.Features
 {
@@ -137,7 +136,7 @@ namespace UIInfoSuiteRW.Features
       int recipiesKnownBeforeTvCall = Game1.player.cookingRecipes.Count();
       string[] dialogue = new QueenOfSauceTV().GetWeeklyRecipe();
       // TODO fix nullability reference
-      _todaysRecipe = new CraftingRecipe(_recipesByDescription.GetOrDefault(dialogue[0], ""), true);
+      _todaysRecipe = new CraftingRecipe(_recipesByDescription.ContainsKey(dialogue[0]) ? _recipesByDescription[dialogue[0]] : "", true);
 
       if (Game1.player.cookingRecipes.Count() > recipiesKnownBeforeTvCall)
       {
