@@ -113,8 +113,8 @@ internal class ShowCalendarAndBillboardOnGameMenuButton : IFeature
     {
       string hoverText = Game1.getMouseX() <
                          _showBillboardButton.Value.bounds.X + _showBillboardButton.Value.bounds.Width / 2
-        ? LanguageKeys.Calendar
-        : LanguageKeys.Billboard;
+        ? I18n.Calendar()
+        : I18n.Billboard();
       IClickableMenu.drawHoverText(Game1.spriteBatch, hoverText, Game1.dialogueFont);
     }
   }
