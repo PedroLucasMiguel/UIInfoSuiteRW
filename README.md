@@ -5,8 +5,8 @@ _Major code refactoring from [UI Info Suite 2](https://github.com/Annosz/UIInfoS
 
 - [X] XPIndicators
 - [X] LuckOfDay
-- [ ] LocationOfTownsFolk
-- [ ] ShopHarvestPrices
+- [X] LocationOfTownsFolk
+- [X] ShopHarvestPrices
 - [ ] ShowAccurateHearts
 - [ ] ShowBirthdayIcon
 - [ ] ShowCalendarAndBillboard
