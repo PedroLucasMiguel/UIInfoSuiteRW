@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 
-namespace UIInfoSuiteRW.Infrastructure;
+namespace UIInfoSuiteRW.Utils;
 
 public sealed class IconHandler
 {
@@ -17,7 +17,6 @@ public sealed class IconHandler
 
   public Point GetNewIconPosition()
   {
-    //ModEntry.MonitorObject.Log($"{new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name}", LogLevel.Warn);
     int yPos = Game1.options.zoomButtons ? 290 : 260;
     int xPosition = Tools.GetWidthInPlayArea() - 70 - 48 * _amountOfVisibleIcons.Value;
     if (IsQuestLogPermanent || Game1.player.questLog.Any() || Game1.player.team.specialOrders.Any())

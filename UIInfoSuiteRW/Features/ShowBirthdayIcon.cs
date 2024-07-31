@@ -7,8 +7,9 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
-using UIInfoSuiteRW.Infrastructure;
-using UIInfoSuiteRW.Infrastructure.Extensions;
+using UIInfoSuiteRW.Utils;
+using UIInfoSuiteRW.Utils.Extensions;
+using UIInfoSuiteRW.Utils.Helpers;
 
 namespace UIInfoSuiteRW.Features;
 
@@ -155,7 +156,7 @@ internal class ShowBirthdayIcon : IFeature
     _birthdayIcons.Value.Clear();
     foreach (NPC npc in _birthdayNPCs.Value)
     {
-      Rectangle headShot = npc.GetHeadShot();
+      Rectangle headShot = HeadShotHelper.GetHeadShot(npc);
       Point iconPosition = IconHandler.Handler.GetNewIconPosition();
       var scale = 2.9f;
 
@@ -203,7 +204,7 @@ internal class ShowBirthdayIcon : IFeature
     {
       if (icons[i].containsPoint(Game1.getMouseX(), Game1.getMouseY()))
       {
-        string hoverText = string.Format(_helper.SafeGetString(LanguageKeys.NpcBirthday), npcs[i].displayName);
+        string hoverText = string.Format(I18n.NpcBirthday(), npcs[i].displayName);
         IClickableMenu.drawHoverText(Game1.spriteBatch, hoverText, Game1.dialogueFont);
       }
     }

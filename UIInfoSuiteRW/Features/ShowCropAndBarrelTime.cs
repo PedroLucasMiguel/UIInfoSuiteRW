@@ -12,8 +12,8 @@ using StardewValley.ItemTypeDefinitions;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using UIInfoSuiteRW.Infrastructure.Extensions;
-using UIInfoSuiteRW.Infrastructure.Helpers;
+using UIInfoSuiteRW.Utils.Extensions;
+using UIInfoSuiteRW.Utils.Helpers;
 using Object = StardewValley.Object;
 
 namespace UIInfoSuiteRW.Features;

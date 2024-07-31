@@ -7,8 +7,8 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
-using UIInfoSuiteRW.Infrastructure;
-using UIInfoSuiteRW.Infrastructure.Extensions;
+using UIInfoSuiteRW.Utils;
+using UIInfoSuiteRW.Utils.Extensions;
 
 namespace UIInfoSuiteRW.Features
 {
@@ -108,7 +108,7 @@ namespace UIInfoSuiteRW.Features
       {
         IClickableMenu.drawHoverText(
           Game1.spriteBatch,
-          _helper.SafeGetString(LanguageKeys.TodaysRecipe) + _todaysRecipe.DisplayName,
+          I18n.TodaysRecipe() + _todaysRecipe.DisplayName,
           Game1.dialogueFont
         );
       }

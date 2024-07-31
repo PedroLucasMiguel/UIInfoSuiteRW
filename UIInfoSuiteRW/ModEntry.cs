@@ -3,7 +3,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using UIInfoSuiteRW.Framework;
-using UIInfoSuiteRW.Infrastructure;
+using UIInfoSuiteRW.Utils;
 
 namespace UIInfoSuiteRW
 {

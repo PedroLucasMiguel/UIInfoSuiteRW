@@ -7,7 +7,7 @@ using StardewValley.Locations;
 using StardewValley.Menus;
 using SObject = StardewValley.Object;
 
-namespace UIInfoSuiteRW.Infrastructure.Helpers;
+namespace UIInfoSuiteRW.Utils.Helpers;
 
 using BundleIngredientsCache = Dictionary<string, List<List<int>>>;
 

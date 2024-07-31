@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
-using UIInfoSuiteRW.Infrastructure;
+using UIInfoSuiteRW.Utils;
 
 namespace UIInfoSuiteRW.Features.HUDElements
 {

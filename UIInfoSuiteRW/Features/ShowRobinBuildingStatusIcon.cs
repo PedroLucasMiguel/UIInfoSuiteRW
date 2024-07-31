@@ -7,8 +7,8 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
-using UIInfoSuiteRW.Infrastructure;
-using UIInfoSuiteRW.Infrastructure.Extensions;
+using UIInfoSuiteRW.Utils;
+using UIInfoSuiteRW.Utils.Extensions;
 
 namespace UIInfoSuiteRW.Features;
 
@@ -107,7 +107,7 @@ internal class ShowRobinBuildingStatusIcon : IFeature
         if (building.daysOfConstructionLeft.Value > building.daysUntilUpgrade.Value)
         {
           hoverText = string.Format(
-            _helper.SafeGetString(LanguageKeys.RobinBuildingStatus),
+            I18n.RobinBuildingStatus(),
             building.daysOfConstructionLeft.Value
           );
           return true;
@@ -115,7 +115,7 @@ internal class ShowRobinBuildingStatusIcon : IFeature
 
         // Add another translation string for this?
         hoverText = string.Format(
-          _helper.SafeGetString(LanguageKeys.RobinBuildingStatus),
+          I18n.RobinBuildingStatus(),
           building.daysUntilUpgrade.Value
         );
         return true;
@@ -125,7 +125,7 @@ internal class ShowRobinBuildingStatusIcon : IFeature
       return false;
     }
 
-    hoverText = string.Format(_helper.SafeGetString(LanguageKeys.RobinHouseUpgradeStatus), remainingDays);
+    hoverText = string.Format(I18n.RobinHouseUpgradeStatus(), remainingDays);
     return true;
   }
 

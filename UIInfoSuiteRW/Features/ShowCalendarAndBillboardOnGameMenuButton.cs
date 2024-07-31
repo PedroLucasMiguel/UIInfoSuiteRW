@@ -8,8 +8,8 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
-using UIInfoSuiteRW.Infrastructure;
-using UIInfoSuiteRW.Infrastructure.Extensions;
+using UIInfoSuiteRW.Utils;
+using UIInfoSuiteRW.Utils.Extensions;
 
 namespace UIInfoSuiteRW.Features;
 
@@ -116,7 +116,7 @@ internal class ShowCalendarAndBillboardOnGameMenuButton : IFeature
                          _showBillboardButton.Value.bounds.X + _showBillboardButton.Value.bounds.Width / 2
         ? LanguageKeys.Calendar
         : LanguageKeys.Billboard;
-      IClickableMenu.drawHoverText(Game1.spriteBatch, _helper.SafeGetString(hoverText), Game1.dialogueFont);
+      IClickableMenu.drawHoverText(Game1.spriteBatch, hoverText, Game1.dialogueFont);
     }
   }
 

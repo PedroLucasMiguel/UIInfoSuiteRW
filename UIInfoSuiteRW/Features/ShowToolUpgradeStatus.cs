@@ -8,7 +8,7 @@ using StardewValley;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.Menus;
 using StardewValley.Tools;
-using UIInfoSuiteRW.Infrastructure;
+using UIInfoSuiteRW.Utils;
 
 namespace UIInfoSuiteRW.Features;
 

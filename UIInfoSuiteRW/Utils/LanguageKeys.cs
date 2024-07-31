@@ -1,4 +1,4 @@
-﻿namespace UIInfoSuiteRW.Infrastructure;
+﻿namespace UIInfoSuiteRW.Utils;
 
 public static class LanguageKeys
 {

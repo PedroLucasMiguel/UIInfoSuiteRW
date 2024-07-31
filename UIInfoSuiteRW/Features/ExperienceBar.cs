@@ -6,8 +6,8 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Tools;
-using UIInfoSuiteRW.Infrastructure;
-using UIInfoSuiteRW.Infrastructure.Extensions;
+using UIInfoSuiteRW.Utils;
+using UIInfoSuiteRW.Utils.Extensions;
 using UIInfoSuiteRW.Features.HUDElements;
 namespace UIInfoSuiteRW.Features
 {
@@ -173,7 +173,7 @@ namespace UIInfoSuiteRW.Features
       // Level up text
       if (LevelUpAnimationEnabled && _levelUpVisibleTimer.Value != 0)
       {
-        _displayedLevelUpMessage.Value.Draw(_levelUpIconRectangle.Value, _helper.SafeGetString(LanguageKeys.LevelUp));
+        _displayedLevelUpMessage.Value.Draw(_levelUpIconRectangle.Value, I18n.LevelUp());
       }
 
       // Experience values

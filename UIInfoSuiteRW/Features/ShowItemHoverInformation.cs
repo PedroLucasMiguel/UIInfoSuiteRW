@@ -8,9 +8,9 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Tools;
-using UIInfoSuiteRW.Infrastructure;
-using UIInfoSuiteRW.Infrastructure.Extensions;
-using UIInfoSuiteRW.Infrastructure.Helpers;
+using UIInfoSuiteRW.Utils;
+using UIInfoSuiteRW.Utils.Extensions;
+using UIInfoSuiteRW.Utils.Helpers;
 using Object = StardewValley.Object;
 
 namespace UIInfoSuiteRW.Features;
@@ -58,14 +58,14 @@ internal class ShowItemHoverInformation : IFeature
     _museumIcon = new ClickableTextureComponent(
       new Rectangle(0, 0, Game1.tileSize, Game1.tileSize),
       gunther.Sprite.Texture,
-      gunther.GetHeadShot(),
+      HeadShotHelper.GetHeadShot(gunther),
       Game1.pixelZoom
     );
 
     _islandFieldOfficeIcon = new ClickableTextureComponent(
       new Rectangle(0, 0, Game1.tileSize, Game1.tileSize),
       professorSnail.Sprite.Texture,
-      professorSnail.GetHeadShot(),
+      HeadShotHelper.GetHeadShot(professorSnail),
       Game1.pixelZoom
     );
   }

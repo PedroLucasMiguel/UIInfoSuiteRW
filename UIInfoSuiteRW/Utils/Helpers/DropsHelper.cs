@@ -7,7 +7,7 @@ using StardewValley.ItemTypeDefinitions;
 using StardewValley.TerrainFeatures;
 using Object = StardewValley.Object;
 
-namespace UIInfoSuiteRW.Infrastructure.Helpers;
+namespace UIInfoSuiteRW.Utils.Helpers;
 
 public record DropInfo(string? Condition, float Chance, string ItemId)
 {

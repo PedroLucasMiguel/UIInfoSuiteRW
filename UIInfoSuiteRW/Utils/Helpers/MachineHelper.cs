@@ -6,7 +6,7 @@ using StardewValley.Extensions;
 using StardewValley.GameData.Buildings;
 using StardewValley.Objects;
 
-namespace UIInfoSuiteRW.Infrastructure.Helpers;
+namespace UIInfoSuiteRW.Utils.Helpers;
 
 public static class MachineHelper
 {

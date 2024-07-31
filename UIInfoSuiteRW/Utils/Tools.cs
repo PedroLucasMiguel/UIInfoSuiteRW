@@ -11,7 +11,7 @@ using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
 using SObject = StardewValley.Object;
 
-namespace UIInfoSuiteRW.Infrastructure;
+namespace UIInfoSuiteRW.Utils;
 
 public static class Tools
 {

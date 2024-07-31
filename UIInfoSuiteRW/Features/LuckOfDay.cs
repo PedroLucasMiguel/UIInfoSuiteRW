@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 using UIInfoSuiteRW.Features.HUDElements;
-using UIInfoSuiteRW.Infrastructure;
+using UIInfoSuiteRW.Utils;
 
 namespace UIInfoSuiteRW.Features
 {

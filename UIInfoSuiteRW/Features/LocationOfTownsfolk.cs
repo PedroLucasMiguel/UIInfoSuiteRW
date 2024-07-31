@@ -11,9 +11,10 @@ using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Quests;
 using StardewValley.WorldMaps;
-using UIInfoSuiteRW.Infrastructure;
-using UIInfoSuiteRW.Infrastructure.Extensions;
+using UIInfoSuiteRW.Utils;
+using UIInfoSuiteRW.Utils.Extensions;
 using UIInfoSuiteRW.Framework;
+using UIInfoSuiteRW.Utils.Helpers;
 
 namespace UIInfoSuiteRW.Features;
 
@@ -362,7 +363,7 @@ internal class LocationOfTownsfolk : IFeature
       return;
     }
 
-    Rectangle headShot = character.GetHeadShot();
+    Rectangle headShot = HeadShotHelper.GetHeadShot(character);
     MapAreaPosition? mapPosition =
       WorldMapManager.GetPositionData(
         Game1.player.currentLocation,

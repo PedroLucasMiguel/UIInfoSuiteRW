@@ -1,4 +1,4 @@
-﻿namespace UIInfoSuiteRW.Infrastructure.Extensions;
+﻿namespace UIInfoSuiteRW.Utils.Extensions;
 
 internal static class StringExtensions
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace UIInfoSuiteRW.Infrastructure.Extensions;
+namespace UIInfoSuiteRW.Utils.Extensions;
 
 public static class ColorExtensions
 {
