@@ -223,22 +223,6 @@ namespace UIInfoSuiteRW.Features
       {
         Vector2 validTile = Game1.currentCursorTile;
         Point cursorPoint = validTile.ToPoint();
-
-        // Junimo Hut is handled differently, because it is a building
-        Building buildingMouse = Game1.currentLocation.getBuildingAt(validTile);
-
-        if (buildingMouse is JunimoHut)
-        {
-          arrayToUse = GetDistanceArray(ObjectsWithDistance.JunimoHut);
-          foreach (Building? nextBuilding in Game1.currentLocation.buildings)
-          {
-            if (nextBuilding is JunimoHut nextHut)
-            {
-              AddTilesToHighlightedArea(arrayToUse, nextHut.tileX.Value + 1, nextHut.tileY.Value + 1);
-            }
-          }
-        }
-
         Object? mouseItem = Game1.currentLocation.getObjectAtTile(cursorPoint.X, cursorPoint.Y);
 
         if (mouseItem != null)
