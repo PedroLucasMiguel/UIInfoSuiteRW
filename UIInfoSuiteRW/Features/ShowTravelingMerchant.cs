@@ -16,7 +16,7 @@ public class ShowTravelingMerchant : IFeature
 #region Properties
   private bool _travelingMerchantIsHere;
   private bool _travelingMerchantIsVisited;
-  private ClickableTextureComponent _travelingMerchantIcon;
+  private ClickableTextureComponent? _travelingMerchantIcon;
 
   private bool Enabled { get; set; }
   private bool HideWhenVisited { get; set; }
