@@ -10,7 +10,7 @@ _Major code refactoring from [UI Info Suite 2](https://github.com/Annosz/UIInfoS
 - [X] ShowAccurateHearts
 - [ ] ShowBirthdayIcon
 - [ ] ShowCalendarAndBillboard
-- [ ] ShowCropAndBarrelTime
+- [X] ~~ShowCropAndBarrelTime~~ (ShowCropAndBuildingTime)
 - [ ] ShowItemEffectRanges
 - [X] ShowItemHoverInformation
 - [ ] ShowQueenOfSauceIcon

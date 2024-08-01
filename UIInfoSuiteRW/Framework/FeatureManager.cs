@@ -19,7 +19,7 @@ namespace UIInfoSuiteRW.Framework
           { FeatureIds.HEART_FILL, new ShowAccurateHearts(helper.Events) },
           { FeatureIds.SHOW_BIRTHDAY_ICON, new ShowBirthdayIcon(helper) },
           { FeatureIds.DISPLAY_CALENDAR_AND_BILBOARD, new ShowCalendarAndBillboardOnGameMenuButton(helper) },
-          { FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP, new ShowCropAndBarrelTime(helper) },
+          { FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP, new ShowCropAndBuildingTime(helper) },
           { FeatureIds.SHOW_ITEM_EFFECT_RANGE, new ShowItemEffectRanges(helper) },
           { FeatureIds.EXTRA_ITEM_INFORMATION, new ShowItemHoverInformation(helper) },
           { FeatureIds.SHOW_NEW_RECIPES_ICON, new ShowQueenOfSauceIcon(helper) },
