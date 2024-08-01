@@ -205,7 +205,7 @@ namespace UIInfoSuiteRW.Features
       foreach (string fertilizerStr in dirtTile.fertilizer.Value.Split("|"))
       {
         string name = ItemRegistry.GetData(fertilizerStr)?.DisplayName ?? "Unknown Fertilizer";
-        int count = fertilizerNames[name];
+        int count = fertilizerNames.ContainsKey(name) ? fertilizerNames[name] : default;
         fertilizerNames[name] = count + 1;
       }
 

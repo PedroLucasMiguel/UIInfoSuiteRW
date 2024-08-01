@@ -11,7 +11,7 @@ _Major code refactoring from [UI Info Suite 2](https://github.com/Annosz/UIInfoS
 - [ ] ShowBirthdayIcon
 - [ ] ShowCalendarAndBillboard
 - [X] ~~ShowCropAndBarrelTime~~ (ShowCropAndBuildingTime)
-- [ ] ShowItemEffectRanges
+- [X] ShowItemEffectRanges
 - [X] ShowItemHoverInformation
 - [ ] ShowQueenOfSauceIcon
 - [ ] ShowRainyDayIcon

@@ -10,6 +10,7 @@ namespace UIInfoSuiteRW.Framework
     //public bool ShowOptionsTabInMenu { get; set; } = true;
     public KeybindList OpenCalendarKeybind { get; set; } = KeybindList.ForSingle(SButton.B);
     public KeybindList OpenQuestBoardKeybind { get; set; } = KeybindList.ForSingle(SButton.H);
+    public KeybindList ShowPlacedObjectRange { get; set; } = KeybindList.ForSingle(SButton.MouseMiddle);
 
     public Dictionary<string, bool> FeatureConfig { get; set; } = new(){
       { FeatureIds.XP_BAR, true },

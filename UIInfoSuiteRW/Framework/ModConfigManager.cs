@@ -44,9 +44,16 @@ namespace UIInfoSuiteRW.Framework
       GenericModConfigMenu.AddKeybindList(
         Manifest,
         name: () => I18n.ConfigMenu_Keybinds_OpenQuestBoard(),
-        tooltip: () => I18n.ConfigMenu_Keybinds_OpenQuestBoard(),
+        tooltip: () => I18n.ConfigMenu_Keybinds_OpenQuestBoardTooltip(),
         getValue: () => Config.OpenQuestBoardKeybind,
         setValue: value => Config.OpenQuestBoardKeybind = value
+      );
+      GenericModConfigMenu.AddKeybindList(
+        Manifest,
+        name: () => I18n.ConfigMenu_Keybinds_ShowPlacedObjectRange(),
+        tooltip: () => I18n.ConfigMenu_Keybinds_ShowPlacedObjectRangeTooltip(),
+        getValue: () => Config.ShowPlacedObjectRange,
+        setValue: value => Config.ShowPlacedObjectRange = value
       );
 
       // Tweaks

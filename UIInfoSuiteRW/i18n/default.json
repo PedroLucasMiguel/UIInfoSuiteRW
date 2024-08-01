@@ -106,6 +106,8 @@
   "config-menu.keybinds.open-calendar-tooltip": "Opens calendar.",
   "config-menu.keybinds.open-quest-board": "Open quest board",
   "config-menu.keybinds.open-quest-board-tooltip": "Opens quest board.",
+  "config-menu.keybinds.show-placed-object-range": "Show placed object range",
+  "config-menu.keybinds.show-placed-object-range-tooltip": "Show object like scarecrow range.",
   //Tweaks
   "config-menu.features.section-title": "Tweaks",
   "config-menu.features.section-tooltip": "Togle UIInfoSuiteRW features on or off",
