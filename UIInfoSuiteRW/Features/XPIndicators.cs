@@ -69,7 +69,7 @@ namespace UIInfoSuiteRW.Features
     private bool ExperienceBarEnabled { get; set; } = true;
 
     private readonly IModHelper _helper;
-    private ModConfig _config;
+    private readonly ModConfig _config;
     #endregion
 
     public XPIndicators(IModHelper helper, ModConfig config)

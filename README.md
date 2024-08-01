@@ -12,7 +12,7 @@ _Major code refactoring from [UI Info Suite 2](https://github.com/Annosz/UIInfoS
 - [ ] ShowCalendarAndBillboard
 - [ ] ShowCropAndBarrelTime
 - [ ] ShowItemEffectRanges
-- [ ] ShowItemHoverInformation
+- [X] ShowItemHoverInformation
 - [ ] ShowQueenOfSauceIcon
 - [ ] ShowRainyDayIcon
 - [ ] ShowRobinBuildingStatucIcon

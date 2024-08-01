@@ -11,6 +11,7 @@ namespace UIInfoSuiteRW.Framework
       public FeatureManager(IModHelper helper, ModConfig config)
       {
         Features = new(){
+          //{ "TESTING", new Testing(helper) },
           { FeatureIds.XP_BAR, new XPIndicators(helper, config) },
           { FeatureIds.NPC_LOCATION_ON_MAP, new LocationOfTownsfolk(helper, config) },
           { FeatureIds.SHOW_LUCK_ICON, new LuckOfDay(helper) },
@@ -36,6 +37,10 @@ namespace UIInfoSuiteRW.Framework
       {
         switch (featureId)
         {
+          /*
+          case "TESTING":
+           Features[featureId].ToggleOption(true);
+            break;*/
           case FeatureIds.XP_BAR:
            Features[featureId].ToggleOption(
               config.FeatureConfig[FeatureIds.XP_BAR]);

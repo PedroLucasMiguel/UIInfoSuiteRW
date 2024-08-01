@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -14,6 +16,8 @@ using Object = StardewValley.Object;
 
 namespace UIInfoSuiteRW.Features
 {
+  public record RequiredBundleItem(string Text, Color? Color);
+
   internal class ShowItemHoverInformation : IFeature
   {
     private readonly ClickableTextureComponent _bundleIcon = new(
@@ -22,8 +26,11 @@ namespace UIInfoSuiteRW.Features
       new Rectangle(331, 374, 15, 14),
       3f
     );
-
     private readonly IModHelper _helper;
+
+    private readonly Dictionary<int, Color?> _colorCache = new();
+
+    private readonly int bundleInfoHeight = 36;
 
     private readonly PerScreen<Item?> _hoverItem = new();
     private readonly ClickableTextureComponent _museumIcon;
@@ -78,8 +85,8 @@ namespace UIInfoSuiteRW.Features
       if (toggle)
       {
         // Todo - Fix multiplayer?
-        _libraryMuseum = Game1.getLocationFromName("ArchaeologyHouse") as LibraryMuseum;
-        _islandFieldOffice = Game1.getLocationFromName("IslandFieldOffice") as IslandFieldOffice;
+        _libraryMuseum = Game1.RequireLocation<LibraryMuseum>("ArchaeologyHouse");
+        _islandFieldOffice = Game1.RequireLocation<IslandFieldOffice>("IslandFieldOffice");
 
         _helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
         _helper.Events.Display.RenderedHud += OnRenderedHud;
@@ -128,6 +135,8 @@ namespace UIInfoSuiteRW.Features
 
     private void DrawAdvancedTooltip(SpriteBatch spriteBatch)
     {
+      // Checking if the item have sell value.
+      // Scythes and fishing rods does not have sell value
       if (_hoverItem.Value != null &&
           !(_hoverItem.Value is MeleeWeapon weapon && weapon.isScythe()) &&
           _hoverItem.Value is not FishingRod)
@@ -142,32 +151,44 @@ namespace UIInfoSuiteRW.Features
           stackPrice = itemPrice * _hoverItem.Value.Stack;
         }
 
+        // Getting crop price
         int cropPrice = Tools.GetHarvestPrice(_hoverItem.Value);
 
+        // Checking if item can be donated to the museoum
         bool notDonatedYet = _libraryMuseum.isItemSuitableForDonation(_hoverItem.Value);
 
+        // Checking if item can be donated to the field office
         int fieldOfficeDonationSlot = FieldOfficeMenu.getPieceIndexForDonationItem($"(O){_hoverItem.Value.ItemId}");
 
+        // Checking if the item was not shipped yet
         bool notShippedYet = hoveredObject != null &&
                             hoveredObject.countsForShippedCollection() &&
                             !Game1.player.basicShipped.ContainsKey(hoveredObject.ItemId) &&
                             hoveredObject.Type != "Fish" &&
                             hoveredObject.Category != Object.skillBooksCategory;
 
-        string? requiredBundleName = null;
-        Color? bundleColor = null;
+        List<RequiredBundleItem>? requiredBundleItems = new();
+
         if (hoveredObject != null)
         {
-          BundleRequiredItem? bundleDisplayData = BundleHelper.GetBundleItemIfNotDonated(hoveredObject);
+          List<BundleRequiredItem>? bundleDisplayData = BundleHelper.GetBundleItemIfNotDonated(hoveredObject);
+
           if (bundleDisplayData != null)
           {
-            requiredBundleName = bundleDisplayData.Name;
-
-            // TODO cache these colors so we're not doing it every time
-            bundleColor = BundleHelper.GetRealColorFromIndex(bundleDisplayData.Id);
-
-            if (bundleColor != null)
-              bundleColor = ColorHelper.Desaturate((Color)bundleColor, 0.35f);
+            bundleDisplayData.ForEach(item =>
+            {
+              _colorCache.TryGetValue(item.Id, out Color? bundleColor);
+              if (bundleColor == null)
+              {
+                Color? uncachedColor = BundleHelper.GetRealColorFromIndex(item.Id);
+                if(uncachedColor != null)
+                {
+                  bundleColor = ColorHelper.Desaturate((Color)uncachedColor, 0.35f);
+                  _colorCache[item.Id] = bundleColor;
+                }
+              }
+              requiredBundleItems.Add(new RequiredBundleItem(item.Name + " : " + item.Count, bundleColor));
+            });
           }
         }
 
@@ -175,10 +196,12 @@ namespace UIInfoSuiteRW.Features
         int windowWidth, windowHeight;
 
         var bundleHeaderWidth = 0;
-        if (!string.IsNullOrEmpty(requiredBundleName))
+        if (requiredBundleItems.Count > 0)
         {
           // bundleHeaderWidth = ((bundleIcon.Width * 3 = 45) - 7 = 38) + 3 + bundleTextSize.X + 3 + ((shippingBin.Width * 1.2 = 36) - 12 = 24)
-          bundleHeaderWidth = 68 + (int)Game1.dialogueFont.MeasureString(requiredBundleName).X;
+          int maxWidth = requiredBundleItems.Max(item => (int)Game1.dialogueFont.MeasureString(item.Text).X);
+
+          bundleHeaderWidth = 68 + maxWidth;
         }
 
         var itemTextWidth = (int)Game1.smallFont.MeasureString(itemPrice.ToString()).X;
@@ -206,9 +229,9 @@ namespace UIInfoSuiteRW.Features
           windowHeight += 40;
         }
 
-        if (!string.IsNullOrEmpty(requiredBundleName))
+        if (requiredBundleItems.Count > 0)
         {
-          windowHeight += 4;
+          windowHeight += 4 + bundleInfoHeight * (requiredBundleItems.Count - 1);
           drawPositionOffset.Y += 4;
         }
 
@@ -237,7 +260,18 @@ namespace UIInfoSuiteRW.Features
         }
 
         var windowPos = new Vector2(windowX, windowY);
+
+        if(requiredBundleItems.Count > 1)
+        {
+          windowPos.Y += bundleInfoHeight * (requiredBundleItems.Count - 1);
+        }
+
         Vector2 drawPosition = windowPos + new Vector2(16, 20) + drawPositionOffset;
+
+        if(requiredBundleItems.Count > 1)
+        {
+          windowPos.Y -= bundleInfoHeight * (requiredBundleItems.Count - 1);
+        }
 
         // Icons are drawn in 32x40 cells. The small font has a cap height of 18 and an offset of (2, 6)
         var rowHeight = 40;
@@ -247,7 +281,7 @@ namespace UIInfoSuiteRW.Features
         if (itemPrice > 0 ||
             stackPrice > 0 ||
             cropPrice > 0 ||
-            !string.IsNullOrEmpty(requiredBundleName) ||
+            requiredBundleItems.Count > 0 ||
             notDonatedYet ||
             notShippedYet ||
             fieldOfficeDonationSlot >= 0)
@@ -364,11 +398,15 @@ namespace UIInfoSuiteRW.Features
           }
         }
 
-        if (!string.IsNullOrEmpty(requiredBundleName))
+        if (requiredBundleItems.Count > 0)
         {
           // Draws a 30x42 bundle icon offset by (-7, -13) from the top-left corner of the window
           // and the 36px high banner with the bundle name
-          DrawBundleBanner(spriteBatch, requiredBundleName, windowPos + new Vector2(-7, -13), windowWidth, bundleColor);
+          for (int i = 0; i < requiredBundleItems.Count; i++)
+          {
+            var item = requiredBundleItems[i];
+            DrawBundleBanner(spriteBatch, item.Text, windowPos + new Vector2(-7, -13) + new Vector2(0, bundleInfoHeight * i), windowWidth, item.Color);
+          }
         }
 
         if (notShippedYet)
