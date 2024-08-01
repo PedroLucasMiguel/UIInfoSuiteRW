@@ -157,8 +157,40 @@ namespace UIInfoSuiteRW.Features
         // Checking if item can be donated to the museoum
         bool notDonatedYet = _libraryMuseum.isItemSuitableForDonation(_hoverItem.Value);
 
+        int fieldOfficeDonationSlot = -1;
         // Checking if item can be donated to the field office
-        int fieldOfficeDonationSlot = FieldOfficeMenu.getPieceIndexForDonationItem($"(O){_hoverItem.Value.ItemId}");
+        // Checking for Snake Vertebrae
+        if (_hoverItem.Value.ItemId == "826")
+        {
+          if (_islandFieldOffice.piecesDonated[6] && 
+              !_islandFieldOffice.piecesDonated[7])
+          {
+            fieldOfficeDonationSlot = 7;
+          }
+          else if (_islandFieldOffice.piecesDonated[7] &&
+                  !_islandFieldOffice.piecesDonated[6])
+          {
+            fieldOfficeDonationSlot = 6;
+          }
+        }
+        // Checking for Fossilized Leg
+        else if (_hoverItem.Value.ItemId == "823")
+        {
+          if (_islandFieldOffice.piecesDonated[0] && 
+            !_islandFieldOffice.piecesDonated[2])
+          {
+            fieldOfficeDonationSlot = 2;
+          }
+          else if (_islandFieldOffice.piecesDonated[2] && 
+                  !_islandFieldOffice.piecesDonated[0])
+          {
+            fieldOfficeDonationSlot = 0;
+          }
+        }
+        else
+        {
+          fieldOfficeDonationSlot = FieldOfficeMenu.getPieceIndexForDonationItem($"(O){_hoverItem.Value.ItemId}");
+        }
 
         // Checking if the item was not shipped yet
         bool notShippedYet = hoveredObject != null &&
