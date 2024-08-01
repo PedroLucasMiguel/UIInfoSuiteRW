@@ -13,6 +13,23 @@
   //Harvest
   "DaysToMature": "dias para amadurecer",
   "ReadyToHarvest": "Pronto para colher!",
+  //Tree
+  "Stump": "Toco",
+  // This space is required for languages that use a space between words, delete otherwise (e.g. Korean)
+  "Tree": " Árvore",
+  "stage": "Estágio",
+  "Oak": "Carvalho",
+  "Maple": "Acer",
+  "Pine": "Pinheiro",
+  "Palm": "Palmeira",
+  "Mushroom": "Cogumelo",
+  "Mahogany": "Mogno",
+  "PalmJungle": "Palmeira (Floresta)",
+  "GreenRainType1": "Chuva Verde Tipo 1",
+  "GreenRainType2": "Chuva Verde Tipo 2",
+  "GreenRainType3": "Chuva Verde Tipo 3",
+  "Mystic": "Mística",
+  "VmvBirch": "(VMV) Birch",
   //Display icons - General
   "TodaysRecipe": "Receita de hoje: ",
   "TravelingMerchantIsInTown": "O mercador está na cidade!",

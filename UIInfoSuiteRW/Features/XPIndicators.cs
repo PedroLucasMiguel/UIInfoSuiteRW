@@ -5,17 +5,21 @@ using StardewModdingAPI.Enums;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Menus;
 using StardewValley.Tools;
 using UIInfoSuiteRW.Features.HUDElements;
 using UIInfoSuiteRW.Framework;
 
+// Thanks djuniah (https://github.com/djuniah) for the mastery experience patch!
 namespace UIInfoSuiteRW.Features
 {
   public class XPIndicators : IFeature
   {
     #region Properties
+    private const int MasterySkill = 6; 
     private readonly PerScreen<Item> _previousItem = new();
     private readonly PerScreen<int[]> _currentExperience = new(() => new int[5]);
+    private readonly PerScreen<int> _currentMasteryExperience = new(() => 0);
     private readonly PerScreen<int> _currentSkillLevel = new(() => 0);
     private readonly PerScreen<int> _experienceRequiredToLevel = new(() => -1);
     private readonly PerScreen<int> _experienceFromPreviousLevels = new(() => -1);
@@ -42,17 +46,19 @@ namespace UIInfoSuiteRW.Features
       { SkillType.Foraging, new Rectangle(60, 428, 10, 10) },
       { SkillType.Mining, new Rectangle(30, 428, 10, 10) },
       { SkillType.Combat, new Rectangle(120, 428, 10, 10) },
-      { SkillType.Luck, new Rectangle(50, 428, 10, 10) }
+      { SkillType.Luck, new Rectangle(50, 428, 10, 10) },
+      { (SkillType)MasterySkill, new Rectangle(73, 89, 10, 11) }
     };
 
     private static readonly Dictionary<SkillType, Color> ExperienceFillColor = new()
     {
-      { SkillType.Farming, new Color(255, 251, 35, 0.38f) },
-      { SkillType.Fishing, new Color(17, 84, 252, 0.63f) },
-      { SkillType.Foraging, new Color(0, 234, 0, 0.63f) },
-      { SkillType.Mining, new Color(145, 104, 63, 0.63f) },
-      { SkillType.Combat, new Color(204, 0, 3, 0.63f) },
-      { SkillType.Luck, new Color(232, 223, 42, 0.63f) }
+      { SkillType.Farming, new Color(255, 251, 35, 96) },
+      { SkillType.Fishing, new Color(17, 84, 252, 160) },
+      { SkillType.Foraging, new Color(0, 234, 0, 160) },
+      { SkillType.Mining, new Color(145, 104, 63, 160) },
+      { SkillType.Combat, new Color(204, 0, 3, 160) },
+      { SkillType.Luck, new Color(232, 223, 42, 160) },
+      { (SkillType)MasterySkill, new Color(123, 215, 124, 160) }
     };
 
     private readonly PerScreen<Rectangle> _experienceIconRectangle =
@@ -204,7 +210,8 @@ namespace UIInfoSuiteRW.Features
           _experienceIconRectangle.Value,
           _experienceEarnedThisLevel.Value,
           _experienceRequiredToLevel.Value - _experienceFromPreviousLevels.Value,
-          _currentSkillLevel.Value
+          _currentSkillLevel.Value,
+          !(Game1.player.Level < 25)
         );
       }
     }
@@ -216,6 +223,11 @@ namespace UIInfoSuiteRW.Features
       for (var i = 0; i < _currentExperience.Value.Length; ++i)
       {
         _currentExperience.Value[i] = Game1.player.experiencePoints[i];
+      }
+
+      if (Game1.player.Level >= 25)
+      {
+        _currentMasteryExperience.Value = (int)Game1.stats.Get("MasteryExp");
       }
     }
 
@@ -252,13 +264,28 @@ namespace UIInfoSuiteRW.Features
       _experienceBarVisibleTimer.Value = ExperienceBarVisibleTicks;
 
       _experienceIconRectangle.Value = SkillIconRectangles[(SkillType)currentLevelIndex];
+
       _experienceFillColor.Value = ExperienceFillColor[(SkillType)currentLevelIndex];
+
       _currentSkillLevel.Value = Game1.player.GetUnmodifiedSkillLevel(currentLevelIndex);
 
-      _experienceRequiredToLevel.Value = GetExperienceRequiredToLevel(_currentSkillLevel.Value);
-      _experienceFromPreviousLevels.Value = GetExperienceRequiredToLevel(_currentSkillLevel.Value - 1);
-      _experienceEarnedThisLevel.Value =
-        Game1.player.experiencePoints[currentLevelIndex] - _experienceFromPreviousLevels.Value;
+      if (Game1.player.Level < 25)
+      {
+        _experienceRequiredToLevel.Value = GetExperienceRequiredToLevel(_currentSkillLevel.Value);
+        _experienceFromPreviousLevels.Value = GetExperienceRequiredToLevel(_currentSkillLevel.Value - 1);
+        _experienceEarnedThisLevel.Value =
+          Game1.player.experiencePoints[currentLevelIndex] - _experienceFromPreviousLevels.Value;
+      }
+      else if(MasteryTrackerMenu.getCurrentMasteryLevel() < 5)
+      {
+        _experienceRequiredToLevel.Value = MasteryTrackerMenu.getMasteryExpNeededForLevel(MasteryTrackerMenu.getCurrentMasteryLevel() + 1);
+        _experienceFromPreviousLevels.Value = MasteryTrackerMenu.getMasteryExpNeededForLevel(MasteryTrackerMenu.getCurrentMasteryLevel());
+        _experienceEarnedThisLevel.Value = (int)Game1.stats.Get("MasteryExp") - MasteryTrackerMenu.getMasteryExpNeededForLevel(MasteryTrackerMenu.getCurrentMasteryLevel());
+        _currentMasteryExperience.Value = (int)Game1.stats.Get("MasteryExp");
+
+        _experienceIconRectangle.Value = SkillIconRectangles[(SkillType)MasterySkill];
+        _experienceFillColor.Value = ExperienceFillColor[(SkillType)MasterySkill];
+      }
 
       if (displayExperience)
       {

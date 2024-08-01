@@ -50,15 +50,18 @@ namespace UIInfoSuiteRW
     {
       if (!Context.IsWorldReady)
         return;
-
-      if (ModConfigM.Config.OpenCalendarKeybind.JustPressed())
+      
+      if (Game1.activeClickableMenu == null)
       {
-        Game1.activeClickableMenu = new Billboard();
-      }
-      else if (ModConfigM.Config.OpenQuestBoardKeybind.JustPressed())
-      {
-        Game1.RefreshQuestOfTheDay();
-        Game1.activeClickableMenu = new Billboard(true);
+        if (ModConfigM.Config.OpenCalendarKeybind.JustPressed())
+        {
+          Game1.activeClickableMenu = new Billboard();
+        }
+        else if (ModConfigM.Config.OpenQuestBoardKeybind.JustPressed())
+        {
+          Game1.RefreshQuestOfTheDay();
+          Game1.activeClickableMenu = new Billboard(true);
+        }
       }
     }
 

@@ -8,14 +8,15 @@ namespace UIInfoSuiteRW.Features.HUDElements
 {
   public sealed class HUDExperienceBar
   {
-    private const int MaxBarWidth = 175;
+    private const int MaxBarWidth = 235;
 
     public void Draw(
       Color experienceFillColor,
       Rectangle experienceIconPosition,
       int experienceEarnedThisLevel,
       int experienceDifferenceBetweenLevels,
-      int currentLevel
+      int currentLevel,
+      bool isMastery
     )
     {
       int barWidth = GetBarWidth(experienceEarnedThisLevel, experienceDifferenceBetweenLevels);
@@ -24,7 +25,7 @@ namespace UIInfoSuiteRW.Features.HUDElements
       Game1.drawDialogueBox(
         (int)leftSide,
         Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 160,
-        240,
+        250,
         160,
         false,
         true
@@ -71,8 +72,8 @@ namespace UIInfoSuiteRW.Features.HUDElements
       else
       {
         Game1.spriteBatch.Draw(
-          Game1.mouseCursors,
-          new Vector2(leftSide + 54, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 62),
+          isMastery ? Game1.mouseCursors_1_6 : Game1.mouseCursors,
+          new Vector2(isMastery ? leftSide + 40 : leftSide + 54, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 62),
           experienceIconPosition,
           Color.White,
           0,
@@ -82,12 +83,15 @@ namespace UIInfoSuiteRW.Features.HUDElements
           0.85f
         );
 
-        Game1.drawWithBorder(
-          currentLevel.ToString(),
-          Color.Black * 0.6f,
-          Color.Black,
-          new Vector2(leftSide + 33, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 70)
-        );
+        if (!isMastery)
+        {
+          Game1.drawWithBorder(
+            currentLevel.ToString(),
+            Color.Black * 0.6f,
+            Color.Black,
+            new Vector2(leftSide + 33, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 70)
+          );
+        }
       }
     }
 
