@@ -33,7 +33,7 @@ namespace UIInfoSuiteRW.Features.HUDElements
 
       Game1.spriteBatch.Draw(
         Game1.staminaRect,
-        new Rectangle((int)leftSide + 32, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 63, barWidth, 31),
+        new Rectangle((int)leftSide + 32, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 65, barWidth, 30),
         experienceFillColor
       );
 
@@ -98,7 +98,7 @@ namespace UIInfoSuiteRW.Features.HUDElements
     #region Static helpers
     private static int GetBarWidth(int experienceEarnedThisLevel, int experienceDifferenceBetweenLevels)
     {
-      return (int)((double)(experienceEarnedThisLevel / experienceDifferenceBetweenLevels) * MaxBarWidth);
+      return (int)((double)experienceEarnedThisLevel / experienceDifferenceBetweenLevels * MaxBarWidth);
     }
 
     private static float GetExperienceBarLeftSide()

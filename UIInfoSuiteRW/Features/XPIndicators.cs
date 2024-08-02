@@ -52,10 +52,10 @@ namespace UIInfoSuiteRW.Features
 
     private static readonly Dictionary<SkillType, Color> ExperienceFillColor = new()
     {
-      { SkillType.Farming, new Color(255, 251, 35, 96) },
+      { SkillType.Farming, new Color(255, 251, 35, 160) },
       { SkillType.Fishing, new Color(17, 84, 252, 160) },
       { SkillType.Foraging, new Color(0, 234, 0, 160) },
-      { SkillType.Mining, new Color(145, 104, 63, 160) },
+      { SkillType.Mining, new Color(178, 168, 173, 255) },
       { SkillType.Combat, new Color(204, 0, 3, 160) },
       { SkillType.Luck, new Color(232, 223, 42, 160) },
       { (SkillType)MasterySkill, new Color(123, 215, 124, 160) }
