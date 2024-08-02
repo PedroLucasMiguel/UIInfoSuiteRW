@@ -1,12 +1,12 @@
 # UI Info Suite RW (Re-Worked)
-_Major code refactoring from [UI Info Suite 2](https://github.com/Annosz/UIInfoSuite2)._
+_Major code refactoring for [UI Info Suite 2](https://github.com/Annosz/UIInfoSuite2)._
 
 # About this project
-This project aims to refactor the code base from [UI Info Suite 2](https://github.com/Annosz/UIInfoSuite2) in order to give a better support in the future.
+This project aims to refactor the codebase from [UI Info Suite 2](https://github.com/Annosz/UIInfoSuite2) in order to give a better support and better new features implementation in the future.
 
 The main changes are:
-- *MAJOR* code refactoring for the mod logic;
-- *MAJOR* code refactoring for all features;
+- **MAJOR** code refactoring for the mod logic;
+- **MAJOR** code refactoring for all features;
 - Improved codebase architecture;
 - Improved naming;
 - Enhanced standardization;
