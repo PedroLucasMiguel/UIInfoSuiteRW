@@ -5,12 +5,12 @@ _Major code refactoring from [UI Info Suite 2](https://github.com/Annosz/UIInfoS
 This project aims to refactor the code base from [UI Info Suite 2](https://github.com/Annosz/UIInfoSuite2) in order to give a better support in the future.
 
 The main changes are:
-- *MAJOR* code refactoring in the mod logic;
-- *MAJOR* code refactoring in all features;
+- *MAJOR* code refactoring for the mod logic;
+- *MAJOR* code refactoring for all features;
 - Improved codebase architecture;
 - Improved naming;
 - Enhanced standardization;
-- Removed in-game menu to turn features on and off (for now on we relly on [Generic Mod Menu Config](https://github.com/spacechase0/StardewValleyMods/tree/develop/GenericModConfigMenu));
+- Removed in-game menu for toggle features (for now on we relly on [Generic Mod Menu Config](https://github.com/spacechase0/StardewValleyMods/tree/develop/GenericModConfigMenu));
 
 # Features
 The main features of this mod are:
