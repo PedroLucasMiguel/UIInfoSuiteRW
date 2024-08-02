@@ -12,12 +12,12 @@ namespace UIInfoSuiteRW.Framework
       {
         Features = new(){
           //{ "TESTING", new Testing(helper) },
-          { FeatureIds.XP_BAR, new XPIndicators(helper, config) },
-          { FeatureIds.NPC_LOCATION_ON_MAP, new LocationOfTownsfolk(helper, config) },
+          { FeatureIds.XP_BAR, new EXPIndicators(helper, config) },
+          { FeatureIds.NPC_LOCATION_ON_MAP, new LocationOfNPCs(helper, config) },
           { FeatureIds.SHOW_LUCK_ICON, new LuckOfDay(helper) },
           { FeatureIds.SHOW_HARVEST_PRICES_IN_SHOP, new ShopHarvestPrices(helper) },
           { FeatureIds.HEART_FILL, new ShowAccurateHearts(helper.Events) },
-          { FeatureIds.SHOW_BIRTHDAY_ICON, new ShowBirthdayIcon(helper) },
+          { FeatureIds.SHOW_BIRTHDAY_ICON, new ShowBirthdayIcon(helper, config) },
           { FeatureIds.DISPLAY_CALENDAR_AND_BILBOARD, new ShowCalendarAndBillboardOnGameMenuButton(helper) },
           { FeatureIds.SHOW_CROP_AND_BUILDING_TOOLTIP, new ShowCropAndBuildingTooltip(helper) },
           { FeatureIds.SHOW_ITEM_EFFECT_RANGE, new ShowItemEffectRanges(helper, config) },

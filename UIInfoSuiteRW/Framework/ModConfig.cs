@@ -35,7 +35,7 @@ namespace UIInfoSuiteRW.Framework
       { FeatureIds.SHOW_TOOL_UPGRADE_STATUS_ICON, true },
       { FeatureIds.SHOW_TRAVELER_MERCHANT_ICON, true },
       { FeatureIds.SHOW_ANIMAL_INDICATORS, true },
-      { FeatureIds.HIDE_ANIMAL_INDICATORS_ON_MAX_FRIENDSHIP, true}
+      { FeatureIds.HIDE_ON_MAX_FRIENDSHIP, true}
     };
 
     public Dictionary<string, bool> ShowLocationOfFriends { get; set; } = new();

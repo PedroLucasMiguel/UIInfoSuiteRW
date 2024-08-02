@@ -7,6 +7,7 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
+using UIInfoSuiteRW.Framework;
 using UIInfoSuiteRW.Utils;
 using UIInfoSuiteRW.Utils.Helpers;
 
@@ -23,13 +24,15 @@ namespace UIInfoSuiteRW.Features
     private bool Enabled { get; set; }
     private bool HideBirthdayIfFullFriendShip { get; set; }
     private readonly IModHelper _helper;
+    private readonly ModConfig _config;
     #endregion
 
 
     #region Lifecycle
-    public ShowBirthdayIcon(IModHelper helper)
+    public ShowBirthdayIcon(IModHelper helper, ModConfig config)
     {
       _helper = helper;
+      _config = config;
     }
     
     public void ToggleOption(bool toggle)
@@ -47,12 +50,6 @@ namespace UIInfoSuiteRW.Features
         _helper.Events.Display.RenderedHud += OnRenderedHud;
         _helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
       }
-    }
-
-    public void ToggleDisableOnMaxFriendshipOption(bool hideBirthdayIfFullFriendShip)
-    {
-      HideBirthdayIfFullFriendShip = hideBirthdayIfFullFriendShip;
-      ToggleOption(Enabled);
     }
     #endregion
 
@@ -116,7 +113,7 @@ namespace UIInfoSuiteRW.Features
             Friendship? friendship = GetFriendshipWithNPC(character.Name);
             if (friendship != null)
             {
-              if (HideBirthdayIfFullFriendShip &&
+              if (_config.FeatureConfig[FeatureIds.HIDE_ON_MAX_FRIENDSHIP] &&
                   friendship.Points >=
                   Utility.GetMaximumHeartsForCharacter(character) * NPC.friendshipPointsPerHeartLevel)
               {

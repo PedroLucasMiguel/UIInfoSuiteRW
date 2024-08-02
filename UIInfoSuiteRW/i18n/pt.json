@@ -1,6 +1,4 @@
 {
-  // GUI - Game Menu
-  "OptionsTabTooltip": "Opções do UI Info Suite 2",
   //GUI - Billboard
   "Billboard": "Quadro de avisos",
   "Calendar": "Calendário",
@@ -13,6 +11,7 @@
   //Harvest
   "DaysToMature": "dias para amadurecer",
   "ReadyToHarvest": "Pronto para colher!",
+  "With": "com",
   //Tree
   "Stump": "Toco",
   // This space is required for languages that use a space between words, delete otherwise (e.g. Korean)
@@ -59,36 +58,68 @@
   "LuckStatus4": "Os espíritos se sentem absolutamente neutros hoje.",
   "LuckStatus5": "Os espíritos estão pouco aborrecidos",
   "LuckStatus6": "Os espíritos estão muito aborrecidos",
-  //Settings - General
-  "ShowLevelUpAnimation": "Mostrar animação de subida de nível",
-  "ShowExperienceBar": "Mostrar barra de experiência",
-  "AllowExperienceBarToFadeOut": "Ocultar barra de experiência automaticamente",
-  "ShowExperienceGain": "Mostrar ganho de experiência",
-  "ShowLocationOfTownsPeople": "Mostrar pessoas da cidade no mapa",
-  "ShowAnimalsNeedPets": "Mostra animais q precisam de carinho",
-  "HideAnimalPetOnMaxFriendship": "Esconder na amizade máxima",
-  "ShowCropAndBarrelTooltip": "Mostrar tempo de colheita e produção",
-  "ShowItemEffectRanges": "Exibe alcance do espantalho e aspersor",
-  "ShowExtraItemInformation": "Exibir informações extras sobre os items",
-  "ShowHarvestPricesInShop": "Mostrar preços de colheita na loja",
-  //Settings - Tabs info
-  "DisplayCalendarAndBillboard": "Inventário: Exibir ícone calendário",
-  "ShowHeartFills": "Exibir preenchimento dos corações",
-  "ShowTodaysGifts": "Exibir presentes dados hoje",
-  //Settings - Show icons
-  "ShowBirthdayIcon": "Exibir ícone dos aniversariantes",
-  "HideBirthdayIfFullFriendShip": "Esconder na amizade máxima",
-  "ShowTravelingMerchant": "Exibir ícone do Carrinho de Viagem",
-  "HideMerchantWhenVisited": "Esconder quando visitado",
-  "ShowRainyDay": "Exibir ícone sobre dias chuvosos",
-  "ShowWhenNewRecipesAreAvailable": "Exibir ícone da Rainha do Molho",
-  "ShowToolUpgradeStatus": "Exibir ícone de melhorias do Clint",
-  "ShowRobinBuildingStatusIcon": "Exibir ícone de construções da Robin",
-  "ShowLuckIcon": "Exibir ícone de sorte",
-  "ShowExactValue": "Mostra o valor exato",
-  "ShowSeasonalBerry": "Mostrar coletáveis sazonais",
-  "ShowSeasonalBerryHazelnut": "Mostrar avelãs nas árvores",
   //Others
   "LevelUp": "Subir de nível",
-  "With": "com"
+  
+  //Generic mod menu config
+  //Keybinds
+  "config-menu.keybinds.section-title": "Atalhos",
+  "config-menu.keybinds.section-tooltip": "Altere seus atalhos.",
+  "config-menu.keybinds.open-calendar": "Abrir calendário",
+  "config-menu.keybinds.open-calendar-tooltip": "Abre o calendário.",
+  "config-menu.keybinds.open-quest-board": "Abrir quadro de missões",
+  "config-menu.keybinds.open-quest-board-tooltip": "Abre o quadro de missões.",
+  "config-menu.keybinds.show-placed-object-range": "Mostrar alcance de objetos",
+  "config-menu.keybinds.show-placed-object-range-tooltip": "Mostra o alcance de objetos como espantalho.",
+  //Tweaks
+  "config-menu.features.section-title": "Ajustes",
+  "config-menu.features.section-tooltip": "Habilite ou desabilite funções do UIInfoSuiteRW",
+  "config-menu.features.xp-bar.fadeout": "Esmaecer barra de XP",
+  "config-menu.features.xp-bar.fadeout.tooltip": "Faz com que a barra de XP suma suavemente.",
+  "config-menu.features.xp-bar.show": "Mostrar barra de XP",
+  "config-menu.features.xp-bar.show.tooltip": "Mostra barra de XP para habilidades.",
+  "config-menu.features.xp-gain.show": "Mostrar ganho de XP",
+  "config-menu.features.xp-gain.show.tooltip": "Mostra ganho de XP dentro do jogo.",
+  "config-menu.features.level-up-animation.show": "Mostrar animação de LVL UP",
+  "config-menu.features.level-up-animation.show.tooltip": "Mostra uma animção de level up dentro do jogo.",
+  "config-menu.features.heart-fills.show": "Mostrar preenchimento dos corações",
+  "config-menu.features.heart-fills.show.tooltip": "Apresenta os valores de amizade de forma mais acurada.",
+  "config-menu.features.extra-item-info.show": "Mostrar informações extras para itens",
+  "config-menu.features.extra-item-info.show.tooltip": "Apresenta mais informações quando você passa o mouse sobre o item.",
+  "config-menu.features.npc-on-map.show": "Mostrar NPCs no mapa",
+  "config-menu.features.npc-on-map.show.tooltip": "Mostra a localização dos NPCs no mapa.",
+
+  "config-menu.features.luck-icon.show": "Mostrar icone de sorte",
+  "config-menu.features.luck-icon.show.tooltip": "Mostra um indicador com o valor de sorte.",
+  "config-menu.features.traveler-merchant-icon.show": "Mostrar icone do carrinho de viagem",
+  "config-menu.features.traveler-merchant-icon.show.tooltip": "Mostra um indicador caso o carrinho de viagem esteja no mapa.",
+  "config-menu.features.rayni-day-icon.show": "Mostrar ícone de chuva",
+  "config-menu.features.rayni-day-icon.show.tooltip": "Mostra um indicador caso amanhã chova.",
+  "config-menu.features.birthday-icon.show": "Mostrar ícone de aniversário",
+  "config-menu.features.birthday-icon.show.tooltip": "Mostra um indicador com o aniversário de um NPC.",
+  "config-menu.features.new-recipe-icon.show": "Mostrar ícone de nova receita",
+  "config-menu.features.new-recipe-icon.show.tooltip": "Mostra um indicador de para novas receitas.",
+  "config-menu.features.tool-upgrade-icon.show": "Mostrar ícone de melhoria de ferramenta",
+  "config-menu.features.tool-upgrade-icon.show.tooltip": "Mostra um indicador com a quantidade de tempo para uma ferramenta ficar pronta.",
+  "config-menu.features.robin-icon.show": "Mostrar ícone de consrução da Robin",
+  "config-menu.features.robin-icon.show.tooltip": "Mostra um indicador com a quantidade de tempo para a Robin finalizar uma construção.",
+  "config-menu.features.seasonal-berry-icon.show": "Mostrar ícone de itens silvestrs",
+  "config-menu.features.seasonal-berry-icon.show.tooltip": "Mostra um indicador para os itens silvestres da estação.",
+  "config-menu.features.todays-gift-icon.show": "Mostrar ícone de aniversariante",
+  "config-menu.features.todays-gift-icon.show.tooltip": "Mostra um indicador para o aniversariante do dia.",
+
+  "config-menu.features.crop-building-tooltip.show": "Mostrar indicador em plantações e construções",
+  "config-menu.features.crop-building-tooltip.show.tooltip": "Mostra um indicador para apresentar o tempo restante para uma plantação ou construção finalizar a atividade.",
+  "config-menu.features.animal-indicators.show": "Mostrar indicador em animais",
+  "config-menu.features.animal-indicators.show.tooltip": "Mostra um indicador caso o animal precise ser acariciado ou tenha produtos para colher.",
+  "config-menu.features.hide-indicators-max-friendship.show": "Esconder indicador com amizade máxima",
+  "config-menu.features.hide-indicators-max-friendship.show.tooltip": "Esconde o indicador de animais e de presentes caso a amizade esteja no máximo.",
+  "config-menu.features.item-effect-range.show": "Mostrar área de efeito de item",
+  "config-menu.features.item-effect-range.show.tooltip": "Mostra a área de efeito de um item.",
+  "config-menu.features.item-bundle.show": "Mostrar indicador de bundles",
+  "config-menu.features.item-bundle.show.tooltip": "Mostra um indicador caso um item pertence a um bundle.",
+  "config-menu.features.harvest-price-in-shop.show": "Mostrar preço de colheita na loja",
+  "config-menu.features.harvest-price-in-shop.show.tooltip": "Mostra o preço unitário das colheitas na loja.",
+  "config-menu.features.calendar-bilboard.show": "Mostrar calendário e quadro de anúncios",
+  "config-menu.features.calendar-bilboard.show.tooltip": "Mostra o calendário e o quadro de anúncios no menu."
 }

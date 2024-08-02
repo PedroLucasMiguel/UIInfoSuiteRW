@@ -22,9 +22,9 @@ namespace UIInfoSuiteRW.Features
 
     private readonly LocationWeather _valleyWeather = new();
     private readonly LocationWeather _islandWeather = new();
-    private Texture2D _iconSheet;
+    private Texture2D _iconSheet = null!;
 
-    private Color[] _weatherIconColors;
+    private Color[] _weatherIconColors = null!;
     private const int WeatherSheetWidth = 15 * 4 + 18 * 3;
     private const int WeatherSheetHeight = 18;
 

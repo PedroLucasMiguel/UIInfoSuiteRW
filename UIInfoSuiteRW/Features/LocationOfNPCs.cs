@@ -17,7 +17,7 @@ using UIInfoSuiteRW.Utils.Helpers;
 
 namespace UIInfoSuiteRW.Features
 {
-  internal class LocationOfTownsfolk : IFeature
+  internal class LocationOfNPCs : IFeature
   {
     #region Internal record
     // Inspired by Bouhm "NPCMapLocations"
@@ -52,7 +52,7 @@ namespace UIInfoSuiteRW.Features
     #endregion
 
     #region Lifecycle
-    public LocationOfTownsfolk(IModHelper helper, ModConfig options)
+    public LocationOfNPCs(IModHelper helper, ModConfig options)
     {
       _helper = helper;
       _options = options;

@@ -118,7 +118,7 @@ namespace UIInfoSuiteRW.Features
     #region Logic
     private void UpdateEffectiveArea()
     {
-      int[][] arrayToUse;
+      int[][]? arrayToUse;
       List<Object> similarObjects;
 
       // Junimo Hut is handled differently, because it is a building
@@ -131,7 +131,7 @@ namespace UIInfoSuiteRW.Features
         {
           if (nextBuilding is JunimoHut nextHut)
           {
-            AddTilesToHighlightedArea(arrayToUse, nextHut.tileX.Value + 1, nextHut.tileY.Value + 1);
+            AddTilesToHighlightedArea(arrayToUse!, nextHut.tileX.Value + 1, nextHut.tileY.Value + 1);
           }
         }
       }
@@ -160,7 +160,7 @@ namespace UIInfoSuiteRW.Features
           arrayToUse = itemName.Contains("eluxe")
             ? GetDistanceArray(ObjectsWithDistance.DeluxeScarecrow, false, currentItem)
             : GetDistanceArray(ObjectsWithDistance.Scarecrow, false, currentItem);
-          AddTilesToHighlightedArea(arrayToUse, (int)validTile.X, (int)validTile.Y);
+          AddTilesToHighlightedArea(arrayToUse!, (int)validTile.X, (int)validTile.Y);
 
           similarObjects = GetSimilarObjectsInLocation("arecrow");
           foreach (Object next in similarObjects)
@@ -168,7 +168,7 @@ namespace UIInfoSuiteRW.Features
             arrayToUse = next.Name.IndexOf("eluxe", StringComparison.OrdinalIgnoreCase) >= 0
               ? GetDistanceArray(ObjectsWithDistance.DeluxeScarecrow, false, next)
               : GetDistanceArray(ObjectsWithDistance.Scarecrow, false, next);
-            AddTilesToHighlightedArea(arrayToUse, (int)next.TileLocation.X, (int)next.TileLocation.Y);
+            AddTilesToHighlightedArea(arrayToUse!, (int)next.TileLocation.X, (int)next.TileLocation.Y);
           }
         }
         else if (itemName.IndexOf("sprinkler", StringComparison.OrdinalIgnoreCase) >= 0)
@@ -204,17 +204,17 @@ namespace UIInfoSuiteRW.Features
         else if (itemName.IndexOf("bee house", StringComparison.OrdinalIgnoreCase) >= 0)
         {
           arrayToUse = GetDistanceArray(ObjectsWithDistance.Beehouse);
-          AddTilesToHighlightedArea(arrayToUse, (int)validTile.X, (int)validTile.Y);
+          AddTilesToHighlightedArea(arrayToUse!, (int)validTile.X, (int)validTile.Y);
         }
         else if (itemName.IndexOf("mushroom log", StringComparison.OrdinalIgnoreCase) >= 0)
         {
           arrayToUse = GetDistanceArray(ObjectsWithDistance.MushroomLog);
-          AddTilesToHighlightedArea(arrayToUse, (int)validTile.X, (int)validTile.Y);
+          AddTilesToHighlightedArea(arrayToUse!, (int)validTile.X, (int)validTile.Y);
         }
         else if (itemName.IndexOf("mossy seed", StringComparison.OrdinalIgnoreCase) >= 0)
         {
           arrayToUse = GetDistanceArray(ObjectsWithDistance.MossySeed);
-          AddTilesToHighlightedArea(arrayToUse, (int)validTile.X, (int)validTile.Y);
+          AddTilesToHighlightedArea(arrayToUse!, (int)validTile.X, (int)validTile.Y);
         }
       }
 
@@ -234,7 +234,7 @@ namespace UIInfoSuiteRW.Features
             arrayToUse = itemName.Contains("eluxe")
               ? GetDistanceArray(ObjectsWithDistance.DeluxeScarecrow, false, mouseItem)
               : GetDistanceArray(ObjectsWithDistance.Scarecrow, false, mouseItem);
-            AddTilesToHighlightedArea(arrayToUse, (int)validTile.X, (int)validTile.Y);
+            AddTilesToHighlightedArea(arrayToUse!, (int)validTile.X, (int)validTile.Y);
 
             similarObjects = GetSimilarObjectsInLocation("arecrow");
             foreach (Object next in similarObjects)
@@ -242,7 +242,7 @@ namespace UIInfoSuiteRW.Features
               arrayToUse = next.Name.IndexOf("eluxe", StringComparison.OrdinalIgnoreCase) >= 0
                 ? GetDistanceArray(ObjectsWithDistance.DeluxeScarecrow, false, next)
                 : GetDistanceArray(ObjectsWithDistance.Scarecrow, false, next);
-              AddTilesToHighlightedArea(arrayToUse, (int)next.TileLocation.X, (int)next.TileLocation.Y);
+              AddTilesToHighlightedArea(arrayToUse!, (int)next.TileLocation.X, (int)next.TileLocation.Y);
             }
           }
           else if (itemName.IndexOf("sprinkler", StringComparison.OrdinalIgnoreCase) >= 0)
@@ -278,17 +278,17 @@ namespace UIInfoSuiteRW.Features
           else if (itemName.IndexOf("bee house", StringComparison.OrdinalIgnoreCase) >= 0)
           {
             arrayToUse = GetDistanceArray(ObjectsWithDistance.Beehouse);
-            AddTilesToHighlightedArea(arrayToUse, (int)validTile.X, (int)validTile.Y);
+            AddTilesToHighlightedArea(arrayToUse!, (int)validTile.X, (int)validTile.Y);
           }
           else if (itemName.IndexOf("mushroom log", StringComparison.OrdinalIgnoreCase) >= 0)
           {
             arrayToUse = GetDistanceArray(ObjectsWithDistance.MushroomLog);
-            AddTilesToHighlightedArea(arrayToUse, (int)validTile.X, (int)validTile.Y);
+            AddTilesToHighlightedArea(arrayToUse!, (int)validTile.X, (int)validTile.Y);
           }
           else if (itemName.IndexOf("mossy seed", StringComparison.OrdinalIgnoreCase) >= 0)
           {
             arrayToUse = GetDistanceArray(ObjectsWithDistance.MossySeed);
-            AddTilesToHighlightedArea(arrayToUse, (int)validTile.X, (int)validTile.Y);
+            AddTilesToHighlightedArea(arrayToUse!, (int)validTile.X, (int)validTile.Y);
           }
         }
       }
@@ -378,7 +378,7 @@ namespace UIInfoSuiteRW.Features
       MossySeed
     }
 
-    private int[][] GetDistanceArray(ObjectsWithDistance type, bool hasPressureNozzle = false, Object? instance = null)
+    private int[][]? GetDistanceArray(ObjectsWithDistance type, bool hasPressureNozzle = false, Object? instance = null)
     {
       switch (type)
       {

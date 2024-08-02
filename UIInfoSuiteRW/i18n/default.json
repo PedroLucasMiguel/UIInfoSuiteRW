@@ -1,10 +1,7 @@
 {
-  // GUI - Game Menu
-  "OptionsTabTooltip": "UI Info Suite 2 Options",
   //GUI - Billboard
   "Billboard": "Billboard",
   "Calendar": "Calendar",
-  "SlayerGoals": "Monster Eradication Goals",
   //GUI - Seed shop
   "HarvestPrice": "Harvest price",
   //Production
@@ -65,38 +62,8 @@
   "LuckStatus4": "The spirits feel absolutely neutral today",
   "LuckStatus5": "Luck will not be on your side today",
   "LuckStatus6": "Maybe you should stay home today...",
-  //Settings - General
-  "ShowLevelUpAnimation": "Show level up animation",
-  "ShowExperienceBar": "Show experience bar",
-  "AllowExperienceBarToFadeOut": "Allow experience bar to fade out",
-  "ShowExperienceGain": "Show experience gain",
-  "ShowLocationOfTownsPeople": "Show townspeople on map",
-  "ShowAnimalsNeedPets": "Show when animals need pets",
-  "HideAnimalPetOnMaxFriendship": "Hide on max friendship",
-  "ShowCropAndBarrelTooltip": "Show crop and barrel times",
-  "ShowItemEffectRanges": "Show scarecrow and sprinkler range",
-  "ShowExtraItemInformation": "Show item hover information",
-  "ShowHarvestPricesInShop": "Show shop harvest prices",
-  //Settings - Tabs info
-  "DisplayCalendarAndBillboard": "Show calendar/billboard button",
-  "ShowHeartFills": "Show heart fills",
-  "ShowTodaysGifts": "Show gifts given today",
-  //Settings - Show icons
-  "ShowBirthdayIcon": "Show Birthday icon",
-  "HideBirthdayIfFullFriendShip": "Hide on max friendship",
-  "ShowTravelingMerchant": "Show Traveling Merchant",
-  "HideMerchantWhenVisited": "Hide when visited",
-  "ShowRainyDay": "Show rainy days",
-  "ShowWhenNewRecipesAreAvailable": "Show when new recipes are available",
-  "ShowToolUpgradeStatus": "Show tool upgrade status",
-  "ShowRobinBuildingStatusIcon": "Show Robin building status",
-  "ShowLuckIcon": "Show luck icon",
-  "ShowExactValue": "Show exact value",
-  "ShowSeasonalBerry": "Show seasonal forageables",
-  "ShowSeasonalBerryHazelnut": "Show hazelnuts on trees",
   //Others
   "LevelUp": "Level Up",
-
 
   //Generic mod menu config
   //Keybinds
@@ -145,12 +112,12 @@
   "config-menu.features.todays-gift-icon.show": "Show todays gift icon",
   "config-menu.features.todays-gift-icon.show.tooltip": "Show a todays gift indicator under the farm money.",
 
-  "config-menu.features.crop-barrel-tooltip.show": "Show crop/barrel tooltip",
-  "config-menu.features.crop-barrel-tooltip.show.tooltip": "Show a tooltip for crops and barrels to indicate the remaining time to finish.",
+  "config-menu.features.crop-building-tooltip.show": "Show crop/building tooltip",
+  "config-menu.features.crop-building-tooltip.show.tooltip": "Show a tooltip for crops and buildings to indicate the remaining time to finish.",
   "config-menu.features.animal-indicators.show": "Show animal indicators",
   "config-menu.features.animal-indicators.show.tooltip": "Show a indicator above the farm animals if they need pets or if they have products.",
-  "config-menu.features.hide-animal-indicators.show": "Hide indicator on max friendship",
-  "config-menu.features.hide-animal-indicators.show.tooltip": "Hide animal pet indicator on max friendship.",
+  "config-menu.features.hide-indicators-max-friendship.show": "Hide indicator on max friendship",
+  "config-menu.features.hide-indicators-max-friendship.show.tooltip": "Hide animal pet indicator on max friendship.",
   "config-menu.features.item-effect-range.show": "Show item effect range",
   "config-menu.features.item-effect-range.show.tooltip": "Show the item effect range.",
   "config-menu.features.item-bundle.show": "Show bundle item indicator",

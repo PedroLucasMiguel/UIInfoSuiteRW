@@ -85,8 +85,12 @@ namespace UIInfoSuiteRW.Features
         return;
       }
 
-      var slotPosition = (int)typeof(SocialPage).GetField("slotPosition", BindingFlags.Instance | BindingFlags.NonPublic)
-                                                .GetValue(_socialPage);
+      var slotPosition = (int)typeof(SocialPage)
+                        .GetField("slotPosition", 
+                                  BindingFlags.Instance | BindingFlags.NonPublic
+                        )!
+                        .GetValue(_socialPage)!;
+      
       var yOffset = 25;
 
       for (int i = slotPosition; i < slotPosition + 5 && i < _socialPage.SocialEntries.Count; ++i)

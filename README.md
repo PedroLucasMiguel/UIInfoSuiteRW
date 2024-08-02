@@ -1,54 +1,45 @@
-# UI Info Suite RW
+# UI Info Suite RW (Re-Worked)
 _Major code refactoring from [UI Info Suite 2](https://github.com/Annosz/UIInfoSuite2)._
 
-# Features to update/refactor before release
+# About this project
+This project aims to refactor the code base from [UI Info Suite 2](https://github.com/Annosz/UIInfoSuite2) in order to give a better support in the future.
 
-- [X] XPIndicators
-- [X] LuckOfDay
-- [X] LocationOfTownsFolk
-- [X] ShopHarvestPrices
-- [X] ShowAccurateHearts
-- [ ] ShowBirthdayIcon
-- [ ] ShowCalendarAndBillboard
-- [X] ~~ShowCropAndBarrelTime~~ (ShowCropAndBuildingTime)
-- [X] ShowItemEffectRanges
-- [X] ShowItemHoverInformation
-- [X] ShowQueenOfSauceIcon
-- [ ] ShowRainyDayIcon
-- [ ] ShowRobinBuildingStatucIcon
-- [ ] ShowSeasonalBerry
-- [ ] ShowTodayysGifts
-- [ ] ShowToolUPgradeStatus
-- [ ] ShowTravelingMerchant
-- [X] ~~ShowWhenAnimalNeedsPet~~ (ShowAnimalIndicators)
+The main changes are:
+- *MAJOR* code refactoring in the mod logic;
+- *MAJOR* code refactoring in all features;
+- Improved codebase architecture;
+- Improved naming;
+- Enhanced standardization;
+- Removed in-game menu to turn features on and off (for now on we relly on [Generic Mod Menu Config](https://github.com/spacechase0/StardewValleyMods/tree/develop/GenericModConfigMenu));
+
+# Features
+The main features of this mod are:
+
+- Realtime location of NPCs on map (working on multiplayer!);
+- Luck of the day indicator;
+- Harvest prices in the shop;
+- Accurate friendship hearts;
+- Animal indicators for pets and production items;
+- NPC birthday icon;
+- Calendar and Billboard on menu;
+- Crops and builds tooltips (time to finish grow/processing);
+- Display item effect ranges (placed items ranges can be displayed with middle mouse click);
+- Item hover information (thanks [sebbi08](https://github.com/sebbi08) for the multiple bundles patch);
+- Daily new recipe indicator;
+- Rainy day indicator;
+- Robin building status indicator;
+- Seasonal berrys/crops indicator;
+- Today's gifts indicator;
+- Tool upgrade status indicator;
+- Traveling merchant indicator;
+- EXP indicators (XP bars and LVL up animations. Thanks [djuniah](https://github.com/djuniah) for the mastery xp bar patch!)
 
 # Translating UI Info Suite RW
-The mod can be translated into any language supported by the game, and SMAPI will automatically
-use the right translations.
-
-Contributions are welcome! See [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations)
-on the wiki for help contributing translations.
+As the mod is beign refactored, most of original UI Info Suite 2 translations are broken now. Wit that said, contributions are welcome! See [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations) on the wiki for help contributing translations.
 
 (❑ = untranslated, ↻ = partly translated, ✓ = fully translated)
 
 locale      | status
 ----------- | :----------------
 default     | [✓](UIInfoSuite2/i18n/default.json)
-Chinese     | [✓](UIInfoSuite2/i18n/zh.json)
-French      | [↻](UIInfoSuite2/i18n/fr.json)
-German      | [✓](UIInfoSuite2/i18n/de.json)
-Hungarian   | [↻](UIInfoSuite2/i18n/hu.json)
-Italian     | [✓](UIInfoSuite2/i18n/it.json)
-Japanese    | [✓](UIInfoSuite2/i18n/ja.json)
-Korean      | [↻](UIInfoSuite2/i18n/ko.json)
-[Polish]    | [✓](UIInfoSuite2/i18n/pl.json)
 Portuguese  | [✓](UIInfoSuite2/i18n/pt.json)
-Russian     | [✓](UIInfoSuite2/i18n/ru.json)
-Spanish     | [↻](UIInfoSuite2/i18n/es.json)
-[Thai]      | [✓](UIInfoSuite2/i18n/th.json)
-Turkish     | [✓](UIInfoSuite2/i18n/tr.json)
-[Ukrainian] | [✓](UIInfoSuite2/i18n/uk.json)
-
-[Polish]: https://www.nexusmods.com/stardewvalley/mods/3616
-[Thai]: https://www.nexusmods.com/stardewvalley/mods/7052
-[Ukrainian]: https://www.nexusmods.com/stardewvalley/mods/8427

@@ -2,7 +2,7 @@
   "Name": "UI Info Suite RW",
   "Author": "Predo",
   "Version": "1.0.0",
-  "Description": "Adds a useful information to the user interface. Based on Cdaragorn's excellent UI Info Suite.",
+  "Description": "A major refactoring project for UI Info Suite 2.",
   "UniqueID": "Predo.UIInfoSuiteRW",
   "EntryDll": "UIInfoSuiteRW.dll",
   "MinimumApiVersion": "4.0.5",

@@ -209,8 +209,8 @@ namespace UIInfoSuiteRW.Framework
       // Show crop/barrel tooltip
       GenericModConfigMenu.AddBoolOption(
         Manifest,
-        name: () => I18n.ConfigMenu_Features_CropBarrelTooltip_Show(),
-        tooltip: () => I18n.ConfigMenu_Features_CropBarrelTooltip_Show_Tooltip(),
+        name: () => I18n.ConfigMenu_Features_CropBuildingTooltip_Show(),
+        tooltip: () => I18n.ConfigMenu_Features_CropBuildingTooltip_Show_Tooltip(),
         getValue: () => Config.FeatureConfig[FeatureIds.SHOW_CROP_AND_BUILDING_TOOLTIP],
         setValue: value => Config.FeatureConfig[FeatureIds.SHOW_CROP_AND_BUILDING_TOOLTIP] = value,
         fieldId: FeatureIds.SHOW_CROP_AND_BUILDING_TOOLTIP
@@ -227,11 +227,11 @@ namespace UIInfoSuiteRW.Framework
       // Show animals need pets
       GenericModConfigMenu.AddBoolOption(
         Manifest,
-        name: () => I18n.ConfigMenu_Features_HideAnimalIndicators_Show(),
-        tooltip: () => I18n.ConfigMenu_Features_HideAnimalIndicators_Show_Tooltip(),
-        getValue: () => Config.FeatureConfig[FeatureIds.HIDE_ANIMAL_INDICATORS_ON_MAX_FRIENDSHIP],
-        setValue: value => Config.FeatureConfig[FeatureIds.HIDE_ANIMAL_INDICATORS_ON_MAX_FRIENDSHIP] = value,
-        fieldId: FeatureIds.HIDE_ANIMAL_INDICATORS_ON_MAX_FRIENDSHIP
+        name: () => I18n.ConfigMenu_Features_HideIndicatorsMaxFriendship_Show(),
+        tooltip: () => I18n.ConfigMenu_Features_HideIndicatorsMaxFriendship_Show_Tooltip(),
+        getValue: () => Config.FeatureConfig[FeatureIds.HIDE_ON_MAX_FRIENDSHIP],
+        setValue: value => Config.FeatureConfig[FeatureIds.HIDE_ON_MAX_FRIENDSHIP] = value,
+        fieldId: FeatureIds.HIDE_ON_MAX_FRIENDSHIP
       );
       // Show item effect ranges
       GenericModConfigMenu.AddBoolOption(

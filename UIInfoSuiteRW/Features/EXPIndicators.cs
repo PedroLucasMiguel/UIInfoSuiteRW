@@ -13,7 +13,7 @@ using UIInfoSuiteRW.Framework;
 // Thanks djuniah (https://github.com/djuniah) for the mastery experience patch!
 namespace UIInfoSuiteRW.Features
 {
-  public class XPIndicators : IFeature
+  public class EXPIndicators : IFeature
   {
     #region Properties
     private const int MasterySkill = 6; 
@@ -79,7 +79,7 @@ namespace UIInfoSuiteRW.Features
     #endregion
 
     #region Lifecycle
-    public XPIndicators(IModHelper helper, ModConfig config)
+    public EXPIndicators(IModHelper helper, ModConfig config)
     {
       _helper = helper;
       _config = config;

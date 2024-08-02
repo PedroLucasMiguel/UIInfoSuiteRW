@@ -161,7 +161,7 @@ namespace UIInfoSuiteRW.Features
         {
           if (!animal.Value.IsEmoting &&
               !animal.Value.wasPet.Value &&
-              (animal.Value.friendshipTowardFarmer.Value < 1000 || !_options.FeatureConfig[FeatureIds.HIDE_ANIMAL_INDICATORS_ON_MAX_FRIENDSHIP]))
+              (animal.Value.friendshipTowardFarmer.Value < 1000 || !_options.FeatureConfig[FeatureIds.HIDE_ON_MAX_FRIENDSHIP]))
           {
             Vector2 positionAboveAnimal = GetPetPositionAboveAnimal(animal.Value);
             string animalType = animal.Value.type.Value.ToLower();
