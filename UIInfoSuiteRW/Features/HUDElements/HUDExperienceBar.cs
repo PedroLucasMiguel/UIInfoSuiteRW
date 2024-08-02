@@ -8,7 +8,7 @@ namespace UIInfoSuiteRW.Features.HUDElements
 {
   public sealed class HUDExperienceBar
   {
-    private const int MaxBarWidth = 180;
+    private const int MaxBarWidth = 205;
 
     public void Draw(
       Color experienceFillColor,
