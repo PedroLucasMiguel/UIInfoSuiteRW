@@ -147,8 +147,10 @@
 
   "config-menu.features.crop-barrel-tooltip.show": "Show crop/barrel tooltip",
   "config-menu.features.crop-barrel-tooltip.show.tooltip": "Show a tooltip for crops and barrels to indicate the remaining time to finish.",
-  "config-menu.features.animal-pets.show": "Show animal need pets",
-  "config-menu.features.animal-pets.show.tooltip": "Show a indicator above the farm animals if they need pets.",
+  "config-menu.features.animal-indicators.show": "Show animal indicators",
+  "config-menu.features.animal-indicators.show.tooltip": "Show a indicator above the farm animals if they need pets or if they have products.",
+  "config-menu.features.hide-animal-indicators.show": "Hide indicator on max friendship",
+  "config-menu.features.hide-animal-indicators.show.tooltip": "Hide animal pet indicator on max friendship.",
   "config-menu.features.item-effect-range.show": "Show item effect range",
   "config-menu.features.item-effect-range.show.tooltip": "Show the item effect range.",
   "config-menu.features.item-bundle.show": "Show bundle item indicator",

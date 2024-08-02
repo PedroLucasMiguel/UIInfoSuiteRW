@@ -78,6 +78,7 @@ namespace UIInfoSuiteRW.Features
     private readonly ModConfig _config;
     #endregion
 
+    #region Lifecycle
     public XPIndicators(IModHelper helper, ModConfig config)
     {
       _helper = helper;
@@ -113,6 +114,7 @@ namespace UIInfoSuiteRW.Features
         _helper.Events.Player.LevelChanged += OnLevelChanged;
       }
     }
+    #endregion
 
     #region Event subscriptions
     private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)

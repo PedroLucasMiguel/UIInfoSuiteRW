@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -10,122 +9,122 @@ using StardewValley.Menus;
 using StardewValley.Tools;
 using UIInfoSuiteRW.Utils;
 
-namespace UIInfoSuiteRW.Features;
-
-internal class ShowToolUpgradeStatus : IFeature
+namespace UIInfoSuiteRW.Features
 {
-#region Logic
-  private void UpdateToolInfo()
+  internal class ShowToolUpgradeStatus : IFeature
   {
-    Tool toolBeingUpgraded = _toolBeingUpgraded.Value = Game1.player.toolBeingUpgraded.Value;
-
-    if (toolBeingUpgraded == null)
+    #region Logic
+    private void UpdateToolInfo()
     {
-      return;
+      Tool toolBeingUpgraded = _toolBeingUpgraded.Value = Game1.player.toolBeingUpgraded.Value;
+
+      if (toolBeingUpgraded == null)
+      {
+        return;
+      }
+
+      if (toolBeingUpgraded is Axe
+          or Pickaxe
+          or Hoe
+          or WateringCan
+          or GenericTool { IndexOfMenuItemView: >= 13 and <= 16 })
+      {
+        ParsedItemData? itemData = ItemRegistry.GetDataOrErrorItem(toolBeingUpgraded.QualifiedItemId);
+        Texture2D? itemTexture = itemData.GetTexture();
+        Rectangle itemTextureLocation = itemData.GetSourceRect();
+        float scaleFactor = 40.0f / itemTextureLocation.Width;
+        _toolUpgradeIcon.Value = new ClickableTextureComponent(
+          new Rectangle(0, 0, 40, 40),
+          itemTexture,
+          itemTextureLocation,
+          scaleFactor
+        );
+      }
+
+      if (Game1.player.daysLeftForToolUpgrade.Value > 0)
+      {
+        _hoverText.Value = string.Format(
+          I18n.DaysUntilToolIsUpgraded(),
+          Game1.player.daysLeftForToolUpgrade.Value,
+          toolBeingUpgraded.DisplayName
+        );
+      }
+      else
+      {
+        _hoverText.Value = string.Format(I18n.ToolIsFinishedBeingUpgraded(), toolBeingUpgraded.DisplayName);
+      }
+    }
+    #endregion
+
+    #region Properties
+    private readonly PerScreen<string> _hoverText = new();
+    private readonly PerScreen<Tool?> _toolBeingUpgraded = new();
+    private readonly PerScreen<ClickableTextureComponent> _toolUpgradeIcon = new();
+
+    private readonly IModHelper _helper;
+    #endregion
+
+    #region Life cycle
+    public ShowToolUpgradeStatus(IModHelper helper)
+    {
+      _helper = helper;
     }
 
-    if (toolBeingUpgraded is Axe
-        or Pickaxe
-        or Hoe
-        or WateringCan
-        or GenericTool { IndexOfMenuItemView: >= 13 and <= 16 })
+    public void ToggleOption(bool toggle)
     {
-      ParsedItemData? itemData = ItemRegistry.GetDataOrErrorItem(toolBeingUpgraded.QualifiedItemId);
-      Texture2D? itemTexture = itemData.GetTexture();
-      Rectangle itemTextureLocation = itemData.GetSourceRect();
-      float scaleFactor = 40.0f / itemTextureLocation.Width;
-      _toolUpgradeIcon.Value = new ClickableTextureComponent(
-        new Rectangle(0, 0, 40, 40),
-        itemTexture,
-        itemTextureLocation,
-        scaleFactor
-      );
+      _helper.Events.Display.RenderingHud -= OnRenderingHud;
+      _helper.Events.Display.RenderedHud -= OnRenderedHud;
+      _helper.Events.GameLoop.DayStarted -= OnDayStarted;
+      _helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
+
+      if (toggle)
+      {
+        UpdateToolInfo();
+        _helper.Events.Display.RenderingHud += OnRenderingHud;
+        _helper.Events.Display.RenderedHud += OnRenderedHud;
+        _helper.Events.GameLoop.DayStarted += OnDayStarted;
+        _helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+      }
+    }
+    #endregion
+
+
+    #region Event subscriptions
+    private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
+    {
+      if (e.IsOneSecond && _toolBeingUpgraded.Value != Game1.player.toolBeingUpgraded.Value)
+      {
+        UpdateToolInfo();
+      }
     }
 
-    if (Game1.player.daysLeftForToolUpgrade.Value > 0)
-    {
-      _hoverText.Value = string.Format(
-        I18n.DaysUntilToolIsUpgraded(),
-        Game1.player.daysLeftForToolUpgrade.Value,
-        toolBeingUpgraded.DisplayName
-      );
-    }
-    else
-    {
-      _hoverText.Value = string.Format(I18n.ToolIsFinishedBeingUpgraded(), toolBeingUpgraded.DisplayName);
-    }
-  }
-#endregion
-
-#region Properties
-  private readonly PerScreen<string> _hoverText = new();
-  private readonly PerScreen<Tool?> _toolBeingUpgraded = new();
-  private readonly PerScreen<ClickableTextureComponent> _toolUpgradeIcon = new();
-
-  private readonly IModHelper _helper;
-#endregion
-
-
-#region Life cycle
-  public ShowToolUpgradeStatus(IModHelper helper)
-  {
-    _helper = helper;
-  }
-
-  public void ToggleOption(bool toggle)
-  {
-    _helper.Events.Display.RenderingHud -= OnRenderingHud;
-    _helper.Events.Display.RenderedHud -= OnRenderedHud;
-    _helper.Events.GameLoop.DayStarted -= OnDayStarted;
-    _helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
-
-    if (toggle)
+    private void OnDayStarted(object? sender, DayStartedEventArgs e)
     {
       UpdateToolInfo();
-      _helper.Events.Display.RenderingHud += OnRenderingHud;
-      _helper.Events.Display.RenderedHud += OnRenderedHud;
-      _helper.Events.GameLoop.DayStarted += OnDayStarted;
-      _helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
     }
-  }
-#endregion
 
-
-#region Event subscriptions
-  private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
-  {
-    if (e.IsOneSecond && _toolBeingUpgraded.Value != Game1.player.toolBeingUpgraded.Value)
+    private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
     {
-      UpdateToolInfo();
+      if (!UIElementUtils.IsRenderingNormally() || _toolBeingUpgraded.Value == null)
+      {
+        return;
+      }
+
+      Point iconPosition = IconHandler.Handler.GetNewIconPosition();
+      _toolUpgradeIcon.Value.bounds.X = iconPosition.X;
+      _toolUpgradeIcon.Value.bounds.Y = iconPosition.Y;
+
+      _toolUpgradeIcon.Value.draw(e.SpriteBatch);
     }
-  }
 
-  private void OnDayStarted(object? sender, DayStartedEventArgs e)
-  {
-    UpdateToolInfo();
-  }
-
-  private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
-  {
-    if (!UIElementUtils.IsRenderingNormally() || _toolBeingUpgraded.Value == null)
+    private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
     {
-      return;
+      // Show text on hover
+      if (_toolBeingUpgraded.Value != null && _toolUpgradeIcon.Value.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+      {
+        IClickableMenu.drawHoverText(Game1.spriteBatch, _hoverText.Value, Game1.dialogueFont);
+      }
     }
-
-    Point iconPosition = IconHandler.Handler.GetNewIconPosition();
-    _toolUpgradeIcon.Value.bounds.X = iconPosition.X;
-    _toolUpgradeIcon.Value.bounds.Y = iconPosition.Y;
-
-    _toolUpgradeIcon.Value.draw(e.SpriteBatch);
+    #endregion
   }
-
-  private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
-  {
-    // Show text on hover
-    if (_toolBeingUpgraded.Value != null && _toolUpgradeIcon.Value.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
-    {
-      IClickableMenu.drawHoverText(Game1.spriteBatch, _hoverText.Value, Game1.dialogueFont);
-    }
-  }
-#endregion
 }

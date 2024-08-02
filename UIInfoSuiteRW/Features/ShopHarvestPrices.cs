@@ -10,8 +10,11 @@ namespace UIInfoSuiteRW.Features
 {
   internal class ShopHarvestPrices : IFeature
   {
+    #region Properties
     private readonly IModHelper _helper;
+    #endregion
 
+    #region Lifecycle
     public ShopHarvestPrices(IModHelper helper)
     {
       _helper = helper;
@@ -26,13 +29,9 @@ namespace UIInfoSuiteRW.Features
         _helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
       }
     }
+    #endregion
 
-    /// <summary>
-    ///   When a menu is open (<see cref="Game1.activeClickableMenu" /> isn't null), raised after that menu is drawn to
-    ///   the sprite batch but before it's rendered to the screen.
-    /// </summary>
-    /// <param name="sender">The event sender.</param>
-    /// <param name="e">The event arguments.</param>
+    #region Event subscrriptions
     private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e)
     {
       if (Game1.activeClickableMenu is not ShopMenu menu)
@@ -110,4 +109,5 @@ namespace UIInfoSuiteRW.Features
       }
     }
   }
+  #endregion
 }

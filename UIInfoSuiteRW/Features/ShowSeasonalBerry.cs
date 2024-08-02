@@ -1,119 +1,119 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using UIInfoSuiteRW.Utils;
 
-namespace UIInfoSuiteRW.Features;
-
-internal class ShowSeasonalBerry : IFeature
+namespace UIInfoSuiteRW.Features
 {
-#region Logic
-  private void UpdateBerryForDay()
+  internal class ShowSeasonalBerry : IFeature
   {
-    string? season = Game1.currentSeason;
-    int day = Game1.dayOfMonth;
-    switch (season)
+    #region Logic
+    private void UpdateBerryForDay()
     {
-      case "spring" when day is >= 15 and <= 18:
-        _berrySpriteLocation = new Rectangle(128, 193, 15, 15);
-        _hoverText = I18n.CanFindSalmonberry();
-        _spriteScale = 8 / 3f;
-        break;
-      case "fall" when day is >= 8 and <= 11:
-        _berrySpriteLocation = new Rectangle(32, 272, 16, 16);
-        _hoverText = I18n.CanFindBlackberry();
-        _spriteScale = 5 / 2f;
-        break;
-      case "fall" when day >= 15 && ShowHazelnut:
-        _berrySpriteLocation = new Rectangle(1, 274, 14, 14);
-        _hoverText = I18n.CanFindHazelnut();
-        _spriteScale = 20 / 7f;
-        break;
-      default:
-        _berrySpriteLocation = null;
-        break;
+      string? season = Game1.currentSeason;
+      int day = Game1.dayOfMonth;
+      switch (season)
+      {
+        case "spring" when day is >= 15 and <= 18:
+          _berrySpriteLocation = new Rectangle(128, 193, 15, 15);
+          _hoverText = I18n.CanFindSalmonberry();
+          _spriteScale = 8 / 3f;
+          break;
+        case "fall" when day is >= 8 and <= 11:
+          _berrySpriteLocation = new Rectangle(32, 272, 16, 16);
+          _hoverText = I18n.CanFindBlackberry();
+          _spriteScale = 5 / 2f;
+          break;
+        case "fall" when day >= 15 && ShowHazelnut:
+          _berrySpriteLocation = new Rectangle(1, 274, 14, 14);
+          _hoverText = I18n.CanFindHazelnut();
+          _spriteScale = 20 / 7f;
+          break;
+        default:
+          _berrySpriteLocation = null;
+          break;
+      }
     }
-  }
-#endregion
+    #endregion
 
-#region Properties
-  private Rectangle? _berrySpriteLocation;
-  private float _spriteScale = 8 / 3f;
-  private string _hoverText = null!;
-  private ClickableTextureComponent _berryIcon = null!;
+    #region Properties
+    private Rectangle? _berrySpriteLocation;
+    private float _spriteScale = 8 / 3f;
+    private string _hoverText = null!;
+    private ClickableTextureComponent _berryIcon = null!;
 
-  private readonly IModHelper _helper;
+    private readonly IModHelper _helper;
 
-  private bool Enabled { get; set; }
-  private bool ShowHazelnut { get; set; }
-#endregion
+    private bool Enabled { get; set; }
+    private bool ShowHazelnut { get; set; }
+    #endregion
 
-#region Lifecycle
-  public ShowSeasonalBerry(IModHelper helper)
-  {
-    _helper = helper;
-  }
+    #region Lifecycle
+    public ShowSeasonalBerry(IModHelper helper)
+    {
+      _helper = helper;
+    }
 
-  public void ToggleOption(bool toggle)
-  {
-    _berrySpriteLocation = null;
-    _helper.Events.GameLoop.DayStarted -= OnDayStarted;
-    _helper.Events.Display.RenderingHud -= OnRenderingHud;
-    _helper.Events.Display.RenderedHud -= OnRenderedHud;
+    public void ToggleOption(bool toggle)
+    {
+      _berrySpriteLocation = null;
+      _helper.Events.GameLoop.DayStarted -= OnDayStarted;
+      _helper.Events.Display.RenderingHud -= OnRenderingHud;
+      _helper.Events.Display.RenderedHud -= OnRenderedHud;
 
-    if (toggle)
+      if (toggle)
+      {
+        UpdateBerryForDay();
+
+        _helper.Events.GameLoop.DayStarted += OnDayStarted;
+        _helper.Events.Display.RenderingHud += OnRenderingHud;
+        _helper.Events.Display.RenderedHud += OnRenderedHud;
+      }
+    }
+
+    public void ToggleHazelnutOption(bool showHazelnut)
+    {
+      ShowHazelnut = showHazelnut;
+      ToggleOption(Enabled);
+    }
+    #endregion
+
+    #region Event subscriptions
+    private void OnDayStarted(object? sender, DayStartedEventArgs e)
     {
       UpdateBerryForDay();
-
-      _helper.Events.GameLoop.DayStarted += OnDayStarted;
-      _helper.Events.Display.RenderingHud += OnRenderingHud;
-      _helper.Events.Display.RenderedHud += OnRenderedHud;
     }
-  }
 
-  public void ToggleHazelnutOption(bool showHazelnut)
-  {
-    ShowHazelnut = showHazelnut;
-    ToggleOption(Enabled);
-  }
-#endregion
-
-#region Event subscriptions
-  private void OnDayStarted(object? sender, DayStartedEventArgs e)
-  {
-    UpdateBerryForDay();
-  }
-
-  private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
-  {
-    // Draw icon
-    if (!UIElementUtils.IsRenderingNormally() || !_berrySpriteLocation.HasValue)
+    private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
     {
-      return;
+      // Draw icon
+      if (!UIElementUtils.IsRenderingNormally() || !_berrySpriteLocation.HasValue)
+      {
+        return;
+      }
+
+      Point iconPosition = IconHandler.Handler.GetNewIconPosition();
+      _berryIcon = new ClickableTextureComponent(
+        new Rectangle(iconPosition.X, iconPosition.Y, 40, 40),
+        Game1.objectSpriteSheet,
+        _berrySpriteLocation.Value,
+        _spriteScale
+      );
+      _berryIcon.draw(Game1.spriteBatch);
     }
 
-    Point iconPosition = IconHandler.Handler.GetNewIconPosition();
-    _berryIcon = new ClickableTextureComponent(
-      new Rectangle(iconPosition.X, iconPosition.Y, 40, 40),
-      Game1.objectSpriteSheet,
-      _berrySpriteLocation.Value,
-      _spriteScale
-    );
-    _berryIcon.draw(Game1.spriteBatch);
-  }
-
-  private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
-  {
-    // Show text on hover
-    bool hasMouse = _berryIcon?.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ?? false;
-    bool hasText = !string.IsNullOrEmpty(_hoverText);
-    if (_berrySpriteLocation.HasValue && hasMouse && hasText)
+    private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
     {
-      IClickableMenu.drawHoverText(Game1.spriteBatch, _hoverText, Game1.dialogueFont);
+      // Show text on hover
+      bool hasMouse = _berryIcon?.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ?? false;
+      bool hasText = !string.IsNullOrEmpty(_hoverText);
+      if (_berrySpriteLocation.HasValue && hasMouse && hasText)
+      {
+        IClickableMenu.drawHoverText(Game1.spriteBatch, _hoverText, Game1.dialogueFont);
+      }
     }
+    #endregion
   }
-#endregion
 }

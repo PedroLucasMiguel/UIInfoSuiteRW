@@ -211,18 +211,27 @@ namespace UIInfoSuiteRW.Framework
         Manifest,
         name: () => I18n.ConfigMenu_Features_CropBarrelTooltip_Show(),
         tooltip: () => I18n.ConfigMenu_Features_CropBarrelTooltip_Show_Tooltip(),
-        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP],
-        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP] = value,
-        fieldId: FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_CROP_AND_BUILDING_TOOLTIP],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_CROP_AND_BUILDING_TOOLTIP] = value,
+        fieldId: FeatureIds.SHOW_CROP_AND_BUILDING_TOOLTIP
       );
       // Show animals need pets
       GenericModConfigMenu.AddBoolOption(
         Manifest,
-        name: () => I18n.ConfigMenu_Features_AnimalPets_Show(),
-        tooltip: () => I18n.ConfigMenu_Features_AnimalPets_Show_Tooltip(),
-        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_ANIMALS_NEED_PETS],
-        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_ANIMALS_NEED_PETS] = value,
-        fieldId: FeatureIds.SHOW_ANIMALS_NEED_PETS
+        name: () => I18n.ConfigMenu_Features_AnimalIndicators_Show(),
+        tooltip: () => I18n.ConfigMenu_Features_AnimalIndicators_Show_Tooltip(),
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_ANIMAL_INDICATORS],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_ANIMAL_INDICATORS] = value,
+        fieldId: FeatureIds.SHOW_ANIMAL_INDICATORS
+      );
+      // Show animals need pets
+      GenericModConfigMenu.AddBoolOption(
+        Manifest,
+        name: () => I18n.ConfigMenu_Features_HideAnimalIndicators_Show(),
+        tooltip: () => I18n.ConfigMenu_Features_HideAnimalIndicators_Show_Tooltip(),
+        getValue: () => Config.FeatureConfig[FeatureIds.HIDE_ANIMAL_INDICATORS_ON_MAX_FRIENDSHIP],
+        setValue: value => Config.FeatureConfig[FeatureIds.HIDE_ANIMAL_INDICATORS_ON_MAX_FRIENDSHIP] = value,
+        fieldId: FeatureIds.HIDE_ANIMAL_INDICATORS_ON_MAX_FRIENDSHIP
       );
       // Show item effect ranges
       GenericModConfigMenu.AddBoolOption(

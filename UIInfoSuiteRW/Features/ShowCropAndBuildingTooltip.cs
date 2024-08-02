@@ -17,8 +17,9 @@ using Object = StardewValley.Object;
 
 namespace UIInfoSuiteRW.Features
 {
-  internal class ShowCropAndBuildingTime : IFeature
+  internal class ShowCropAndBuildingTooltip : IFeature
   {
+    #region Properties
     private const int MAX_TREE_GROWTH_STAGE = 5;
 
     private static readonly List<Func<Building?, List<string>, bool>> BuildingDetailRenderers = new()
@@ -41,8 +42,10 @@ namespace UIInfoSuiteRW.Features
     private readonly PerScreen<Building?> _currentTileBuilding = new();
 
     private readonly IModHelper _helper;
+    #endregion
 
-    public ShowCropAndBuildingTime(IModHelper helper)
+    #region Lifecycle
+    public ShowCropAndBuildingTooltip(IModHelper helper)
     {
       _helper = helper;
     }
@@ -58,10 +61,9 @@ namespace UIInfoSuiteRW.Features
         _helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
       }
     }
+    #endregion
 
-    /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
-    /// <param name="sender">The event sender.</param>
-    /// <param name="e">The event arguments.</param>
+    #region Event subscriptions
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
     {
       if (!e.IsMultipleOf(4))
@@ -118,12 +120,6 @@ namespace UIInfoSuiteRW.Features
       }
     }
 
-    /// <summary>
-    ///   Raised before drawing the HUD (item toolbar, clock, etc) to the screen. The vanilla HUD may be hidden at this
-    ///   point (e.g. because a menu is open).
-    /// </summary>
-    /// <param name="sender">The event sender.</param>
-    /// <param name="e">The event arguments.</param>
     private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
     {
       if (Game1.activeClickableMenu != null)
@@ -197,7 +193,9 @@ namespace UIInfoSuiteRW.Features
         overrideY: overrideY
       );
     }
+    #endregion
 
+    #region Logic
     private static string GetFertilizerString(HoeDirt dirtTile)
     {
       var fertilizerNames = new Dictionary<string, int>();
@@ -539,5 +537,5 @@ namespace UIInfoSuiteRW.Features
       }
     }
   }
-
+  #endregion
 }

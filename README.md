@@ -20,7 +20,7 @@ _Major code refactoring from [UI Info Suite 2](https://github.com/Annosz/UIInfoS
 - [ ] ShowTodayysGifts
 - [ ] ShowToolUPgradeStatus
 - [ ] ShowTravelingMerchant
-- [ ] ShowWhenAnimalNeedsPet
+- [X] ~~ShowWhenAnimalNeedsPet~~ (ShowAnimalIndicators)
 
 # Translating UI Info Suite RW
 The mod can be translated into any language supported by the game, and SMAPI will automatically

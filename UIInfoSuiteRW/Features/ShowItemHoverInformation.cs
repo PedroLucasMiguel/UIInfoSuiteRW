@@ -14,8 +14,10 @@ using UIInfoSuiteRW.Utils;
 using UIInfoSuiteRW.Utils.Helpers;
 using Object = StardewValley.Object;
 
+// Thanks sebbi08 (https://github.com/sebbi08) for the multiple bundles patch!
 namespace UIInfoSuiteRW.Features
 {
+  #region Properties
   public record RequiredBundleItem(string Text, Color? Color);
 
   internal class ShowItemHoverInformation : IFeature
@@ -52,7 +54,9 @@ namespace UIInfoSuiteRW.Features
 
     private LibraryMuseum _libraryMuseum = null!;
     private IslandFieldOffice _islandFieldOffice = null!;
+    #endregion
 
+    #region Lifecycle
     public ShowItemHoverInformation(IModHelper helper)
     {
       _helper = helper;
@@ -93,37 +97,22 @@ namespace UIInfoSuiteRW.Features
         _helper.Events.Display.Rendering += OnRendering;
       }
     }
+    #endregion
 
-    /// <summary>Raised before the game draws anything to the screen in a draw tick, as soon as the sprite batch is opened.</summary>
-    /// <param name="sender">The event sender.</param>
-    /// <param name="e">The event arguments.</param>
+    #region Event subscriptions
     private void OnRendering(object? sender, EventArgs e)
     {
       _hoverItem.Value = Tools.GetHoveredItem();
     }
 
-    /// <summary>
-    ///   Raised after drawing the HUD (item toolbar, clock, etc) to the sprite batch, but before it's rendered to the
-    ///   screen. The vanilla HUD may be hidden at this point (e.g. because a menu is open). Content drawn to the sprite batch
-    ///   at this point will appear over the HUD.
-    /// </summary>
-    /// <param name="sender">The event sender.</param>
-    /// <param name="e">The event arguments.</param>
     private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
     {
-      // ModEntry.MonitorObject.Log(Game1.player.currentLocation.Name);
       if (Game1.activeClickableMenu == null)
       {
         DrawAdvancedTooltip(e.SpriteBatch);
       }
     }
 
-    /// <summary>
-    ///   Raised after the game draws to the sprite patch in a draw tick, just before the final sprite batch is rendered
-    ///   to the screen.
-    /// </summary>
-    /// <param name="sender">The event sender.</param>
-    /// <param name="e">The event arguments.</param>
     [EventPriority(EventPriority.Low)]
     private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e)
     {
@@ -132,7 +121,9 @@ namespace UIInfoSuiteRW.Features
         DrawAdvancedTooltip(e.SpriteBatch);
       }
     }
+    #endregion
 
+    #region Logic
     private void DrawAdvancedTooltip(SpriteBatch spriteBatch)
     {
       // Checking if the item have sell value.
@@ -539,5 +530,5 @@ namespace UIInfoSuiteRW.Features
       );
     }
   }
-
+  #endregion
 }

@@ -8,157 +8,157 @@ using StardewValley.Buildings;
 using StardewValley.Menus;
 using UIInfoSuiteRW.Utils;
 
-namespace UIInfoSuiteRW.Features;
-
-internal class ShowRobinBuildingStatusIcon : IFeature
+namespace UIInfoSuiteRW.Features
 {
-#region Properties
-  private bool _IsBuildingInProgress;
-  private Rectangle? _buildingIconSpriteLocation;
-  private string _hoverText = null!;
-  private readonly PerScreen<ClickableTextureComponent> _buildingIcon = new();
-  private Texture2D _robinIconSheet = null!;
-
-  private readonly IModHelper _helper;
-#endregion
-
-#region Lifecycle
-  public ShowRobinBuildingStatusIcon(IModHelper helper)
+  internal class ShowRobinBuildingStatusIcon : IFeature
   {
-    _helper = helper;
-  }
+    #region Properties
+    private bool _IsBuildingInProgress;
+    private Rectangle? _buildingIconSpriteLocation;
+    private string _hoverText = null!;
+    private readonly PerScreen<ClickableTextureComponent> _buildingIcon = new();
+    private Texture2D _robinIconSheet = null!;
 
-  public void ToggleOption(bool toggle)
-  {
-    _helper.Events.GameLoop.DayStarted -= OnDayStarted;
-    _helper.Events.Display.RenderingHud -= OnRenderingHud;
-    _helper.Events.Display.RenderedHud -= OnRenderedHud;
-    _helper.Events.GameLoop.OneSecondUpdateTicked -= OnTickInRobinHouse;
+    private readonly IModHelper _helper;
+    #endregion
 
-    if (toggle)
+    #region Lifecycle
+    public ShowRobinBuildingStatusIcon(IModHelper helper)
+    {
+      _helper = helper;
+    }
+
+    public void ToggleOption(bool toggle)
+    {
+      _helper.Events.GameLoop.DayStarted -= OnDayStarted;
+      _helper.Events.Display.RenderingHud -= OnRenderingHud;
+      _helper.Events.Display.RenderedHud -= OnRenderedHud;
+      _helper.Events.GameLoop.OneSecondUpdateTicked -= OnTickInRobinHouse;
+
+      if (toggle)
+      {
+        UpdateRobinBuindingStatusData();
+
+        _helper.Events.GameLoop.DayStarted += OnDayStarted;
+        _helper.Events.Display.RenderingHud += OnRenderingHud;
+        _helper.Events.Display.RenderedHud += OnRenderedHud;
+        _helper.Events.GameLoop.OneSecondUpdateTicked += OnTickInRobinHouse;
+      }
+    }
+    #endregion
+
+    #region Event subscriptions
+    public void OnTickInRobinHouse(object? sender, OneSecondUpdateTickedEventArgs e)
+    {
+      if (Game1.currentLocation?.Name != "ScienceHouse")
+      {
+        return;
+      }
+      UpdateRobinBuindingStatusData();
+    }
+
+    private void OnDayStarted(object? sender, DayStartedEventArgs e)
     {
       UpdateRobinBuindingStatusData();
-
-      _helper.Events.GameLoop.DayStarted += OnDayStarted;
-      _helper.Events.Display.RenderingHud += OnRenderingHud;
-      _helper.Events.Display.RenderedHud += OnRenderedHud;
-      _helper.Events.GameLoop.OneSecondUpdateTicked += OnTickInRobinHouse;
     }
-  }
-#endregion
 
-#region Event subscriptions
-
-  public void OnTickInRobinHouse(object? sender, OneSecondUpdateTickedEventArgs e)
-  {
-    if (Game1.currentLocation?.Name != "ScienceHouse")
+    private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
     {
-      return;
-    }
-    UpdateRobinBuindingStatusData();
-  }
-
-  private void OnDayStarted(object? sender, DayStartedEventArgs e)
-  {
-    UpdateRobinBuindingStatusData();
-  }
-
-  private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
-  {
-    // Draw icon
-    if (UIElementUtils.IsRenderingNormally() && _IsBuildingInProgress && _buildingIconSpriteLocation.HasValue)
-    {
-      Point iconPosition = IconHandler.Handler.GetNewIconPosition();
-      _buildingIcon.Value = new ClickableTextureComponent(
-        new Rectangle(iconPosition.X, iconPosition.Y, 40, 40),
-        _robinIconSheet,
-        _buildingIconSpriteLocation.Value,
-        8 / 3f
-      );
-      _buildingIcon.Value.draw(Game1.spriteBatch);
-    }
-  }
-
-  private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
-  {
-    // Show text on hover
-    if (_IsBuildingInProgress &&
-        (_buildingIcon.Value?.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ?? false) &&
-        !string.IsNullOrEmpty(_hoverText))
-    {
-      IClickableMenu.drawHoverText(Game1.spriteBatch, _hoverText, Game1.dialogueFont);
-    }
-  }
-#endregion
-
-#region Logic
-  private bool GetRobinMessage(out string hoverText)
-  {
-    int remainingDays = Game1.player.daysUntilHouseUpgrade.Value;
-
-    if (remainingDays <= 0)
-    {
-      Building? building = Game1.GetBuildingUnderConstruction();
-
-      if (building is not null)
+      // Draw icon
+      if (UIElementUtils.IsRenderingNormally() && _IsBuildingInProgress && _buildingIconSpriteLocation.HasValue)
       {
-        if (building.daysOfConstructionLeft.Value > building.daysUntilUpgrade.Value)
+        Point iconPosition = IconHandler.Handler.GetNewIconPosition();
+        _buildingIcon.Value = new ClickableTextureComponent(
+          new Rectangle(iconPosition.X, iconPosition.Y, 40, 40),
+          _robinIconSheet,
+          _buildingIconSpriteLocation.Value,
+          8 / 3f
+        );
+        _buildingIcon.Value.draw(Game1.spriteBatch);
+      }
+    }
+
+    private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
+    {
+      // Show text on hover
+      if (_IsBuildingInProgress &&
+          (_buildingIcon.Value?.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ?? false) &&
+          !string.IsNullOrEmpty(_hoverText))
+      {
+        IClickableMenu.drawHoverText(Game1.spriteBatch, _hoverText, Game1.dialogueFont);
+      }
+    }
+    #endregion
+
+    #region Logic
+    private bool GetRobinMessage(out string hoverText)
+    {
+      int remainingDays = Game1.player.daysUntilHouseUpgrade.Value;
+
+      if (remainingDays <= 0)
+      {
+        Building? building = Game1.GetBuildingUnderConstruction();
+
+        if (building is not null)
         {
+          if (building.daysOfConstructionLeft.Value > building.daysUntilUpgrade.Value)
+          {
+            hoverText = string.Format(
+              I18n.RobinBuildingStatus(),
+              building.daysOfConstructionLeft.Value
+            );
+            return true;
+          }
+
+          // Add another translation string for this?
           hoverText = string.Format(
             I18n.RobinBuildingStatus(),
-            building.daysOfConstructionLeft.Value
+            building.daysUntilUpgrade.Value
           );
           return true;
         }
 
-        // Add another translation string for this?
-        hoverText = string.Format(
-          I18n.RobinBuildingStatus(),
-          building.daysUntilUpgrade.Value
-        );
-        return true;
+        hoverText = string.Empty;
+        return false;
       }
 
-      hoverText = string.Empty;
-      return false;
+      hoverText = string.Format(I18n.RobinHouseUpgradeStatus(), remainingDays);
+      return true;
     }
 
-    hoverText = string.Format(I18n.RobinHouseUpgradeStatus(), remainingDays);
-    return true;
+    private void UpdateRobinBuindingStatusData()
+    {
+      if (GetRobinMessage(out _hoverText))
+      {
+        _IsBuildingInProgress = true;
+        FindRobinSpritesheet();
+      }
+      else
+      {
+        _IsBuildingInProgress = false;
+      }
+    }
+
+    private void FindRobinSpritesheet()
+    {
+      Texture2D? foundTexture = Game1.getCharacterFromName("Robin")?.Sprite?.Texture;
+      if (foundTexture != null)
+      {
+        _robinIconSheet = foundTexture;
+      }
+      else
+      {
+        ModEntry.MonitorObject.Log($"{GetType().Name}: Could not find Robin spritesheet.", LogLevel.Warn);
+      }
+
+      if (_robinIconSheet == null)
+      {
+        ModEntry.MonitorObject.Log($"{GetType().Name}: Could not find Robin spritesheet.", LogLevel.Warn);
+      }
+
+      _buildingIconSpriteLocation =
+        new Rectangle(0, 195 + 1, 15, 15 - 1); // 1px edits for better alignment with other icons
+    }
+    #endregion
   }
-
-  private void UpdateRobinBuindingStatusData()
-  {
-    if (GetRobinMessage(out _hoverText))
-    {
-      _IsBuildingInProgress = true;
-      FindRobinSpritesheet();
-    }
-    else
-    {
-      _IsBuildingInProgress = false;
-    }
-  }
-
-  private void FindRobinSpritesheet()
-  {
-    Texture2D? foundTexture = Game1.getCharacterFromName("Robin")?.Sprite?.Texture;
-    if (foundTexture != null)
-    {
-      _robinIconSheet = foundTexture;
-    }
-    else
-    {
-      ModEntry.MonitorObject.Log($"{GetType().Name}: Could not find Robin spritesheet.", LogLevel.Warn);
-    }
-
-    if (_robinIconSheet == null)
-    {
-      ModEntry.MonitorObject.Log($"{GetType().Name}: Could not find Robin spritesheet.", LogLevel.Warn);
-    }
-
-    _buildingIconSpriteLocation =
-      new Rectangle(0, 195 + 1, 15, 15 - 1); // 1px edits for better alignment with other icons
-  }
-#endregion
 }

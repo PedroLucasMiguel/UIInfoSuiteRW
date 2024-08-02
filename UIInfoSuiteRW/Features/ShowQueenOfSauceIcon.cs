@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -14,6 +13,7 @@ namespace UIInfoSuiteRW.Features
 {
   internal class ShowQueenOfSauceIcon : IFeature
   {
+    #region Internal classes
     private class QueenOfSauceTV : TV
     {
       public string[] GetWeeklyRecipe()
@@ -21,6 +21,7 @@ namespace UIInfoSuiteRW.Features
         return base.getWeeklyRecipe();
       }
     }
+    #endregion
 
     #region Properties
     private readonly Dictionary<string, string> _recipesByDescription = new();

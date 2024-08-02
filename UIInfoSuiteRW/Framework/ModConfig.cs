@@ -23,7 +23,7 @@ namespace UIInfoSuiteRW.Framework
       { FeatureIds.HEART_FILL, true },
       { FeatureIds.SHOW_BIRTHDAY_ICON, true },
       { FeatureIds.DISPLAY_CALENDAR_AND_BILBOARD, true },
-      { FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP, true },
+      { FeatureIds.SHOW_CROP_AND_BUILDING_TOOLTIP, true },
       { FeatureIds.SHOW_ITEM_EFFECT_RANGE, true },
       { FeatureIds.SHOW_ITEMS_REQUIRED_FOR_BUNDLES, true },
       { FeatureIds.EXTRA_ITEM_INFORMATION, true },
@@ -34,7 +34,8 @@ namespace UIInfoSuiteRW.Framework
       { FeatureIds.SHOW_TODAYS_GIFT_ICON, true },
       { FeatureIds.SHOW_TOOL_UPGRADE_STATUS_ICON, true },
       { FeatureIds.SHOW_TRAVELER_MERCHANT_ICON, true },
-      { FeatureIds.SHOW_ANIMALS_NEED_PETS, true },
+      { FeatureIds.SHOW_ANIMAL_INDICATORS, true },
+      { FeatureIds.HIDE_ANIMAL_INDICATORS_ON_MAX_FRIENDSHIP, true}
     };
 
     public Dictionary<string, bool> ShowLocationOfFriends { get; set; } = new();

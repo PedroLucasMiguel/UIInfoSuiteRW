@@ -19,7 +19,7 @@ namespace UIInfoSuiteRW.Framework
           { FeatureIds.HEART_FILL, new ShowAccurateHearts(helper.Events) },
           { FeatureIds.SHOW_BIRTHDAY_ICON, new ShowBirthdayIcon(helper) },
           { FeatureIds.DISPLAY_CALENDAR_AND_BILBOARD, new ShowCalendarAndBillboardOnGameMenuButton(helper) },
-          { FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP, new ShowCropAndBuildingTime(helper) },
+          { FeatureIds.SHOW_CROP_AND_BUILDING_TOOLTIP, new ShowCropAndBuildingTooltip(helper) },
           { FeatureIds.SHOW_ITEM_EFFECT_RANGE, new ShowItemEffectRanges(helper, config) },
           { FeatureIds.EXTRA_ITEM_INFORMATION, new ShowItemHoverInformation(helper) },
           { FeatureIds.SHOW_NEW_RECIPES_ICON, new ShowQueenOfSauceIcon(helper) },
@@ -29,7 +29,7 @@ namespace UIInfoSuiteRW.Framework
           { FeatureIds.SHOW_TODAYS_GIFT_ICON, new ShowTodaysGifts(helper) },
           { FeatureIds.SHOW_TOOL_UPGRADE_STATUS_ICON, new ShowToolUpgradeStatus(helper) },
           { FeatureIds.SHOW_TRAVELER_MERCHANT_ICON, new ShowTravelingMerchant(helper) },
-          { FeatureIds.SHOW_ANIMALS_NEED_PETS, new ShowWhenAnimalNeedsPet(helper) }
+          { FeatureIds.SHOW_ANIMAL_INDICATORS, new ShowAnimalIndicators(helper, config) }
         };
       }
 
@@ -75,9 +75,9 @@ namespace UIInfoSuiteRW.Framework
               config.FeatureConfig[FeatureIds.DISPLAY_CALENDAR_AND_BILBOARD]
             );
             break;
-          case FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP:
+          case FeatureIds.SHOW_CROP_AND_BUILDING_TOOLTIP:
             Features[featureId].ToggleOption(
-              config.FeatureConfig[FeatureIds.SHOW_CROP_AND_BARREL_TOOLTIP]
+              config.FeatureConfig[FeatureIds.SHOW_CROP_AND_BUILDING_TOOLTIP]
             );
             break;
           case FeatureIds.SHOW_ITEM_EFFECT_RANGE:
@@ -125,9 +125,9 @@ namespace UIInfoSuiteRW.Framework
               config.FeatureConfig[FeatureIds.SHOW_TRAVELER_MERCHANT_ICON]
             );
             break;
-          case FeatureIds.SHOW_ANIMALS_NEED_PETS:
+          case FeatureIds.SHOW_ANIMAL_INDICATORS:
             Features[featureId].ToggleOption(
-              config.FeatureConfig[FeatureIds.SHOW_ANIMALS_NEED_PETS]
+              config.FeatureConfig[FeatureIds.SHOW_ANIMAL_INDICATORS]
             );
             break;
         }
