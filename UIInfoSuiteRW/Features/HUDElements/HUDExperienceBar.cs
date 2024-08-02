@@ -8,7 +8,7 @@ namespace UIInfoSuiteRW.Features.HUDElements
 {
   public sealed class HUDExperienceBar
   {
-    private const int MaxBarWidth = 235;
+    private const int MaxBarWidth = 180;
 
     public void Draw(
       Color experienceFillColor,
@@ -25,7 +25,7 @@ namespace UIInfoSuiteRW.Features.HUDElements
       Game1.drawDialogueBox(
         (int)leftSide,
         Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 160,
-        250,
+        270,
         160,
         false,
         true
@@ -73,7 +73,7 @@ namespace UIInfoSuiteRW.Features.HUDElements
       {
         Game1.spriteBatch.Draw(
           isMastery ? Game1.mouseCursors_1_6 : Game1.mouseCursors,
-          new Vector2(isMastery ? leftSide + 40 : leftSide + 54, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 62),
+          new Vector2(isMastery ? leftSide + 40 : leftSide + 60, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 62),
           experienceIconPosition,
           Color.White,
           0,
@@ -98,7 +98,7 @@ namespace UIInfoSuiteRW.Features.HUDElements
     #region Static helpers
     private static int GetBarWidth(int experienceEarnedThisLevel, int experienceDifferenceBetweenLevels)
     {
-      return (int)((double)experienceEarnedThisLevel / experienceDifferenceBetweenLevels * MaxBarWidth);
+      return (int)((double)(experienceEarnedThisLevel / experienceDifferenceBetweenLevels) * MaxBarWidth);
     }
 
     private static float GetExperienceBarLeftSide()
