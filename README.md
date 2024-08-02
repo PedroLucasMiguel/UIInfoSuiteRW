@@ -13,7 +13,7 @@ _Major code refactoring from [UI Info Suite 2](https://github.com/Annosz/UIInfoS
 - [X] ~~ShowCropAndBarrelTime~~ (ShowCropAndBuildingTime)
 - [X] ShowItemEffectRanges
 - [X] ShowItemHoverInformation
-- [ ] ShowQueenOfSauceIcon
+- [X] ShowQueenOfSauceIcon
 - [ ] ShowRainyDayIcon
 - [ ] ShowRobinBuildingStatucIcon
 - [ ] ShowSeasonalBerry

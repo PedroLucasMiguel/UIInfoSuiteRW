@@ -7,6 +7,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
+using UIInfoSuiteRW.Features.HUDElements;
 using UIInfoSuiteRW.Utils;
 
 namespace UIInfoSuiteRW.Features
@@ -88,12 +89,7 @@ namespace UIInfoSuiteRW.Features
         {
           Point iconPosition = IconHandler.Handler.GetNewIconPosition();
 
-          _icon.Value = new ClickableTextureComponent(
-            new Rectangle(iconPosition.X, iconPosition.Y, 40, 40),
-            Game1.mouseCursors,
-            new Rectangle(609, 361, 28, 28),
-            1.3f
-          );
+          _icon.Value = HudQueenOfSauceIcon.Create(iconPosition);
           _icon.Value.draw(Game1.spriteBatch);
         }
       }

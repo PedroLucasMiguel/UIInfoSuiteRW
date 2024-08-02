@@ -56,7 +56,6 @@ namespace UIInfoSuiteRW.Features
           ModEntry.MonitorObject.Log("BUNDLE!", LogLevel.Warn);
         }
       }*/
-      
       if (GameMenu.bundleItemHovered)
       {
         ModEntry.MonitorObject.Log("BUNDLE!", LogLevel.Warn);
