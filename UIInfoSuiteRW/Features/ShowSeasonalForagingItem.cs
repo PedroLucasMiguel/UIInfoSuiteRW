@@ -3,6 +3,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
+using UIInfoSuiteRW.Features.HUDElements;
 using UIInfoSuiteRW.Utils;
 
 namespace UIInfoSuiteRW.Features
@@ -57,12 +58,7 @@ namespace UIInfoSuiteRW.Features
       }
 
       Point iconPosition = IconHandler.Handler.GetNewIconPosition();
-      _itemIcon = new ClickableTextureComponent(
-        new Rectangle(iconPosition.X, iconPosition.Y, 40, 40),
-        Game1.objectSpriteSheet,
-        _itemSpriteLocation.Value,
-        _spriteScale
-      );
+      _itemIcon = HUDSeasonalForagingItemIcon.Create(iconPosition, _itemSpriteLocation, _spriteScale);
       _itemIcon.draw(Game1.spriteBatch);
     }
 

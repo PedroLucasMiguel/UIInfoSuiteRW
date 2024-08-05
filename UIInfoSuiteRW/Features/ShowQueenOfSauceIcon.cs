@@ -90,7 +90,7 @@ namespace UIInfoSuiteRW.Features
         {
           Point iconPosition = IconHandler.Handler.GetNewIconPosition();
 
-          _icon.Value = HudQueenOfSauceIcon.Create(iconPosition);
+          _icon.Value = HUDQueenOfSauceIcon.Create(iconPosition);
           _icon.Value.draw(Game1.spriteBatch);
         }
       }
