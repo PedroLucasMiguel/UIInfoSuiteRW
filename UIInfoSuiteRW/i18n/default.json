@@ -50,6 +50,8 @@
   "CanFindSalmonberry": "You can find Salmonberries today",
   "CanFindBlackberry": "You can find Blackberries today",
   "CanFindHazelnut": "You can find Hazelnuts on trees today",
+  "CanFindSpringOnion": "You can find Spring Onions today",
+  "CanFindFiddleheadFern": "You can find Fiddlehead Fern today",
   //Display icons - Luck
   "DailyLuckValue": "Your daily luck is {0}",
   "FeelingLucky": "You're feelin' lucky!!",
@@ -107,8 +109,8 @@
   "config-menu.features.tool-upgrade-icon.show.tooltip": "Show a tool upgrade indicator under the farm money.",
   "config-menu.features.robin-icon.show": "Show Robin building status icon",
   "config-menu.features.robin-icon.show.tooltip": "Show a Robin building status indicator under the farm money.",
-  "config-menu.features.seasonal-berry-icon.show": "Show season berry icon",
-  "config-menu.features.seasonal-berry-icon.show.tooltip": "Show a seasonal berry indicator under the farm money.",
+  "config-menu.features.seasonal-foraging-icon.show": "Show season foraging item icon",
+  "config-menu.features.seasonal-foraging-icon.show.tooltip": "Show a seasonal foraging item indicator under the farm money.",
   "config-menu.features.todays-gift-icon.show": "Show todays gift icon",
   "config-menu.features.todays-gift-icon.show.tooltip": "Show a todays gift indicator under the farm money.",
 

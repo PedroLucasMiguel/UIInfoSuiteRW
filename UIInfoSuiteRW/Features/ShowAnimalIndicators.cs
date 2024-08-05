@@ -22,7 +22,6 @@ namespace UIInfoSuiteRW.Features
     #region Properties
     private readonly PerScreen<float> _yMovementPerDraw = new();
     private readonly PerScreen<float> _alpha = new();
-    private bool HideOnMaxFriendship { get; set; }
     private readonly ModConfig _options;
 
     private readonly IModHelper _helper;
@@ -189,11 +188,13 @@ namespace UIInfoSuiteRW.Features
               1f
             );
           }
+          /*
+          Why was this here????????????????
           else
           {
             // Disable indicator if max friendship
             ToggleOption(false);
-          }
+          }*/
         }
       }
     }
@@ -204,7 +205,7 @@ namespace UIInfoSuiteRW.Features
       {
         if (character is Pet pet &&
             !pet.lastPetDay.Values.Any(day => day == Game1.Date.TotalDays) &&
-            (pet.friendshipTowardFarmer.Value < 1000 || !HideOnMaxFriendship))
+            (pet.friendshipTowardFarmer.Value < 1000 || !_options.FeatureConfig[FeatureIds.HIDE_ON_MAX_FRIENDSHIP]))
         {
           Vector2 positionAboveAnimal = GetPetPositionAboveAnimal(character);
           positionAboveAnimal.X += 50f;

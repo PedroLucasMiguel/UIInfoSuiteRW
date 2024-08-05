@@ -46,6 +46,8 @@
   "CanFindSalmonberry": "Você pode encontrar amoras-silvestres hoje",
   "CanFindBlackberry": "Você pode encontrar amoras hoje",
   "CanFindHazelnut": "Você pode encontrar avelãs nas árvores hoje",
+  "CanFindSpringOnion": "Você pode achar cebolinha hoje",
+  "CanFindFiddleheadFern": "Você pode achar broto de samambaia hoje",
   //Display icons - Luck
   "DailyLuckValue": "Seu número da sorte é {0}",
   "FeelingLucky": "Os espíritos estão muito felizes!",
@@ -103,8 +105,8 @@
   "config-menu.features.tool-upgrade-icon.show.tooltip": "Mostra um indicador com a quantidade de tempo para uma ferramenta ficar pronta.",
   "config-menu.features.robin-icon.show": "Mostrar ícone de consrução da Robin",
   "config-menu.features.robin-icon.show.tooltip": "Mostra um indicador com a quantidade de tempo para a Robin finalizar uma construção.",
-  "config-menu.features.seasonal-berry-icon.show": "Mostrar ícone de itens silvestrs",
-  "config-menu.features.seasonal-berry-icon.show.tooltip": "Mostra um indicador para os itens silvestres da estação.",
+  "config-menu.features.seasonal-foraging-icon.show": "Mostrar ícone de itens de coleta",
+  "config-menu.features.seasonal-foraging-icon.show.tooltip": "Mostra um indicador para os itens de coleta da estação.",
   "config-menu.features.todays-gift-icon.show": "Mostrar ícone de aniversariante",
   "config-menu.features.todays-gift-icon.show.tooltip": "Mostra um indicador para o aniversariante do dia.",
 

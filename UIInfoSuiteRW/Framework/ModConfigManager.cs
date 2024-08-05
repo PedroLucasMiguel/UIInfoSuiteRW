@@ -200,11 +200,11 @@ namespace UIInfoSuiteRW.Framework
       //Show seasonal berry icon
       GenericModConfigMenu.AddBoolOption(
         Manifest,
-        name: () => I18n.ConfigMenu_Features_SeasonalBerryIcon_Show(),
-        tooltip: () => I18n.ConfigMenu_Features_SeasonalBerryIcon_Show_Tooltip(),
-        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_SEASONAL_BERRY_ICON],
-        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_SEASONAL_BERRY_ICON] = value,
-        fieldId: FeatureIds.SHOW_SEASONAL_BERRY_ICON
+        name: () => I18n.ConfigMenu_Features_SeasonalForagingIcon_Show(),
+        tooltip: () => I18n.ConfigMenu_Features_SeasonalForagingIcon_Show_Tooltip(),
+        getValue: () => Config.FeatureConfig[FeatureIds.SHOW_SEASONAL_FORAGING_ICON],
+        setValue: value => Config.FeatureConfig[FeatureIds.SHOW_SEASONAL_FORAGING_ICON] = value,
+        fieldId: FeatureIds.SHOW_SEASONAL_FORAGING_ICON
       );
       // Show crop/barrel tooltip
       GenericModConfigMenu.AddBoolOption(

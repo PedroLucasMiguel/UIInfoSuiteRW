@@ -30,7 +30,7 @@ namespace UIInfoSuiteRW.Framework
       { FeatureIds.SHOW_NEW_RECIPES_ICON, true },
       { FeatureIds.SHOW_RAINY_DAY_ICON, true },
       { FeatureIds.SHOW_ROBIN_BUILDING_STATUS, true },
-      { FeatureIds.SHOW_SEASONAL_BERRY_ICON, true },
+      { FeatureIds.SHOW_SEASONAL_FORAGING_ICON, true },
       { FeatureIds.SHOW_TODAYS_GIFT_ICON, true },
       { FeatureIds.SHOW_TOOL_UPGRADE_STATUS_ICON, true },
       { FeatureIds.SHOW_TRAVELER_MERCHANT_ICON, true },

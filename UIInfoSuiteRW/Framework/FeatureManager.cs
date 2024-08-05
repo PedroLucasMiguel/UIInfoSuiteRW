@@ -25,7 +25,7 @@ namespace UIInfoSuiteRW.Framework
           { FeatureIds.SHOW_NEW_RECIPES_ICON, new ShowQueenOfSauceIcon(helper) },
           { FeatureIds.SHOW_RAINY_DAY_ICON, new ShowRainyDayIcon(helper) },
           { FeatureIds.SHOW_ROBIN_BUILDING_STATUS, new ShowRobinBuildingStatusIcon(helper) },
-          { FeatureIds.SHOW_SEASONAL_BERRY_ICON, new ShowSeasonalBerry(helper) },
+          { FeatureIds.SHOW_SEASONAL_FORAGING_ICON, new ShowSeasonalForagingItem(helper) },
           { FeatureIds.SHOW_TODAYS_GIFT_ICON, new ShowTodaysGifts(helper) },
           { FeatureIds.SHOW_TOOL_UPGRADE_STATUS_ICON, new ShowToolUpgradeStatus(helper) },
           { FeatureIds.SHOW_TRAVELER_MERCHANT_ICON, new ShowTravelingMerchant(helper) },
@@ -105,9 +105,9 @@ namespace UIInfoSuiteRW.Framework
               config.FeatureConfig[FeatureIds.SHOW_ROBIN_BUILDING_STATUS]
             );
             break;
-          case FeatureIds.SHOW_SEASONAL_BERRY_ICON:
+          case FeatureIds.SHOW_SEASONAL_FORAGING_ICON:
             Features[featureId].ToggleOption(
-              config.FeatureConfig[FeatureIds.SHOW_SEASONAL_BERRY_ICON]
+              config.FeatureConfig[FeatureIds.SHOW_SEASONAL_FORAGING_ICON]
             );
             break;
           case FeatureIds.SHOW_TODAYS_GIFT_ICON:
