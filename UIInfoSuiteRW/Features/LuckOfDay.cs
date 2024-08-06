@@ -101,46 +101,47 @@ namespace UIInfoSuiteRW.Features
     {
       if (e.IsMultipleOf(30)) // half second
       {
+        int luckToDisplay = (int)(Game1.player.DailyLuck * 1000);
         switch (Game1.player.DailyLuck)
         {
           // Spirits are very happy (FeelingLucky)
           case > 0.07:
-            _hoverText.Value = $"{I18n.LuckStatus1()}\n({Game1.player.DailyLuck * 1000}/125)";
+            _hoverText.Value = $"{I18n.LuckStatus1()}\n({luckToDisplay}/125)";
             _color.Value = Luck1Color;
             _sourceRectX = 80;
             _sourceRectY = 80;
             break;
           // Spirits are in good humor (LuckyButNotTooLucky)
           case <= 0.07 and > 0.02:
-            _hoverText.Value = $"{I18n.LuckStatus2()}\n({Game1.player.DailyLuck * 1000}/125)";
+            _hoverText.Value = $"{I18n.LuckStatus2()}\n({luckToDisplay}/125)";
             _color.Value = Luck2Color;
             _sourceRectX = 64;
             _sourceRectY = 80;
             break;
           // The spirits feel absolutely neutral
           case 0:
-            _hoverText.Value = $"{I18n.LuckStatus4()}\n({Game1.player.DailyLuck * 1000}/125)";
+            _hoverText.Value = $"{I18n.LuckStatus4()}\n({luckToDisplay}/125)";
             _color.Value = Luck4Color;
             _sourceRectX = 48;
             _sourceRectY = 16;
             break;
           // The spirits feel neutral
           case <= 0.02 and >= -0.02:
-            _hoverText.Value = $"{I18n.LuckStatus3()}\n({Game1.player.DailyLuck * 1000}/125)";
+            _hoverText.Value = $"{I18n.LuckStatus3()}\n({luckToDisplay}/125)";
             _color.Value = Luck3Color;
             _sourceRectX = 0;
             _sourceRectY = 0;
             break;
           // The spirits are somewhat annoyed (NotFeelingLuckyAtAll)
           case >= -0.07 and < -0.02:
-            _hoverText.Value = $"{I18n.LuckStatus5()}\n({Game1.player.DailyLuck * 1000}/125)";
+            _hoverText.Value = $"{I18n.LuckStatus5()}\n({luckToDisplay}/125)";
             _color.Value = Luck5Color;
             _sourceRectX = 64;
             _sourceRectY = 16;
             break;
           // The spirits are very displeased (MaybeStayHome)
           case < -0.07:
-            _hoverText.Value = $"{I18n.LuckStatus6()}\n({Game1.player.DailyLuck * 1000}/125)";
+            _hoverText.Value = $"{I18n.LuckStatus6()}\n({luckToDisplay}/125)";
             _color.Value = Luck6Color;
             _sourceRectX = 112;
             _sourceRectY = 16;
