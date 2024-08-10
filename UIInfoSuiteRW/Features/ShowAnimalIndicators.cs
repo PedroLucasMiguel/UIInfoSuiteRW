@@ -173,7 +173,6 @@ namespace UIInfoSuiteRW.Features
               positionAboveAnimal.X += 50f;
               positionAboveAnimal.Y += 50f;
             }
-
             Game1.spriteBatch.Draw(
               Game1.mouseCursors,
               Utility.ModifyCoordinatesForUIScale(
